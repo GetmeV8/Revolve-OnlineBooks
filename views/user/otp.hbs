@@ -1,0 +1,36 @@
+<section class="vh-100 mt-5" style="background-color: #ffffff;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div style="text-transform: capitalize;" class="card-body p-5 text-center">
+
+                        <h3 class="mb-5">OTP Login</h3>
+                        {{#if otpStatus}}
+                        <div class="alert alert-success" role="alert">
+                            {{otpStatus}}
+                        </div>
+                        {{/if}}
+                        {{#if otpErr}}
+                        <div class="alert alert-danger" role="alert">
+                            {{otpErr}}
+                        </div>
+                        {{/if}}
+                        <div class="form-outline mb-4">
+                            <form action="/otp" method="post">
+                                <div style="margin-bottom: 20px;" class="form-outline mb-4">
+                                    <label class="form-label" for="typePasswordX-2">Enter OTP</label>
+                                    <input name="otp" type="text" id="typePasswordX-2"
+                                        class="form-control form-control-lg" required>
+                                </div>
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+                            </form>
+                        </div>
+                        <hr class="my-4">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

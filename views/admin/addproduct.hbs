@@ -1,0 +1,94 @@
+<main class="main-wrap">
+  <section class="content-main">
+    <div class="row">
+      <div class="col-9">
+        <div class="content-header">
+          <h2 class="content-title">Add New Product</h2>
+
+        </div>
+      </div>
+      {{#if productStatus}}
+      <div class="alert alert-success" role="alert">
+        {{productStatus}}
+      </div>
+      {{/if}}
+      <form action="/admin/adminAddProducts" method="post" enctype="multipart/form-data">
+        <div class="col-lg-6">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Basic</h4>
+            </div>
+            <div class="card-body">
+              <div class="mb-4">
+                <label for="product_name" class="form-label">Product title</label>
+                <input type="text" name="name" placeholder="Type here" class="form-control" id="product_name">
+              </div>
+              <div class="mb-4">
+                <label class="form-label">Full description</label>
+                <textarea name="description" placeholder="Type here" class="form-control" rows="4"></textarea>
+              </div>
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="mb-4">
+                    <label class="form-label">Regular price</label>
+                    <div class="row gx-2">
+                      <input placeholder="$" name="price" type="text" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="mb-4">
+                    <label class="form-label">Quantity</label>
+                    <input placeholder="" name="quantity" type="text" class="form-control">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <label class="form-label">Category</label>
+                  
+                  <select style="text-transform: capitalize;" name="category" class="form-select">
+                   {{#each category}}
+                    
+                     <option>{{this.product_name}}</option>
+                    
+                      {{/each}}
+                     
+                  </select>
+               
+                </div>
+              </div>
+              {{!-- <label class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" value="">
+                <span class="form-check-label"> Make a template </span>
+              </label> --}}
+            </div>
+          </div> <!-- card end// -->
+        </div>
+        <div class="col-lg-3">
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Media</h4>
+            </div>
+            <div class="card-body">
+              <div class="input-upload">
+                <img src="/assets/imgs/theme/upload.svg" id="imgView" alt="">
+                <input class="form-control" name="image" onchange="viewImage(event)" value="upload" type="file"
+                  multiple>
+              </div>
+            </div>
+          </div> <!-- card end// -->
+        </div>
+        <div>
+          <a href="productlist" >
+            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">All products</button>
+          </a>
+          <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
+        </div>
+      </form>
+    </div>
+    <script>
+      function viewImage(event) {
+        document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
+      }
+    </script>
+  </section> <!-- content-main end// -->
+</main>

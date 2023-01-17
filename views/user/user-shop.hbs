@@ -1,0 +1,152 @@
+ 
+ <div class="row">
+    {{#each products}}
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="/product-view/{{this._id}}" class="img-wrap"> <img src="/image-products/{{this._id}}.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title"></a>
+                            <a href="#" class="title">{{this.name}}</a>
+                           <a href="#" class="title">{{this.description}}</a>
+                            <div class="price mt-1">{{this.price}}</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div>
+                {{/each}} 
+                <!-- col.// -->
+                {{!-- <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap"> <img src="assets/imgs/items/2.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title">Brown Winter Jacket for Men</a>
+                            <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap"> <img src="assets/imgs/items/3.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title">Jeans short new model</a>
+                            <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap"> <img src="assets/imgs/items/4.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title">Travel Bag XL</a>
+                            <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap"> <img src="assets/imgs/items/5.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title">Just another product name</a>
+                            <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap"> <img src="assets/imgs/items/6.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title">Just another product name</a>
+                            <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap"> <img src="assets/imgs/items/7.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title">Just another product name</a>
+                            <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// -->
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card card-product-grid">
+                        <a href="#" class="img-wrap"> <img src="assets/imgs/items/8.jpg" alt="Product"> </a>
+                        <div class="info-wrap">
+                            <div class="dropdown float-end">
+                                <a href="#" class="btn btn-sm btn-brand rounded">
+                                    <i class="material-icons md-edit mr-5"></i>Edit
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Edit info</a>
+                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <a href="#" class="title">Apple Airpods CB-133</a>
+                            <div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+                        </div>
+                    </div> <!-- card-product  end// -->
+                </div> <!-- col.// --> --}}
+            </div> 

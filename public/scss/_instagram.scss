@@ -1,0 +1,166 @@
+/*-------- 13. Instagram style ---------*/
+
+.instagram-tag {
+    span {
+        font-size: 16px;
+        color: $black;
+    }
+    @media #{$xs-layout} {
+        margin-top: 7px; 
+    }
+    @media #{$sm-layout} {
+        margin-top: 0px; 
+    }
+}
+
+.instagram-wrap-1 {
+    display: flex;
+    .single-instafeed {
+        a {
+            display: block;
+            position: relative;
+            margin: 0 2.5px;
+            &:before {
+                position: absolute;
+                content: "";
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: $black;
+                transition: all 0.3s ease 0s;
+                opacity: 0;
+                visibility: hidden; 
+            }
+            &::after {
+                content: "\e609";
+                font-family: 'simple-line-icons';
+                position: absolute;
+                font-size: 36px;
+                left: 0;
+                right: 0;
+                text-align: center;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 9;
+                color: $white;
+                opacity: 0;
+                visibility: hidden;
+                transform: scale(.5);
+                transition: all 0.3s ease 0s;
+                @media #{$md-layout} {
+                    font-size: 28px;
+                }
+                @media #{$xs-layout} {
+                    font-size: 25px;
+                }
+            }
+            img {
+                width: 100%;
+            }
+            &:hover {
+                &:before {
+                    opacity: .4;
+                    visibility: visible;
+                }
+                &::after {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: scale(1);
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}
+
+.instagram-style-2 {
+    display: flex;
+    flex-wrap: wrap;
+    .single-instafeed {
+        flex: 0 0 12.5%;
+        @media #{$xs-layout} {
+            flex: 0 0 50%;
+        }
+        @media #{$sm-layout} {
+            flex: 0 0 25%;
+        }
+        a {
+            display: block;
+            overflow: hidden;
+            img {
+                width: 100%;
+                transform: scale(1);
+            }
+            &:hover {
+                img {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+
+.instagram-style-1 {
+    .single-instafeed {
+        a {
+            display: block;
+            position: relative;
+            margin: 0 2.5px;
+            &:before {
+                position: absolute;
+                content: "";
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: $black;
+                transition: all 0.3s ease 0s;
+                opacity: 0;
+                visibility: hidden;
+            }
+            &::after {
+                content: "\e609";
+                font-family: 'simple-line-icons';
+                position: absolute;
+                font-size: 36px;
+                left: 0;
+                right: 0;
+                text-align: center;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 9;
+                color: $white;
+                opacity: 0;
+                visibility: hidden;
+                transform: scale(.5);
+                transition: all 0.3s ease 0s;
+                @media #{$md-layout} {
+                    font-size: 28px;
+                }
+                @media #{$xs-layout} {
+                    font-size: 25px;
+                }
+            }
+            img {
+                width: 100%;
+            }
+            &:hover {
+                &:before {
+                    opacity: .4;
+                    visibility: visible;
+                }
+                &::after {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: scale(1);
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}
+
+
