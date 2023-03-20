@@ -31,6 +31,7 @@ module.exports = {
       else if (response.status) {
         req.session.loggedUserIn = true
         req.session.user = response.user
+        console.log(req.session.user);
         res.redirect('/')
       }
       else {
@@ -132,31 +133,37 @@ module.exports = {
     res.render('user/user-profile/user-account', { user: req.session.user });
   },
 
-  //Cart GET
-  UserCart: (req, res) => {
-    res.render('user/user-cart', { user: req.session.user })
-  },
-
   //Cart ADD
   AddtoCart: (req, res) => {
     const productId = req.params.id
     const userId = req.session?.user._id
-    console.log(productId);
-    console.log(userId);
-    userHelper.cartget(userId, productId).then((response) => {
+     console.log(productId);
+     console.log(userId);
+    userHelper.addcartget(userId, productId).then((response) => {
       res.json({ status: true })
     })
   },
-  
+
+  //GetCart
+  userCartGet: async (req, res) => {
+    const totalAmount = await userHelper.findTotalAmout(req.session.user._id)
+    const cartItems = await userHelper.getcartProducts(req.session.user._id)
+    console.log(cartItems);
+    const cartId = cartItems?._id
+    res.render('user/user-cart', { cartItems, user: req.session.user, totalAmount, cartId })
+  },
+
   //ChangeQuantity
-  ChangeCartQuantity:(req,res)=>{
-   userHelper.ChangeQuantity(req.body).then(async(response)=>{
-    response.total = await userHelper.FindTotal(req.body.userId);
-    const Subtotal = await userHelper.FindSubtotal(req.body.userId)
-    response.Subtotal = Subtotal;
-    console.log(Subtotal);
-    res.json(response)
-   })
-  }
+  ChangeCartQuantity: (req, res) => {
+    userHelper.ChangeQuantity(req.body).then(async (response) => {
+      response.total = await userHelper.FindTotal(req.body.userId);
+      const Subtotal = await userHelper.FindSubtotal(req.body.userId)
+      response.Subtotal = Subtotal;
+      console.log(Subtotal);
+      res.json(response) 
+    })
+  },
+
+
 
 }

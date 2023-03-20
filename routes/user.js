@@ -39,7 +39,7 @@ router.get('/product-view/:id',page_controller.productView);
 router.get('/user-account',user_controller.userProfileDash);
 
 //get Cart
-router.get('/user-cart',session_check.userauthenticationCheck,user_controller.UserCart)
+router.get('/user-cart',session_check.isUserExist,user_controller.userCartGet);
  
 // add to cart
 router.get('/add-to-cart/:id',session_check.isUserExist,user_controller.AddtoCart);

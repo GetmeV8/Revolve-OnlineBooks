@@ -81,53 +81,94 @@ module.exports = {
             }
         })
     },
-    cartget: (productId, userId) => {
+    // addcartget: (productId, userId) => {
+    //     const product = {
+    //         item: ObjectId(productId),
+    //         quantity: 1
+    //     }
+    //     return new Promise(async (resolve, reject) => {
+    //         const UserCart = await db.get().collection(collection.CART_COLLECTION).findOne({ userId: ObjectId(userId)})
+    //           console.log(UserCart)
+    //         //   console.log(ObjectId(productId))
+    //         if (UserCart) {
+    //             console.log('The cart exists');
+    //             const IsproductExist = UserCart?.products.findIndex(product => {
+    //                 return product.item == productId
+    //             })
+    //             console.log(IsproductExist);
+    //             if (IsproductExist !== -1) {
+    //                 console.log('This product already exist')
+    //                 db.get().collection(collection.CART_COLLECTION).updateOne({ userId: ObjectId(userId), 'products.item': ObjectId(productId) },
+    //                     {
+    //                         $inc: { 'products.$.quantity': 1 }
+    //                     }).then(() => {
+    //                         resolve()
+    //                     })
+    //             } else {
+    //                 db.get().collection(collection.CART_COLLECTION).updateOne({ userId: ObjectId(userId) },
+    //                     {
+    //                         $push: {
+    //                             products: product
+    //                         }
+    //                     }).then((response) => {
+    //                         console.log("Updated Cart");
+    //                         resolve(response)
+    //                     })
+    //             }
+    //         } else {
+    //             console.log("New Cart Created");
+    //             const cart = {
+    //                 userId: ObjectId(userId),
+    //                 products: [product]
+    //             }
+    //             db.get().collection(collection.CART_COLLECTION).insertOne(cart).then((response) => {
+    //                 console.log("Added Product to the cart.");
+    //                 resolve(response)
+    //             })
+    //         }
+    //     })
+    // },
+    addcartget: async (userId,productId) => {
         const product = {
             item: ObjectId(productId),
             quantity: 1
         }
-        return new Promise(async (resolve, reject) => {
-            const UserCart = await db.get().collection(collection.CART_COLLECTION).findOne({ userId: ObjectId(userId) })
-            console.log(UserCart)
-            console.log(ObjectId(productId))
-            if (UserCart) {
-                console.log('The cart exists');
-                const IsproductExist = UserCart?.products.findIndex(product => {
-                    return product.item == productId
+        try {
+            const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ userId: ObjectId(userId) })
+            if (userCart) {
+                const isProductExist = userCart?.products.findIndex(product => {
+                    return product.item === productId
                 })
-                console.log(IsproductExist);
-                if (IsproductExist !== -1) {
-                    console.log('This product already exist')
-                    db.get().collection(collection.CART_COLLECTION).updateOne({ userId: ObjectId(userId), 'products.item': ObjectId(productId) },
-                        {
-                            $inc: { 'products.$.quantity': 1 }
-                        }).then(() => {
-                            resolve()
-                        })
+                if (isProductExist !== -1) {
+                    await db.get().collection(collection.CART_COLLECTION)
+                        .updateOne({ userId: ObjectId(userId), 'products.item': ObjectId(productId) },
+                            {
+                                $inc: { 'products.$.quantity': 1 }
+                            })
                 } else {
-                    db.get().collection(collection.CART_COLLECTION).updateOne({ userId: ObjectId(userId) },
-                        {
-                            $push: {
-                                products: product
-                            }
-                        }).then((response) => {
-                            console.log("Updated Cart");
-                            resolve(response)
-                        })
+                    const response = await db.get().collection(collection.CART_COLLECTION).updateOne({ userId: ObjectId(userId) }, {
+                        $push: {
+                            products: product
+                        }
+                    })
+                    return response
                 }
             } else {
-                console.log("New Cart Created");
+                console.log('new cart created')
                 const cart = {
                     userId: ObjectId(userId),
                     products: [product]
                 }
-                db.get().collection(collection.CART_COLLECTION).insertOne(cart).then((response) => {
-                    console.log("Added Product to the cart.");
-                    resolve(response)
-                })
+                await db.get().collection(collection.CART_COLLECTION).insertOne(cart)
+                console.log('added product into the cart')
             }
-        })
+            return true
+        } catch (error) {
+            console.log(error)
+            return false
+        }
     },
+
     getCartProductsCount: (userId) => {
         return new Promise(async (resolve, reject) => {
             const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ userId: ObjectId(userId) })
@@ -159,6 +200,112 @@ module.exports = {
             }
         })
     },
+
+    getcartProducts: (userId) => {
+        console.log(userId)
+        return new Promise(async (resolve, reject) => {
+            const cartItems = await db.get().collection(collection.CART_COLLECTION).aggregate([
+                {
+                    $match: { userId: ObjectId(userId) }
+                },
+                {
+                    $unwind: '$products'
+                },
+                {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        localField: 'products.item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                },
+                {
+                    $unwind: '$product'
+                },
+                {
+                    $group: {
+                        _id: { 
+                            cartId: '$_id',
+                            productId: '$product._id'
+                        },
+                        product_title: { $first: '$product.name' },
+                        product_price: { $first: '$product.price' },
+                        quantity: { $sum: '$products.quantity' },
+                        subtotal: { $sum: { $multiply: ['$products.quantity', '$product.price'] } }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id.cartId',
+                        products: {
+                            $push: {
+                                product_id: '$_id.productId',
+                                product_title: '$name',
+                                product_price: '$product.price',
+                                quantity: '$quantity',
+                                subtotal: '$subtotal'
+                            }
+                        },
+                        total: { $sum: '$subtotal' }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        products: 1,
+                        total: 1
+                    }
+                }
+            ]).toArray()
+            console.log(cartItems[0].product)
+            resolve(cartItems[0])
+        })
+    },
+
+    findTotalAmout: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            const totalAmount = await db.get().collection(collection.CART_COLLECTION).aggregate([
+                {
+                    $match: {
+                        userId: ObjectId(userId)
+                    }
+                },
+                {
+                    $unwind: '$products'
+                },
+                {
+                    $project: {
+                        item: '$products.item',
+                        quantity: '$products.quantity'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                },
+                {
+                    $project: {
+                        item: 1,
+                        quantity: 1,
+                        product: { $arrayElemAt: ['$product', 0] }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: { $multiply: ['$quantity', '$product.product_price'] } }
+                    }
+                }
+            ]
+            ).toArray()
+            console.log(totalAmount)
+            resolve(totalAmount[0])
+        })
+    }
 
 
 

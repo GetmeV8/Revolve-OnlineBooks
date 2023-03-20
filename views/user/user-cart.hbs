@@ -141,19 +141,7 @@
                     <ul>
                         <li class="single-product-cart">
                             <div class="cart-img">
-                                <a href="#"><img src="assets/images/cart/cart-1.jpg" alt=""></a>
-                            </div>
-                            <div class="cart-title">
-                                <h4><a href="#">Simple Black T-Shirt</a></h4>
-                                <span> 1 × $49.00 </span>
-                            </div>
-                            <div class="cart-delete">
-                                <a href="#">×</a>
-                            </div>
-                        </li>
-                        <li class="single-product-cart">
-                            <div class="cart-img">
-                                <a href="#"><img src="assets/images/cart/cart-2.jpg" alt=""></a>
+                                <a href="#"><img src="/images/cart/cart-2.jpg" alt=""></a>
                             </div>
                             <div class="cart-title">
                                 <h4><a href="#">Norda Backpack</a></h4>
@@ -205,11 +193,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                       {{#each cartItems.product}}
                                         <tr>
                                             <td class="product-thumbnail">
                                                 <a href="#"><img src="/images/cart/cart-1.jpg" alt=""></a>
                                             </td>
-                                            <td class="product-name"><a href="#">Simple Black T-Shirt</a></td>
+                                            <td class="product-name"><a href="#">bb</a></td>
                                             <td class="product-price-cart"><span class="amount">$260.00</span></td>
                                             <td class="product-quantity pro-details-quality">
                                                 <div class="cart-plus-minus">
@@ -222,40 +211,7 @@
                                                 <a href="#"><i class="icon_close"></i></a>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td class="product-thumbnail">
-                                                <a href="#"><img src="/images/cart/cart-2.jpg" alt=""></a>
-                                            </td>
-                                            <td class="product-name"><a href="#">Norda Simple Backpack</a></td>
-                                            <td class="product-price-cart"><span class="amount">$150.00</span></td>
-                                            <td class="product-quantity pro-details-quality">
-                                                <div class="cart-plus-minus">
-                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton"
-                                                        value="1">
-                                                </div>
-                                            </td>
-                                            <td class="product-subtotal">$150.00</td>
-                                            <td class="product-remove">
-                                                <a href="#"><i class="icon_close"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="product-thumbnail">
-                                                <a href="#"><img src="/images/cart/cart-1.jpg" alt=""></a>
-                                            </td>
-                                            <td class="product-name"><a href="#">Simple Black T-Shirt </a></td>
-                                            <td class="product-price-cart"><span class="amount">$170.00</span></td>
-                                            <td class="product-quantity pro-details-quality">
-                                                <div class="cart-plus-minus">
-                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton"
-                                                        value="2">
-                                                </div>
-                                            </td>
-                                            <td class="product-subtotal">$170.00</td>
-                                            <td class="product-remove">
-                                                <a href="#"><i class="icon_close"></i></a>
-                                            </td>
-                                        </tr>
+                                        {{/each}}
                                     </tbody>
                                 </table>
                             </div>
