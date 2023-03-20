@@ -1,5 +1,9 @@
+{{>adminmain-head}}
+{{>side-bar}}
 <main class="main-wrap">
+    {{>admin-header}}
   <section class="content-main">
+   
     <div class="row">
       <div class="col-9">
         <div class="content-header">
@@ -81,14 +85,19 @@
           <a href="productlist" >
             <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">All products</button>
           </a>
-          <button type="submit" class="btn btn-md rounded font-sm hover-up">Publish</button>
+          <button type="submit" class="btn btn-md rounded font-sm ">Publish</button>
+                    {{!-- <button type="submit" class="btn btn-success ">Publish</button> --}}
+
         </div>
       </form>
     </div>
-    <script>
+    
+  </section> <!-- content-main end// -->
+
+  {{>admin-footer}}
+  <script>
       function viewImage(event) {
         document.getElementById('imgView').src = URL.createObjectURL(event.target.files[0])
       }
     </script>
-  </section> <!-- content-main end// -->
-</main>
+

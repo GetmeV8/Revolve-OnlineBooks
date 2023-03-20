@@ -201,6 +201,9 @@
                             <div class="tab-content">
                                 <div id="lg1" class="tab-pane active">
                                     <div class="login-form-container">
+                                        {{#if err}}
+                                        <p style="color: red;">Email  Already ind</p>
+                                        {{/if}}
                                         <div class="login-register-form">
                                             <form action="/signUp" method="post">
                                                 <input type="text" name="firstname" placeholder="Firstname">

@@ -8,16 +8,13 @@ var router = express.Router();
 /* GET users listing. */
 
 
+//user indexpage
+router.get('/',user_controller.getindex);
+
 // user login page and post
-router.route('/')
-    .get(session_check.authenticationCheck, user_controller.userLogin)
-    .post(user_controller.loginForm);
+router.route('/user-login').get(session_check.userauthenticationCheck, user_controller.userLogin).post(user_controller.loginForm);
 
-router.get('/user-home', user_controller.getHome)
-
-// router.get('/signUp', user_controller.userSignup)
-
-// router.post('/signUp',user_controller.formSubmit)
+//userhomepage
 
 // user signup and post
 
@@ -32,14 +29,20 @@ router.route('/otp').get(user_controller.otpValidateGet).post(user_controller.ot
 //otp login
 router.route('/otplogin').get(user_controller.loginWithOtpGet).post(user_controller.loginWithotppost);
 
-
+//User-Shop Page
 router.get('/user-shop', page_controller.productListing );
 
-
+//view products details
 router.get('/product-view/:id',page_controller.productView);
 
+//user dash
+router.get('/user-account',user_controller.userProfileDash);
 
-
+//get Cart
+router.get('/user-cart',session_check.userauthenticationCheck,user_controller.UserCart)
+ 
+// add to cart
+router.get('/add-to-cart/:id',session_check.isUserExist,user_controller.AddtoCart);
 
 
 module.exports = router;

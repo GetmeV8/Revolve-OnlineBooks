@@ -2,9 +2,15 @@ const { response } = require('express');
 const session = require('express-session');
 const userHelper = require('../helpers/user-helpers');
 const { doSignup } = require('../helpers/user-helpers');
-let twilio = require('../middlewares/twilio')
+let twilio = require('../middlewares/twilio');
+const { subscribe } = require('../routes/user');
 
 module.exports = {
+
+  getindex: (req, res) => {
+    res.render('user/index', { user: req.session.user })
+  },
+
   userLogin: (req, res, next) => {
     if (req.session.loggedUserIn) {
       res.redirect('/user-home')
@@ -13,47 +19,54 @@ module.exports = {
       req.session.adminBlocked = null;
     }
   },
-  loginForm: (req, res, next) => {
+
+  loginForm: (req, res) => {
     // console.log(req.body)
     userHelper.doLogin(req.body).then((response) => {
       console.log(response)
       if (response.blocked) {
-        req.session.adminBlocked = "Your accout is blocked by admin"
-        res.redirect('/')
+        req.session.adminBlocked = "Your account is blocked by admin"
+        res.redirect('/user-login')
       }
       else if (response.status) {
         req.session.loggedUserIn = true
         req.session.user = response.user
-        res.redirect('/user-home')
+        res.redirect('/')
       }
       else {
         req.session.loginErr = "Invalid email or password";
         res.redirect('/')
+
       }
     })
   },
+
+
   userSignup: (req, res, next) => {
     if (req.session.loggedUserIn) {
       res.redirect('/user-home')
     } else {
-      res.render('user/user-signup')
+      let err = req.session.signupErr
+      res.render('user/user-signup', { err })
+      req.session.signupErr = false
     }
-
-
   },
-  signupForm: async (req, res, next) => {
 
+
+  signupForm: async (req, res, next) => {
     userHelper.doSignup(req.body).then((data) => {
-      req.session.signupStatus = 'Account has created'
-      res.redirect('/user-home')
-    }).catch((err) => {
-      req.session.signupErr = "Email already exist"
-      res.redirect('/user-signup')
+      if (data) {
+
+        req.session.signupStatus = 'Account has created'
+        res.redirect('/user-login')
+      } else {
+        req.session.signupErr = true
+        res.redirect('/signUp')
+
+      }
     })
   },
-  getHome: (req, res) => {
-    res.render('user/user-home', { user: req.session.user })
-  },
+
 
   //otp validation
 
@@ -106,12 +119,44 @@ module.exports = {
       }
     })
   },
-  //user logout
 
+  //user logout
   userlogOut: (req, res) => {
     req.session.loggedUserIn = false;
     req.session.user = null;
     req.session.destroy();
     res.redirect('/');
   },
+  // use dash
+  userProfileDash: (req, res) => {
+    res.render('user/user-profile/user-account', { user: req.session.user });
+  },
+
+  //Cart GET
+  UserCart: (req, res) => {
+    res.render('user/user-cart', { user: req.session.user })
+  },
+
+  //Cart ADD
+  AddtoCart: (req, res) => {
+    const productId = req.params.id
+    const userId = req.session?.user._id
+    console.log(productId);
+    console.log(userId);
+    userHelper.cartget(userId, productId).then((response) => {
+      res.json({ status: true })
+    })
+  },
+  
+  //ChangeQuantity
+  ChangeCartQuantity:(req,res)=>{
+   userHelper.ChangeQuantity(req.body).then(async(response)=>{
+    response.total = await userHelper.FindTotal(req.body.userId);
+    const Subtotal = await userHelper.FindSubtotal(req.body.userId)
+    response.Subtotal = Subtotal;
+    console.log(Subtotal);
+    res.json(response)
+   })
+  }
+
 }

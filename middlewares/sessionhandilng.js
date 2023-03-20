@@ -1,9 +1,9 @@
 
 module.exports = {
     //user login and signup page session
-    authenticationCheck: (req, res, next) => {
+    userauthenticationCheck: (req, res, next) => {
         if (req.session.user) {
-            res.redirect('/user-home');
+            res.redirect('/');
         } else {
             next();
         }
@@ -15,5 +15,8 @@ module.exports = {
         } else {
             res.redirect('/admin')
         }
+    },
+    isUserExist: (req, res, next) => {
+        req.session.user ? next() : res.redirect('/')
     }
 }

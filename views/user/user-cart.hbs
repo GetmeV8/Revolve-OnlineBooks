@@ -1,7 +1,7 @@
-<section>
+{{>user-header}}
 
+<body>
     <div class="main-wrapper">
-
         <!-- Mobile menu start -->
         <div class="mobile-header-active mobile-header-wrapper-style">
             <div class="clickalbe-sidebar-wrap">
@@ -9,8 +9,7 @@
                 <div class="mobile-header-content-area">
                     <div class="header-offer-wrap mobile-header-padding-border-4">
                         <p><i class="icon-paper-plane"></i> FREE SHIPPING world wide for all orders over
-                            <span>$199</span>
-                        </p>
+                            <span>$199</span></p>
                     </div>
                     <div class="mobile-search mobile-header-padding-border-1">
                         <form class="search-form" action="#">
@@ -72,7 +71,7 @@
                                         <li><a href="compare.html">compare </a></li>
                                         <li><a href="contact.html">contact us </a></li>
                                         <li><a href="order-tracking.html">order tracking</a></li>
-                                        <li><a href="login-register.html">login  </a></li>
+                                        <li><a href="login-register.html">login / register </a></li>
                                     </ul>
                                 </li>
                                 <li class="menu-item-has-children "><a href="#">Blog</a>
@@ -120,7 +119,7 @@
                     <div class="mobile-contact-info mobile-header-padding-border-4">
                         <ul>
                             <li><i class="icon-phone "></i> (+612) 2531 5600</li>
-                            <li><i class="icon-envelope-open "></i> .com</li>
+                            <li><i class="icon-envelope-open "></i> norda@domain.com</li>
                             <li><i class="icon-home"></i> PO Box 1622 Colins Street West Australia</li>
                         </ul>
                     </div>
@@ -134,7 +133,7 @@
             </div>
         </div>
         <!-- mini cart start -->
-        {{!-- <div class="sidebar-cart-active">
+        <div class="sidebar-cart-active">
             <div class="sidebar-cart-all">
                 <a class="cart-close" href="#"><i class="icon_close"></i></a>
                 <div class="cart-content">
@@ -142,7 +141,7 @@
                     <ul>
                         <li class="single-product-cart">
                             <div class="cart-img">
-                                <a href="#"><img src="/images/cart/cart-1.jpg" alt=""></a>
+                                <a href="#"><img src="assets/images/cart/cart-1.jpg" alt=""></a>
                             </div>
                             <div class="cart-title">
                                 <h4><a href="#">Simple Black T-Shirt</a></h4>
@@ -154,7 +153,7 @@
                         </li>
                         <li class="single-product-cart">
                             <div class="cart-img">
-                                <a href="#"><img src="/images/cart/cart-2.jpg" alt=""></a>
+                                <a href="#"><img src="assets/images/cart/cart-2.jpg" alt=""></a>
                             </div>
                             <div class="cart-title">
                                 <h4><a href="#">Norda Backpack</a></h4>
@@ -174,154 +173,185 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
-        {{!-- <div class="breadcrumb-area bg-gray">
+        </div>
+        <div class="breadcrumb-area bg-gray">
             <div class="container">
                 <div class="breadcrumb-content text-center">
                     <ul>
                         <li>
                             <a href="index.html">Home</a>
                         </li>
-                        <li class="active">login - register </li>
+                        <li class="active">Cart Page </li>
                     </ul>
                 </div>
             </div>
-        </div> --}}
-        <div class="login-register-area pt-115 pb-120">
+        </div>
+        <div class="cart-main-area pt-115 pb-120">
             <div class="container">
+                <h3 class="cart-page-title">Your cart items</h3>
                 <div class="row">
-                    <div class="col-lg-7 col-md-12 ml-auto mr-auto">
-                        <div class="login-register-wrapper">
-                            <div class="login-register-tab-list nav">
-                                <a class="active" data-toggle="tab" href="#lg1">
-                                    <h4> login </h4>
-                                </a>
-                                {{!-- <a data-toggle="tab" href="#">
-
-                                </a> --}}
-                            </div>
-                            <div class="tab-content">
-                                <div id="lg1" class="tab-pane active">
-                                    <div class="login-form-container">
-                                        {{!-- {{#if adminLoginErr}}
-                                                     <div class="alert alert-danger" role="alert">
-                                                    {{adminLoginErr}} --}}
-                                        <div class="login-register-form">
-                                            <form action="/admin/admin-login" method="post">
-                                                <input type="text" name="name" placeholder="Username">
-                                                <input type="password" name="password" placeholder="Password">
-                                                <div class="button-box">
-                                                    <div class="login-toggle-btn">
-
-                                                    </div>
-                                                    <button type="submit">Login</button>
-                                                     
-                                                    </div>
-
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                        <form action="#">
+                            <div class="table-content table-responsive cart-table-content">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product Name</th>
+                                            <th>Until Price</th>
+                                            <th>Qty</th>
+                                            <th>Subtotal</th>
+                                            <th>action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a href="#"><img src="/images/cart/cart-1.jpg" alt=""></a>
+                                            </td>
+                                            <td class="product-name"><a href="#">Simple Black T-Shirt</a></td>
+                                            <td class="product-price-cart"><span class="amount">$260.00</span></td>
+                                            <td class="product-quantity pro-details-quality">
+                                                <div class="cart-plus-minus">
+                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton"
+                                                        value="1">
                                                 </div>
-                                               
-                                            </form>
+                                            </td>
+                                            <td class="product-subtotal">$110.00</td>
+                                            <td class="product-remove">
+                                                <a href="#"><i class="icon_close"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a href="#"><img src="/images/cart/cart-2.jpg" alt=""></a>
+                                            </td>
+                                            <td class="product-name"><a href="#">Norda Simple Backpack</a></td>
+                                            <td class="product-price-cart"><span class="amount">$150.00</span></td>
+                                            <td class="product-quantity pro-details-quality">
+                                                <div class="cart-plus-minus">
+                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton"
+                                                        value="1">
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal">$150.00</td>
+                                            <td class="product-remove">
+                                                <a href="#"><i class="icon_close"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="product-thumbnail">
+                                                <a href="#"><img src="/images/cart/cart-1.jpg" alt=""></a>
+                                            </td>
+                                            <td class="product-name"><a href="#">Simple Black T-Shirt </a></td>
+                                            <td class="product-price-cart"><span class="amount">$170.00</span></td>
+                                            <td class="product-quantity pro-details-quality">
+                                                <div class="cart-plus-minus">
+                                                    <input class="cart-plus-minus-box" type="text" name="qtybutton"
+                                                        value="2">
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal">$170.00</td>
+                                            <td class="product-remove">
+                                                <a href="#"><i class="icon_close"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="cart-shiping-update-wrapper">
+                                        <div class="cart-shiping-update">
+                                            <a href="#">Continue Shopping</a>
+                                        </div>
+                                        <div class="cart-clear">
+                                            <button>Update Cart</button>
+                                            <a href="#">Clear Cart</a>
                                         </div>
                                     </div>
                                 </div>
-                                {{!-- <div id="lg2" class="tab-pane">
-                                    <div class="login-form-container">
-                                        <div class="login-register-form">
-                                            <form action="admin/admin-login" method="post">
-                                                <input type="text" name="user-name" placeholder="Username">
-                                                <input type="password" name="user-password" placeholder="Password">
-                                                <input name="user-email" placeholder="Email" type="email">
-                                                <div class="button-box">
-                                                    <button type="submit">Register</button>
-                                                </div>
-                                            </form>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6">
+                                {{!-- <div class="cart-tax">
+                                    <div class="title-wrap">
+                                        <h4 class="cart-bottom-title section-bg-gray">Estimate Shipping And Tax</h4>
+                                    </div>
+                                    <div class="tax-wrapper">
+                                        <p>Enter your destination to get a shipping estimate.</p>
+                                        <div class="tax-select-wrapper">
+                                            <div class="tax-select">
+                                                <label>
+                                                    * Country
+                                                </label>
+                                                <select class="email s-email s-wid">
+                                                    <option>Bangladesh</option>
+                                                    <option>Albania</option>
+                                                    <option>Åland Islands</option>
+                                                    <option>Afghanistan</option>
+                                                    <option>Belgium</option>
+                                                </select>
+                                            </div>
+                                            <div class="tax-select">
+                                                <label>
+                                                    * Region / State
+                                                </label>
+                                                <select class="email s-email s-wid">
+                                                    <option>Bangladesh</option>
+                                                    <option>Albania</option>
+                                                    <option>Åland Islands</option>
+                                                    <option>Afghanistan</option>
+                                                    <option>Belgium</option>
+                                                </select>
+                                            </div>
+                                            <div class="tax-select">
+                                                <label>
+                                                    * Zip/Postal Code
+                                                </label>
+                                                <input type="text">
+                                            </div>
+                                            <button class="cart-btn-2" type="submit">Get A Quote</button>
                                         </div>
                                     </div>
                                 </div> --}}
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="subscribe-area bg-gray pt-115 pb-115">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-5 col-md-5">
-                        <div class="section-title">
-                            <h2>keep connected</h2>
-                            {{!-- <p>Get updates by subscribe our weekly newsletter</p> --}}
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-md-7">
-                        <div id="mc_embed_signup" class="subscribe-form">
-                            <form id="mc-embedded-subscribe-form" class="validate subscribe-form-style" novalidate=""
-                                target="_blank" name="mc-embedded-subscribe-form" method="post"
-                                action="https://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef">
-                                <div id="mc_embed_signup_scroll" class="mc-form">
-                                    <input class="email" type="email" required="" placeholder="Enter your email address"
-                                        name="EMAIL" value="">
-                                    <div class="mc-news" aria-hidden="true">
-                                        <input type="text" value="" tabindex="-1"
-                                            name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef">
+                            <div class="col-lg-4 col-md-6">
+                                <div class="discount-code-wrapper">
+                                    <div class="title-wrap">
+                                        <h4 class="cart-bottom-title section-bg-gray">Use Coupon Code</h4>
                                     </div>
-                                    <div class="clear">
-                                        <input id="mc-embedded-subscribe" class="button" type="submit" name="subscribe"
-                                            value="Subscribe">
+                                    <div class="discount-code">
+                                        <p>Enter your coupon code if you have one.</p>
+                                        <form>
+                                            <input type="text" required="" name="name">
+                                            <button class="cart-btn-2" type="submit">Apply Coupon</button>
+                                        </form>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col-lg-4 col-md-12">
+                                <div class="grand-totall">
+                                    <div class="title-wrap">
+                                        <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
+                                    </div>
+                                    <h5>Total products <span>$260.00</span></h5>
+                                    <div class="total-shipping">
+                                        <h5>Total shipping</h5>
+                                        <ul>
+                                            <li><input type="checkbox"> Standard <span>$20.00</span></li>
+                                            <li><input type="checkbox"> Express <span>$30.00</span></li>
+                                        </ul>
+                                    </div>
+                                    <h4 class="grand-totall-title">Grand Total <span>$260.00</span></h4>
+                                    <a href="#">Proceed to Checkout</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <footer class="footer-area bg-gray pb-30">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="contact-info-wrap">
-                            <div class="footer-logo">
-                                <a href="#"><img src="/images/logo/logo.png" alt="logo"></a>
-                            </div>
-                            <div class="single-contact-info">
-                                <span>Our Location</span>
-                                <p>869 General Village Apt. 645, Moorebury, USA</p>
-                            </div>
-                            <div class="single-contact-info">
-                                <span>24/7 hotline:</span>
-                                <p>(+99) 052 128 2399</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="footer-right-wrap">
-                            <div class="footer-menu">
-                                <nav>
-                                    <ul>
-                                        <li><a href="index.html">home</a></li>
-                                        <li><a href="shop.html">Shop</a></li>
-                                        <li><a href="shop.html">Product </a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="blog.html">Blog.</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div class="social-style-2 social-style-2-mrg">
-                                <a href="#"><i class="social_twitter"></i></a>
-                                <a href="#"><i class="social_facebook"></i></a>
-                                <a href="#"><i class="social_googleplus"></i></a>
-                                <a href="#"><i class="social_instagram"></i></a>
-                                <a href="#"><i class="social_youtube"></i></a>
-                            </div>
-                            <div class="copyright">
-                                <p>Copyright © 2021 HasThemes | <a href="https://hasthemes.com/">Built with
-                                        <span>Norda</span> by HasThemes</a>.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-</section>
+</body>
+{{>user-footer}}

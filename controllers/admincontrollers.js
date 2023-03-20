@@ -32,7 +32,7 @@ module.exports = {
     //admin dashboard
     adminDash: (req, res) => {
         let admin = req.session.admin;
-        res.render('admin/admin-dash', { admin });
+        res.render('admin/admin-dash',{admin});
     },
 
 
@@ -60,14 +60,14 @@ module.exports = {
             res.redirect('/admin/allusers')
         })
     },
+
     addProduct: (req, res) => {
         adminHelper.getallCategories().then((category) => {
             console.log(category)
             res.render('admin/addproduct', { admin: true, category });
         })
-
-
-        // req.session.productStatus = false;
+    
+        req.session.productStatus = false;
     },
     productList: (req, res) => {
         adminHelper.viewProduct().then((products) => {
@@ -77,6 +77,7 @@ module.exports = {
     },
     adminAddProductPost: (req, res) => {
         console.log(req.body);
+        console.log(req.files)
         adminHelper.addProduct(req.body).then((data) => {
             console.log(data)
             let image = req.files.image;
@@ -142,6 +143,6 @@ module.exports = {
     }, categoryListing: (req, res) => {
         let category = req.params.id;
         adminHelper.allCategory().then(category)
-    }, 
-      
+    },
+
 }

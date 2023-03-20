@@ -3,6 +3,8 @@ var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
 let twilio = require('../middlewares/twilio')
 const { ObjectId } = require('mongodb');
+const { CART_COLLECTION } = require('../config/collections');
+const { response } = require('express');
 
 module.exports = {
     doSignup: (userdata) => {
@@ -11,14 +13,14 @@ module.exports = {
 
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userdata.email })
             // console.log(user)
-            let regUser = {}
+            // let regUser = {}
             if (user) {
-                console.log("worked")
-                regUser.status = true;
-                resolve(regUser)
+                console.log("email already exsist")
+                // regUser.status = true;
+                resolve(false)
             }
             else {
-                userdata.access=true
+                userdata.access = true
                 console.log(userdata.password)
                 userdata.password = await bcrypt.hash(userdata.password, 10)
                 // .then((hash)=>{
@@ -26,10 +28,10 @@ module.exports = {
                 // }).catch((err)=>{
                 //     console.log(err);
                 // })
-                db.get().collection(collection.USER_COLLECTION).insertOne(userdata)
-                console.log("worked")
+                await db.get().collection(collection.USER_COLLECTION).insertOne(userdata)
+                console.log("document inserted successfully")
 
-                resolve({ status: false, userdata })
+                resolve(true)
             }
         })
 
@@ -38,10 +40,10 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             console.log(userdata)
             let response = {}
-            let user = await db.get().collection(collection.USER_COLLECTION).findOne({email : userdata.name })
+            let user = await db.get().collection(collection.USER_COLLECTION).findOne({ email: userdata.name })
             console.log(user)
-            if(!user.access){
-                resolve({blocked:true})
+            if (!user.access) {
+                resolve({ blocked: true })
             }
             else if (user) {
                 bcrypt.compare(userdata.password, user.password).then((status) => {
@@ -78,7 +80,86 @@ module.exports = {
                 res({ loginError: false });
             }
         })
-    }
+    },
+    cartget: (productId, userId) => {
+        const product = {
+            item: ObjectId(productId),
+            quantity: 1
+        }
+        return new Promise(async (resolve, reject) => {
+            const UserCart = await db.get().collection(collection.CART_COLLECTION).findOne({ userId: ObjectId(userId) })
+            console.log(UserCart)
+            console.log(ObjectId(productId))
+            if (UserCart) {
+                console.log('The cart exists');
+                const IsproductExist = UserCart?.products.findIndex(product => {
+                    return product.item == productId
+                })
+                console.log(IsproductExist);
+                if (IsproductExist !== -1) {
+                    console.log('This product already exist')
+                    db.get().collection(collection.CART_COLLECTION).updateOne({ userId: ObjectId(userId), 'products.item': ObjectId(productId) },
+                        {
+                            $inc: { 'products.$.quantity': 1 }
+                        }).then(() => {
+                            resolve()
+                        })
+                } else {
+                    db.get().collection(collection.CART_COLLECTION).updateOne({ userId: ObjectId(userId) },
+                        {
+                            $push: {
+                                products: product
+                            }
+                        }).then((response) => {
+                            console.log("Updated Cart");
+                            resolve(response)
+                        })
+                }
+            } else {
+                console.log("New Cart Created");
+                const cart = {
+                    userId: ObjectId(userId),
+                    products: [product]
+                }
+                db.get().collection(collection.CART_COLLECTION).insertOne(cart).then((response) => {
+                    console.log("Added Product to the cart.");
+                    resolve(response)
+                })
+            }
+        })
+    },
+    getCartProductsCount: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ userId: ObjectId(userId) })
+            const count = userCart?.products.length
+            resolve(count)
+        })
+    },
+
+    ChangeQuantity: (productdata) => {
+        return new Promise((resolve, reject) => {
+            let { cartId, productId, count, quantity } = productdata
+            count = parseInt(count)
+            quantity = parseInt(quantity)
+            if (count === -1 && quantity === 1) {
+                db.get().collection(collection.CART_COLLECTION).updateOne({ _id: ObjectId(cartId) },
+                    {
+                        $pull: { products: { item: ObjectId(productId) } }
+                    }).then(() => {
+                        resolve({ removed: true })
+                    })
+            } else {
+                db.get().collection(collection.CART_COLLECTION).
+                    findOneAndUpdate({ _id: ObjectId(cartId), 'products.item': ObjectId(productId) },
+                        {
+                            $inc: { 'products.$.quantity': count }
+                        }).then(() => {
+                            resolve({ status: true })
+                        })
+            }
+        })
+    },
+
 
 
 }
