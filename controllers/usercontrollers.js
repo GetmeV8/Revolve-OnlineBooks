@@ -1,5 +1,6 @@
 const { response } = require('express');
 const session = require('express-session');
+const { checkout } = require('../app');
 const userHelper = require('../helpers/user-helpers');
 const { doSignup } = require('../helpers/user-helpers');
 let twilio = require('../middlewares/twilio');
@@ -146,24 +147,32 @@ module.exports = {
 
   //GetCart
   userCartGet: async (req, res) => {
-    const totalAmount = await userHelper.findTotalAmout(req.session.user._id)
+    const totalAmount = await userHelper.FindTotalAmount(req.session.user._id)
     const cartItems = await userHelper.getcartProducts(req.session.user._id)
     console.log(cartItems);
     const cartId = cartItems?._id
     res.render('user/user-cart', { cartItems, user: req.session.user, totalAmount, cartId })
-  },
+  }, 
 
   //ChangeQuantity
   ChangeCartQuantity: (req, res) => {
     userHelper.ChangeQuantity(req.body).then(async (response) => {
-      response.total = await userHelper.FindTotal(req.body.userId);
-      const Subtotal = await userHelper.FindSubtotal(req.body.userId)
-      response.Subtotal = Subtotal;
-      console.log(Subtotal);
+      response.total = await userHelper.FindTotalAmount(req.body.userId);
+      const subtotal = await userHelper.findSubTotal(req.body.userId)
+      response.subtotal = subtotal;
+      console.log(subtotal);
       res.json(response) 
     })
   },
 
+  removeproducts:(req,res)=>{
+    userHelper.removeCartProducts(req.body).then((response)=>{
+      res.json(response)
+    })
+  },
 
+  UserCheckout:(req,res)=>{
+    res.render('user/checkout')
+  }
 
 }

@@ -25,7 +25,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret:'key',cookie:{maxAge:260000}}))
+app.use(session({
+secret:'key',
+resave:false,
+saveUninitialized:false,
+cookie:{maxAge:600000}}))
 app.use(nocache())
 app.use(fileUpload())
 

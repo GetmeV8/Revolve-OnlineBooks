@@ -128,7 +128,7 @@ module.exports = {
     //         }
     //     })
     // },
-    addcartget: async (userId,productId) => {
+    addcartget: async (userId, productId) => {
         const product = {
             item: ObjectId(productId),
             quantity: 1
@@ -169,6 +169,7 @@ module.exports = {
         }
     },
 
+
     getCartProductsCount: (userId) => {
         return new Promise(async (resolve, reject) => {
             const userCart = await db.get().collection(collection.CART_COLLECTION).findOne({ userId: ObjectId(userId) })
@@ -176,6 +177,7 @@ module.exports = {
             resolve(count)
         })
     },
+
 
     ChangeQuantity: (productdata) => {
         return new Promise((resolve, reject) => {
@@ -190,6 +192,7 @@ module.exports = {
                         resolve({ removed: true })
                     })
             } else {
+                console.log("updated");
                 db.get().collection(collection.CART_COLLECTION).
                     findOneAndUpdate({ _id: ObjectId(cartId), 'products.item': ObjectId(productId) },
                         {
@@ -224,7 +227,7 @@ module.exports = {
                 },
                 {
                     $group: {
-                        _id: { 
+                        _id: {
                             cartId: '$_id',
                             productId: '$product._id'
                         },
@@ -240,8 +243,8 @@ module.exports = {
                         products: {
                             $push: {
                                 product_id: '$_id.productId',
-                                product_title: '$name',
-                                product_price: '$product.price',
+                                product_title: '$product_title',
+                                product_price: '$product_price',
                                 quantity: '$quantity',
                                 subtotal: '$subtotal'
                             }
@@ -257,12 +260,12 @@ module.exports = {
                     }
                 }
             ]).toArray()
-            console.log(cartItems[0].product)
+            //    console.log(cartItems[0].products)
             resolve(cartItems[0])
         })
     },
 
-    findTotalAmout: (userId) => {
+    FindTotalAmount: (userId) => {
         return new Promise(async (resolve, reject) => {
             const totalAmount = await db.get().collection(collection.CART_COLLECTION).aggregate([
                 {
@@ -297,13 +300,68 @@ module.exports = {
                 {
                     $group: {
                         _id: null,
-                        total: { $sum: { $multiply: ['$quantity', '$product.product_price'] } }
+                        total: { $sum: { $multiply: ['$quantity', '$product.price'] } }
                     }
                 }
             ]
             ).toArray()
             console.log(totalAmount)
             resolve(totalAmount[0])
+        })
+    },
+    findSubTotal: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            const subtotal = await db.get().collection(collection.CART_COLLECTION).aggregate([
+                {
+                    $match: {
+                        userId: ObjectId(userId)
+                    }
+                },
+                {
+                    $unwind: '$products'
+                },
+                {
+                    $lookup: {
+                        from: collection.PRODUCT_COLLECTION,
+                        localField: 'products.item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                },
+                {
+                    $unwind: '$product'
+                },
+                {
+                    $project: {
+                        _id: '$product._id',
+                        name: '$product.product_title',
+                        subtotal: {
+                            $multiply: ['$products.quantity', '$product.price']
+                        }
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        subtotal: {
+                            $sum: '$subtotal'
+                        }
+                    }
+                }
+            ]).toArray()
+            resolve(subtotal)
+        })
+    },
+    removeCartProducts: (cartInfo) => {
+        return new Promise((resolve, reject) => {
+            const { cartId, productId } = cartInfo
+            db.get().collection(collection.CART_COLLECTION).updateOne({ _id: ObjectId(cartId) },
+                {
+                    $pull: { products: { item: ObjectId(productId) } }
+                }).then(() => {
+                    resolve({ removed: true })
+                })
         })
     }
 
