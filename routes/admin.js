@@ -3,6 +3,20 @@ var router = express.Router();
 const admin_controller = require('../controllers/admincontrollers');
 const page_controller = require('../controllers/pagecontroller')
 let adminauth = require('../middlewares/sessionhandilng');
+const adminvalidation = require('../validation/adminvalidation');
+const multer = require('multer');
+const path = require('path');
+const upload = multer({
+    storage: multer.diskStorage({}),
+    fileFilter: (req, file, cb) => {
+        let ext = path.extname(file.originalname)
+        if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png" && ext !== ".webp") {
+            cb(new Error("File type is not supported"), false)
+            return
+        }
+        cb(null, true)
+    }
+})
 
 /* GET home page. */
 
@@ -11,36 +25,51 @@ let adminauth = require('../middlewares/sessionhandilng');
 //   password: 'administrator',
 // }
 
-// router.route('/admin-login').get(admin_controller.adminLogin).post(admin_controller.adminPost);
 
-router.get('/', admin_controller.adminLogin)
+router.route("/").get(admin_controller.adminLoginGet).post(adminvalidation.adminLoginValidate, admin_controller.adminLoginPost)
 
-router.post('/admin-login',admin_controller.adminPost);
+router.get('/logOut', admin_controller.logoutAdmin);
 
-router.get('/admin-dash',admin_controller.adminDash);
+router.get('/admin-dash', admin_controller.adminDash);
 
-router.get('/allusers',admin_controller.allUsers);
+router.get('/allusers', admin_controller.allUsers);
 
 router.get('/user-block/:id', admin_controller.userBlocking);
 
+//user blocking unblocking
 router.get('/user-unblocking/:id', admin_controller.userUnblocking);
 
-router.get('/addproduct',admin_controller.addProduct);
+//Add Product
+router.get('/addproduct', admin_controller.addProduct);
 
-router.post('/adminAddProducts',admin_controller.adminAddProductPost)
+//Image Upload Multer
+router.post('/adminAddProducts',
+    upload.fields([
+        { name: 'image1', maxCount: 1 },
+        { name: 'image2', maxCount: 1 },
+        { name: 'image3', maxCount: 1 },
 
-router.get('/productslist',admin_controller.productList);
-
-router.get('/editproduct/:id',admin_controller.productEdit);
-
-router.post('/productUpdate/:id',admin_controller.productUpdate);
-
-router.get('/category',admin_controller.addcategoryGet);
-
-router.post('/addcategoryPost',admin_controller.addcategoryPost);
-
+    ]),
+    admin_controller.adminAddProductPost);
 
 
+//Products list
+router.get('/productslist', admin_controller.productList);
+
+//edit product
+router.get('/editproduct/:id', admin_controller.productEdit);
+
+//product Edit post
+router.post('/productUpdate/:id', admin_controller.productUpdate);
+
+//category get
+router.get('/category', admin_controller.addcategoryGet);
+
+//category post
+router.post('/addcategoryPost', admin_controller.addcategoryPost);
+
+//coupon get
+router.get('/add-coupon',admin_controller.couponGet);
 
 
 module.exports = router;

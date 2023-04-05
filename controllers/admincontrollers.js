@@ -1,38 +1,59 @@
 const adminHelper = require('../helpers/admin-helpers')
 const product_helper = require('../helpers/product-helpers')
 const { response, json } = require('express');
+const multer = require('multer');
+const path = require('path');
+var cloudinary = require('../utils/cloudinary');
+const { validationResult } = require('express-validator')
 
 module.exports = {
 
-    adminLogin: (req, res, next) => {
-        let admin = req.session.admin;
-        console.log('loginadmin')
-        res.render('admin/admin-login', { admin, 'adminLoginErr': req.session.adminLoginErr });
-        req.session.adminLoginErr = false
+    // adminLogin: (req, res, next) => {
+    //     let admin = req.session.admin;
+    //     console.log('loginadmin')
+    //     res.render('admin/admin-login', { admin, 'adminLoginErr': req.session.adminLoginErr });
+    //     req.session.adminLoginErr = false
+    // },
 
-
+    adminLoginGet: (req, res) => {
+        const { admin, loginError } = req.session
+        if (admin) {
+            return res.redirect("/admin/admin-dashb")
+        }
+        res.render("admin/admin-login", { loginErr: loginError })
+        req.session.loginError = null
     },
+
+    logoutAdmin: (req, res) => {
+        req.session.admin = null
+        res.redirect("/admin")
+      },
+
     // admin login post
-    adminPost: (req, res, next) => {
-        adminHelper.doLogin(req.body).then((data) => {
-            console.log(data)
-            if (data.name) {
-                console.log("admin dash")
-                req.session.admin = data;
-                req.session.adminStatus = true;
-                res.redirect('/admin/admin-dash')
-            }
-            else {
-                console.log("admin login failed")
-                req.session.adminLoginErr = "Invalid Admin Email Or Password";
-                res.redirect('/admin/admin-login')
-            }
-        })
-    },
+    adminLoginPost: async (req, res) => {
+        try {
+          const response = await adminHelper.adminLogin(req.body)
+          console.log(response);
+          if (response.status) {
+            req.session.adminLoggedIn = true
+            req.session.admin = response.admin
+            res.json({ status: true })
+          } else if (response.notExist) {
+            req.session.loginError = "Invalid email address..."
+            res.json({ status: false })
+          } else {
+            req.session.loginError = "Incorrect password "
+            res.json({ status: false })
+          }
+        } catch (error) {
+          console.error(error)
+          res.status(500).json({ error: "Server Error" })
+        }
+      },
     //admin dashboard
     adminDash: (req, res) => {
         let admin = req.session.admin;
-        res.render('admin/admin-dash',{admin});
+        res.render('admin/admin-dash', { admin });
     },
 
 
@@ -66,32 +87,49 @@ module.exports = {
             console.log(category)
             res.render('admin/addproduct', { admin: true, category });
         })
-    
         req.session.productStatus = false;
     },
+
+
     productList: (req, res) => {
         adminHelper.viewProduct().then((products) => {
             // console.log(products);
             res.render('admin/productslist', { admin: true, products })
         })
     },
-    adminAddProductPost: (req, res) => {
+    adminAddProductPost: async (req, res) => {
         console.log(req.body);
         console.log(req.files)
-        adminHelper.addProduct(req.body).then((data) => {
-            console.log(data)
-            let image = req.files.image;
-            console.log(image);
-            let objId = data.insertedId;
-            image.mv('./public/image-products/' + objId + '.jpg', err => {
-                if (!err) {
-                    res.redirect('/admin/addproduct')
-                } else {
-                    console.log(err)
-                    res.redirect('/admin/addproduct')
-                }
+        const cloudinaryImageUploadMethod = (file) => {
+            console.log("qqqq");
+            return new Promise((resolve) => {
+                cloudinary.uploader.upload(file, (err, res) => {
+                    if (err)
+                        console.log(err, "sssssssssssssssssssssssss");
+                    resolve(res.secure_url)
+                })
             })
+        }
+
+        const files = req.files
+        let arr1 = Object.values(files)
+        let arr2 = arr1.flat()
+        const urls = await Promise.all(
+            arr2.map(async (file) => {
+                const { path } = file
+                const result = await cloudinaryImageUploadMethod(path)
+                return result
+            })
+        )
+        adminHelper.addProduct(req.body, urls).then((err) => {
+            if (!err) {
+                res.redirect('/admin/addproduct')
+            } else {
+                console.log(err)
+                res.redirect('/admin/addproduct')
+            }
         })
+
 
     },
     productEdit: (req, res) => {
@@ -103,6 +141,17 @@ module.exports = {
 
         })
     },
+    // productEdit:(req,res)=>{
+    //     const productId = req.params.id  
+    //        adminHelper.editProduct(productId).then((document)=>{
+    //         res.render('admin/editproduct',{
+    //             document,
+    //             productStatus:req.session.updateProductStatus,
+    //             updateErr:req.session.updateProductError,
+    //             updateMsg:req.session.updateMsg
+    //         })
+    //        })
+    // },
     productUpdate: async (req, res) => {
         const id = req.params.id;
         const obj = {
@@ -144,5 +193,12 @@ module.exports = {
         let category = req.params.id;
         adminHelper.allCategory().then(category)
     },
-
+    // add coupon
+    couponGet:(req,res)=>{
+       
+        adminHelper.viewProduct().then((products) => {
+            // console.log(products);
+            res.render('admin/add-coupon', {  products })
+        })
+    },
 }

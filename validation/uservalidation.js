@@ -1,7 +1,7 @@
-let { check, validationResult } = require('express-validator');
+let { check} = require('express-validator');
 module.exports = {
   userSignUpValidate: [
-    check('name')
+    check('firstname')
       .notEmpty()
       .withMessage("Name cannot be empty")
       .isLength({ min: 2 })

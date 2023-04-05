@@ -1,40 +1,7 @@
 <body>
-
+    {{>user-header}}
+    {{>user-sidebar}}
     <div class="main-wrapper">
-        {{>user-header}}
-        {{>user-sidebar}}
-       
-        <!-- mini cart start -->
-        {{!-- <div class="sidebar-cart-active">
-            <div class="sidebar-cart-all">
-                <a class="cart-close" href="#"><i class="icon_close"></i></a>
-                <div class="cart-content">
-                    <h3>Your Cart</h3>
-                    <ul>
-                        
-                        <li class="single-product-cart">
-                            <div class="cart-img">
-                                <a href="#"><img src=" " alt=""></a>
-                            </div>
-                            <div class="cart-title">
-                                <h4><a href="#">Title</a></h4>
-                                <span> 1 × $49.00 </span>
-                            </div>
-                            <div class="cart-delete">
-                                <a href="#">×</a>
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="cart-total">
-                        <h4>Subtotal: <span>$170.00</span></h4>
-                    </div>
-                    <div class="cart-checkout-btn">
-                        <a class="btn-hover cart-btn-style" href="/user-cart">view cart</a>
-                        <a class="no-mrg btn-hover cart-btn-style" href="checkout.html">checkout</a>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
         <div class="breadcrumb-area bg-gray">
             <div class="container">
                 <div class="breadcrumb-content text-center">
@@ -51,7 +18,7 @@
             <div class="container">
                 <div class="row flex-row-reverse">
                     <div class="col-lg-9">
-                        <div class="shop-topbar-wrapper">
+                        {{!-- <div class="shop-topbar-wrapper">
                             <div class="shop-topbar-left">
                                 <div class="view-mode nav">
                                     <a class="active" href="#shop-1" data-bs-toggle="tab"><i class="icon-grid"></i></a>
@@ -77,23 +44,21 @@
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="shop-bottom-area">
                             <div class="tab-content jump">
                                 <div id="shop-1" class="tab-pane active">
                                     <div class="row">
                                         {{#each products}}
                                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-
-
-
                                             <div class="single-product-wrap mb-35">
                                                 <div class="product-img product-img-zoom mb-15">
                                                     <a href="/product-view/{{this._id}}">
-                                                        <img src="/image-products/{{this._id}}.jpg" alt="Product">
+                                                        <img src="{{this.image.[0]}}" alt="Product">
                                                     </a>
                                                     <div class="product-action-2 tooltip-style-2">
-                                                        <button title="Wishlist"><i class="icon-heart"></i></button>
+                                                        <button onclick="wishlistAdd('{{this._id}}')"
+                                                            title="Wishlist"><i class="icon-heart"></i></button>
                                                         <button title="Quick View" data-bs-toggle="modal"
                                                             data-bs-target="#exampleModal"><i
                                                                 class="icon-size-fullscreen icons"></i></button>
@@ -113,7 +78,7 @@
                                                     </div>
                                                     <h3><a href="product-details.html">{{this.name}}</a></h3>
                                                     <div class="product-price-2">
-                                                        <span>{{this.price}}Rs</span>
+                                                        <span>${{this.price}}</span>
                                                     </div>
                                                 </div>
                                                 <div
@@ -128,9 +93,9 @@
                                                         </div>
                                                         <span>(2)</span>
                                                     </div>
-                                                    <h3><a href="product-details.html">Basic Joggin Shorts</a></h3>
+                                                    <h3><a href="product-details.html">{{this.name}}</a></h3>
                                                     <div class="product-price-2">
-                                                        <span>{{this.price}}Rs</span>
+                                                        <span>${{this.price}}</span>
                                                     </div>
                                                     <div class="pro-add-to-cart">
                                                         <button onclick="cartAdd('{{this._id}}')"
@@ -138,10 +103,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
-
-
                                         </div>
                                         {{/each}}
                                     </div>
@@ -403,14 +364,12 @@
                             <div class="sidebar-widget shop-sidebar-border mb-35 pt-40">
                                 <h4 class="sidebar-widget-title">Categories </h4>
                                 <div class="shop-catigory">
+                                    {{#each category}}
                                     <ul>
-                                        <li><a href="shop.html">T-Shirt</a></li>
-                                        <li><a href="shop.html">Shoes</a></li>
-                                        <li><a href="shop.html">Clothing </a></li>
-                                        <li><a href="shop.html">Women </a></li>
-                                        <li><a href="shop.html">Baby Boy </a></li>
-                                        <li><a href="shop.html">Accessories </a></li>
+                                        <li><a href="shop.html">{{product_name}}</a></li>
+
                                     </ul>
+                                    {{/each}}
                                 </div>
                             </div>
                             <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
@@ -446,37 +405,6 @@
                                             <div class="sidebar-widget-list-left">
                                                 <input type="checkbox" value=""> <a href="#">In Stock <span>6</span>
                                                 </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
-                                <h4 class="sidebar-widget-title">Size </h4>
-                                <div class="sidebar-widget-list">
-                                    <ul>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">XL <span>4</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">L <span>5</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">SM <span>6</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">XXL <span>7</span> </a>
                                                 <span class="checkmark"></span>
                                             </div>
                                         </li>
@@ -531,7 +459,7 @@
         </div>
         {{>user-footer}}
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+        {{!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -629,7 +557,8 @@
                                     <div class="product-details-meta">
                                         <ul>
                                             <li><span>Categories:</span> <a href="#">Woman,</a> <a href="#">Dress,</a>
-                                                <a href="#">T-Shirt</a></li>
+                                                <a href="#">T-Shirt</a>
+                                            </li>
                                             <li><span>Tag: </span> <a href="#">Fashion,</a> <a href="#">Mentone</a> , <a
                                                     href="#">Texas</a></li>
                                         </ul>
@@ -660,6 +589,6 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <!-- Modal end -->
     </div>

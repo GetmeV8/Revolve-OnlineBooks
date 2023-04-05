@@ -1,17 +1,17 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 const hbs = require('express-handlebars');
-var fileUpload = require('express-fileupload')
-var userRouter = require('./routes/user');
-var adminRouter = require('./routes/admin');
-var db = require('./config/connection')
-var session = require('express-session')
-var nocache = require('nocache')
+let bodyparser = require('body-parser')
+let userRouter = require('./routes/user');
+let adminRouter = require('./routes/admin');
+const db = require('./config/connection')
+let session = require('express-session')
+const nocache = require('nocache')
 require('dotenv').config();
-var app = express();
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,13 +25,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
 app.use(session({
 secret:'key',
 resave:false,
 saveUninitialized:false,
 cookie:{maxAge:600000}}))
 app.use(nocache())
-app.use(fileUpload())
 
 db.connect((err)=>{
   if(err)console.log('connection error'+err)

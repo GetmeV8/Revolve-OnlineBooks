@@ -7,7 +7,6 @@ module.exports = {
         } else {
             next();
         }
-
     },
     adminauthenticationCheck: (req, res, next) => {
         if (req.session.user) {

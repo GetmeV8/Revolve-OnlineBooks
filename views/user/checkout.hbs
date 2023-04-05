@@ -1,17 +1,17 @@
-
-
 <body>
-{{>user-header}}
-{{>user-sidebar}}
+    {{>user-header}}
+
     <div class="main-wrapper">
-      
+        {{>user-sidebar}}
         <!-- Mobile menu start -->
-        <div class="mobile-header-active mobile-header-wrapper-style">
+        {{!-- <div class="mobile-header-active mobile-header-wrapper-style">
             <div class="clickalbe-sidebar-wrap">
                 <a class="sidebar-close"><i class="icon_close"></i></a>
                 <div class="mobile-header-content-area">
                     <div class="header-offer-wrap mobile-header-padding-border-4">
-                        <p><i class="icon-paper-plane"></i> FREE SHIPPING world wide for all orders over <span>$199</span></p>
+                        <p><i class="icon-paper-plane"></i> FREE SHIPPING world wide for all orders over
+                            <span>$199</span>
+                        </p>
                     </div>
                     <div class="mobile-search mobile-header-padding-border-1">
                         <form class="search-form" action="#">
@@ -75,7 +75,8 @@
                             <a href="order-tracking.html"><i class="lastudioicon-pin-3-2"></i> Track Your Order </a>
                         </div>
                         <div class="single-mobile-header-info">
-                            <a class="mobile-language-active" href="#">Language <span><i class="icon-arrow-down"></i></span></a>
+                            <a class="mobile-language-active" href="#">Language <span><i
+                                        class="icon-arrow-down"></i></span></a>
                             <div class="lang-curr-dropdown lang-dropdown-active">
                                 <ul>
                                     <li><a href="#">English</a></li>
@@ -86,7 +87,8 @@
                             </div>
                         </div>
                         <div class="single-mobile-header-info">
-                            <a class="mobile-currency-active" href="#">Currency <span><i class="icon-arrow-down"></i></span></a>
+                            <a class="mobile-currency-active" href="#">Currency <span><i
+                                        class="icon-arrow-down"></i></span></a>
                             <div class="lang-curr-dropdown curr-dropdown-active">
                                 <ul>
                                     <li><a href="#">USD</a></li>
@@ -126,7 +128,7 @@
                             </div>
                             <div class="cart-title">
                                 <h4><a href="#">Simple Black T-Shirt</a></h4>
-                                <span> 1 × $49.00	</span>
+                                <span> 1 × $49.00 </span>
                             </div>
                             <div class="cart-delete">
                                 <a href="#">×</a>
@@ -138,7 +140,7 @@
                             </div>
                             <div class="cart-title">
                                 <h4><a href="#">Norda Backpack</a></h4>
-                                <span> 1 × $49.00	</span>
+                                <span> 1 × $49.00 </span>
                             </div>
                             <div class="cart-delete">
                                 <a href="#">×</a>
@@ -154,7 +156,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
         <div class="breadcrumb-area bg-gray">
             <div class="container">
                 <div class="breadcrumb-content text-center">
@@ -170,9 +172,11 @@
         <div class="checkout-main-area pt-120 pb-120">
             <div class="container">
                 <div class="customer-zone mb-20">
-                    <p class="cart-page-title">Returning customer? <a class="checkout-click1" href="#">Click here to login</a></p>
+                    <p class="cart-page-title">Returning customer? <a class="checkout-click1" href="#">Click here to
+                            login</a></p>
                     <div class="checkout-login-info">
-                        <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new customer, please proceed to the Billing & Shipping section.</p>
+                        <p>If you have shopped with us before, please enter your details in the boxes below. If you are
+                            a new customer, please proceed to the Billing & Shipping section.</p>
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6">
@@ -210,7 +214,8 @@
                     </div>
                 </div>
                 <div class="customer-zone mb-20">
-                    <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#">Click here to enter your code</a></p>
+                    <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#">Click here to enter
+                            your code</a></p>
                     <div class="checkout-login-info3">
                         <form action="#">
                             <input type="text" placeholder="Coupon code">
@@ -223,7 +228,7 @@
                         <div class="col-lg-7">
                             <div class="billing-info-wrap mr-50">
                                 <h3>Billing Details</h3>
-                                <div class="row">
+                                {{!-- <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <div class="billing-info mb-20">
                                             <label>First Name <abbr class="required" title="required">*</abbr></label>
@@ -257,8 +262,10 @@
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
-                                            <label>Street Address <abbr class="required" title="required">*</abbr></label>
-                                            <input class="billing-address" placeholder="House number and street name" type="text">
+                                            <label>Street Address <abbr class="required"
+                                                    title="required">*</abbr></label>
+                                            <input class="billing-address" placeholder="House number and street name"
+                                                type="text">
                                             <input placeholder="Apartment, suite, unit etc." type="text">
                                         </div>
                                     </div>
@@ -270,13 +277,15 @@
                                     </div>
                                     <div class="col-lg-12 col-md-12">
                                         <div class="billing-info mb-20">
-                                            <label>State / County <abbr class="required" title="required">*</abbr></label>
+                                            <label>State / County <abbr class="required"
+                                                    title="required">*</abbr></label>
                                             <input type="text">
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12">
                                         <div class="billing-info mb-20">
-                                            <label>Postcode / ZIP <abbr class="required" title="required">*</abbr></label>
+                                            <label>Postcode / ZIP <abbr class="required"
+                                                    title="required">*</abbr></label>
                                             <input type="text">
                                         </div>
                                     </div>
@@ -288,11 +297,12 @@
                                     </div>
                                     <div class="col-lg-12 col-md-12">
                                         <div class="billing-info mb-20">
-                                            <label>Email Address <abbr class="required" title="required">*</abbr></label>
+                                            <label>Email Address <abbr class="required"
+                                                    title="required">*</abbr></label>
                                             <input type="text">
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="checkout-account mb-25">
                                     <input class="checkout-toggle2" type="checkbox">
                                     <span>Create an account?</span>
@@ -333,15 +343,17 @@
                                                     <option>Azerbaijan</option>
                                                     <option>Bahamas</option>
                                                     <option>Bahrain</option>
-                                                    <option>Bangladesh</option>
+                                                    <option>United Kingdom</option>
                                                     <option>Barbados</option>
+                                                    <option>India</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="billing-info mb-20">
                                                 <label>Street Address</label>
-                                                <input class="billing-address" placeholder="House number and street name" type="text">
+                                                <input class="billing-address"
+                                                    placeholder="House number and street name" type="text">
                                                 <input placeholder="Apartment, suite, unit etc." type="text">
                                             </div>
                                         </div>
@@ -379,83 +391,211 @@
                                 </div>
                                 <div class="additional-info-wrap">
                                     <label>Order notes</label>
-                                    <textarea placeholder="Notes about your order, e.g. special notes for delivery. " name="message"></textarea>
+                                    <textarea placeholder="Notes about your order, e.g. special notes for delivery. "
+                                        name="message"></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-5">
-                            <div class="your-order-area">
-                                <h3>Your order</h3>
-                                <div class="your-order-wrap gray-bg-4">
-                                    <div class="your-order-info-wrap">
-                                        <div class="your-order-info">
-                                            <ul>
-                                                <li>Product <span>Total</span></li>
-                                            </ul>
+                            <form id="checkout-form">
+                                <div class="your-order-area">
+                                    <h3>Your order</h3>
+                                    <div class="your-order-wrap gray-bg-4">
+                                        <div class="your-order-info-wrap">
+                                            <div class="your-order-info">
+                                                <ul>
+                                                    <li>Product <span>Total</span></li>
+                                                </ul>
+                                            </div>
+                                            <div class="your-order-middle">
+                                                <ul>
+                                                    {{#each cartItems.products}}
+                                                    <li>{{product_title}} X {{quantity}} <span>${{subtotal}}</span></li>
+                                                    {{/each}}
+                                                </ul>
+                                            </div>
+                                            <div class="your-order-info order-subtotal">
+                                                <ul>
+                                                    <li>Subtotal <span>${{subtotal}} </span></li>
+                                                </ul>
+                                            </div>
+                                            <div class="your-order-info order-shipping">
+                                                <ul>
+                                                    <li>Shipping <p>Enter your full address </p>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="your-order-info order-total">
+                                                <ul>
+                                                    <li>Total <span>${{totalAmount.total}}</span></li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="your-order-middle">
-                                            <ul>
-                                                <li>Product Name X 1 <span>$329 </span></li>
-                                                <li>Product Name X 1 <span>$329 </span></li>
-                                            </ul>
+                                        <div class="payment-method">
+                                            {{!-- <div class="pay-top sin-payment">
+                                                <input id="payment_method_1" class="input-radio" type="radio"
+                                                    value="cheque" checked="checked" name="payment_method">
+                                                <label for="payment_method_1"> Direct Bank Transfer </label>
+                                                <div class="payment-box payment_method_bacs">
+                                                    <p>Make your payment directly into our bank account. Please use your
+                                                        Order ID as the payment reference.</p>
+                                                </div>
+                                            </div> --}}
+                                            <div class="pay-top sin-payment">
+                                                <input id="payment-method-2" class="input-radio" type="radio"
+                                                    value="razorpay" name="payment_method">
+                                                <label for="payment-method-2">Razorpay</label>
+                                                <div class="payment-box payment_method_bacs">
+                                                    <p>Make your payment directly into our bank account. Please use your
+                                                        Order ID as the payment reference.</p>
+                                                </div>
+                                            </div>
+                                            <div class="pay-top sin-payment">
+                                                <input id="payment-method-3" class="input-radio" type="radio"
+                                                    value="cod" name="payment_method">
+                                                <label for="payment-method-3">Cash on delivery </label>
+                                                <div class="payment-box payment_method_bacs">
+                                                    <p>Make your payment directly into our bank account. Please use your
+                                                        Order ID as the payment reference.</p>
+                                                </div>
+                                            </div>
+                                            {{!-- <div class="pay-top sin-payment sin-payment-3">
+                                                <input id="payment-method-4" class="input-radio" type="radio"
+                                                    value="paypal" name="payment_method">
+                                                <label for="payment-method-4">PayPal <img alt=""
+                                                        src="/images/icon-img/payment.png"><a href="#">What is
+                                                        PayPal?</a></label>
+                                                <div class="payment-box payment_method_bacs">
+                                                    <p>Make your payment directly into our bank account. Please use your
+                                                        Order ID as the payment reference.</p>
+                                                </div>
+                                            </div> --}}
                                         </div>
-                                        <div class="your-order-info order-subtotal">
-                                            <ul>
-                                                <li>Subtotal <span>$329 </span></li>
-                                            </ul>
-                                        </div>
-                                        <div class="your-order-info order-shipping">
-                                            <ul>
-                                                <li>Shipping <p>Enter your full address </p>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="your-order-info order-total">
-                                            <ul>
-                                                <li>Total <span>$273.00 </span></li>
-                                            </ul>
+                                        <div class="myaccount-content">
+                                            <h3>Billing Address</h3>
+                                            <div class="row">
+                                                <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+                                                {{#each addresses}}
+                                                <address>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio" name="addressid"
+                                                            value="{{_id}}">
+                                                        <label class="form-check-label" for="inlineRadio2"></label>
+                                                    </div>
+                                                    <p><strong>{{name}}</strong></p>
+                                                    <p>{{locality}},{{landmark}} <br>{{city}},{{state}},{{pincode}}
+                                                    </p>
+                                                    <p>Mobile: {{mobile}}</p>
+                                                </address>
+                                                {{/each}}
+
+
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="payment-method">
-                                        <div class="pay-top sin-payment">
-                                            <input id="payment_method_1" class="input-radio" type="radio" value="cheque" checked="checked" name="payment_method">
-                                            <label for="payment_method_1"> Direct Bank Transfer </label>
-                                            <div class="payment-box payment_method_bacs">
-                                                <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                            </div>
-                                        </div>
-                                        <div class="pay-top sin-payment">
-                                            <input id="payment-method-2" class="input-radio" type="radio" value="cheque" name="payment_method">
-                                            <label for="payment-method-2">Check payments</label>
-                                            <div class="payment-box payment_method_bacs">
-                                                <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                            </div>
-                                        </div>
-                                        <div class="pay-top sin-payment">
-                                            <input id="payment-method-3" class="input-radio" type="radio" value="cheque" name="payment_method">
-                                            <label for="payment-method-3">Cash on delivery </label>
-                                            <div class="payment-box payment_method_bacs">
-                                                <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                            </div>
-                                        </div>
-                                        <div class="pay-top sin-payment sin-payment-3">
-                                            <input id="payment-method-4" class="input-radio" type="radio" value="cheque" name="payment_method">
-                                            <label for="payment-method-4">PayPal <img alt="" src="assets/images/icon-img/payment.png"><a href="#">What is PayPal?</a></label>
-                                            <div class="payment-box payment_method_bacs">
-                                                <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference.</p>
-                                            </div>
-                                        </div>
+                                    <div class="Place-order">
+                                        <button id="place-order" type="submit">Place Order</button>
                                     </div>
                                 </div>
-                                <div class="Place-order">
-                                    <a href="#">Place Order</a>
-                                </div>
-                            </div>
+                            </form>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    {{>user-footer}}
+
+        {{>user-footer}}
+
 
 </body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    $("#checkout-form").submit((e) => {
+        console.log(">>>>>>>>>>>>>>ok")
+        e.preventDefault()
+        $.ajax({
+            url: '/order-placed',
+            method: 'post',
+            data: $('#checkout-form').serialize(),
+            success: (response) => {
+                console.log(response)
+                if (response.cod) {
+                    // Define the SweetAlert options
+                    const swalOptions = {
+                        title: 'PERFECT !',
+                        text: 'ORDER PLACED SUCCESSFULLY !',
+                        icon: 'success',
+                        timer: 6000 // delay in milliseconds
+                    };
+                    // Show the SweetAlert dialog and perform an action after the user clicks the OK button
+                    Swal.fire(swalOptions).then((result) => {
+                        if (result.isConfirmed) {
+                            // Redirect to the root URL after the user clicks the OK button
+                            window.location.href = '/order-placed-landing';
+                        }
+                    });
+                } else if (response.id) {
+                    console.log("called")
+                    getRazorpay(response)
+                }
+            }
+        });
+    });
+    const getRazorpay = (order) => {
+        var options = {
+            "key": "rzp_test_KR2oW5tjBzSx0y", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Acme Corp", //your business name
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                verifyPayment(order, response);
+            },
+            "prefill": {
+                "name": "Gaurav Kumar", //your customer's name
+                "email": "gaurav.kumar@example.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on('payment.failed', function (response) {
+            alert(response.error.code);
+            alert(response.error.description);
+            alert(response.error.source);
+            alert(response.error.step);
+            alert(response.error.reason);
+            alert(response.error.metadata.order_id);
+            alert(response.error.metadata.payment_id);
+        });
+        document.getElementById('place-order').onclick = function (e) {
+            e.preventDefault();
+            rzp1.open();
+        }
+        function verifyPayment(payment,order){
+            $.ajax({
+                url:'/verify-payment',
+                data:{
+                    payment,
+                    order
+                },
+                method:'post',
+                success:(response)=>{
+                    if(response.status){
+                        alert('payment success')
+                    }else{
+                        alert('payment failed')
+                    }
+                }
+            })
+        }
+    }
+</script>

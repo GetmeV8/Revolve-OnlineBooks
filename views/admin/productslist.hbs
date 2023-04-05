@@ -27,9 +27,9 @@
           <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
             <select class="form-select">
               <option selected>All category</option>
-              <option>Electronics</option>
-              <option>Clothes</option>
-              <option>Automobile</option>
+              {{#each category}}
+              <option>{{products.category}}</option>
+              {{/each}}
             </select>
           </div>
           <div class="col-md-2 col-6">
@@ -57,7 +57,7 @@
             <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
               <a class="itemside" href="#">
                 <div class="left">
-                  <img src="/image-products/{{this._id}}.jpg" class="img-sm img-thumbnail" alt="Item">
+                  <img src="{{image.[0]}}" class="img-sm img-thumbnail" alt="Item">
                 </div>
                 <div class="info">
                   <h6 class="mb-0">{{this.name}}</h6>

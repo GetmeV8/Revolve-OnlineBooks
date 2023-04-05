@@ -18,21 +18,47 @@ module.exports = {
             }
         })
     },
-    doLogin: (adminData) => {
-        return new Promise(async (resolve, reject) => {
+    // doLogin: (adminData) => {
+    //     return new Promise(async (resolve, reject) => {
 
-            let response = {}
-            let admin = await db.get().collection(collection.ADMIN_COLLECTION).findOne({ name: adminData.name })
-            if (admin.password == adminData.password) {
-                response.admin = admin;
-                response.status = true;
-                resolve(admin)
+    //         let response = {}
+    //         let admin = await db.get().collection(collection.ADMIN_COLLECTION).findOne({ name: adminData.name })
+    //         if (admin.password == adminData.password) {
+    //             response.admin = admin;
+    //             response.status = true;
+    //             resolve(admin)
+    //         }
+    //         else {
+    //             resolve({ status: false })
+    //         }
+    //     })
+    // },
+    adminLogin: async (adminInfo) => {
+        try {
+          const response = {}
+          const admin = await db
+            .get()
+            .collection(collection.ADMIN_COLLECTION)
+            .findOne({ email: adminInfo.email })
+          if (admin) {
+            if (adminInfo.password === admin.password) {
+              console.log("login successful")
+              response.admin = admin
+              response.status = true
+              return response
+            } else {
+              console.log("login error")
+              return { status: false }
             }
-            else {
-                resolve({ status: false })
-            }
-        })
-    },
+          } else {
+            console.log("login failed")
+            return { notExist: true }
+          }
+        } catch (error) {
+          console.log("login error", error)
+          throw new Error("Login failed")
+        }
+      },
     blockUsers: (userId) => {
         return new Promise((resolve, reject) => {
             db.get().collection(collection.USER_COLLECTION).updateOne({ _id: objectId(userId) }, { $set: { access: false } }).then(() => {
@@ -47,8 +73,11 @@ module.exports = {
             })
         })
     },
-    addProduct: (product) => {
+    addProduct: (product,urls) => {
         return new Promise((resolve, reject) => {
+            product.price=parseInt(product.price)
+            product.quantity=parseInt(product.quantity)
+            product.image= urls;
             product.isActive = true;
             let data =db.get().collection(collection.PRODUCT_COLLECTION).insertOne(product)
             resolve(data)

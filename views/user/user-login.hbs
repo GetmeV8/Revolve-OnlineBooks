@@ -206,9 +206,18 @@
                                             {{#if Blocked}}
                                             <p class="alert alert-danger"> {{Blocked}}</p>
                                             {{/if}}
-                                            <form action="/user-login" method="post">
-                                                <input type="text" name="name" placeholder="Username">
-                                                <input type="password" name="password" placeholder="Password">
+                                            <form id="login-form" name="login-form">
+                                                <div>
+                                                    <input id="phone" type="text" name="phone"
+                                                        placeholder="Username">
+                                                    <small class="text-danger error-msg ms-1 pt-2"></small>
+                                                </div>
+                                                <div>
+                                                    <input id="password" type="password" name="password"
+                                                        placeholder="Password">
+                                                    <small class="text-danger error-msg ms-1 pt-2"></small>
+                                                </div>
+
                                                 <div class="button-box">
                                                     <div class="login-toggle-btn">
                                                         <input type="checkbox">
@@ -216,10 +225,6 @@
                                                         <a href="#">Forgot Password?</a>
                                                     </div>
                                                     <button type="submit">Login</button>
-
-
-
-
                                                 </div>
                                                 <a class="btn btn-lg btn-block btn-primary mb-2" href="/otplogin"
                                                     style="background-color: #3b5998; ;  " type="submit">OTP Login</a>
@@ -228,7 +233,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="lg2" class="tab-pane">
+                                {{!-- <div id="lg2" class="tab-pane">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
                                             <form action="/user-login" method="post">
@@ -241,7 +246,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -280,52 +285,119 @@
                 </div>
             </div>
         </div>
-        <footer class="footer-area bg-gray pb-30">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="contact-info-wrap">
-                            <div class="footer-logo">
-                                <a href="#"><img src="/images/logo/logo.png" alt="logo"></a>
-                            </div>
-                            <div class="single-contact-info">
-                                <span>Our Location</span>
-                                <p>869 General Village Apt. 645, Moorebury, USA</p>
-                            </div>
-                            <div class="single-contact-info">
-                                <span>24/7 hotline:</span>
-                                <p>(+99) 052 128 2399</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6">
-                        <div class="footer-right-wrap">
-                            <div class="footer-menu">
-                                <nav>
-                                    <ul>
-                                        <li><a href="index.html">home</a></li>
-                                        <li><a href="shop.html">Shop</a></li>
-                                        <li><a href="shop.html">Product </a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="blog.html">Blog.</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <div class="social-style-2 social-style-2-mrg">
-                                <a href="#"><i class="social_twitter"></i></a>
-                                <a href="#"><i class="social_facebook"></i></a>
-                                <a href="#"><i class="social_googleplus"></i></a>
-                                <a href="#"><i class="social_instagram"></i></a>
-                                <a href="#"><i class="social_youtube"></i></a>
-                            </div>
-                            <div class="copyright">
-                                <p>Copyright © 2021 HasThemes | <a href="https://hasthemes.com/">Built with
-                                        <span>Norda</span> by HasThemes</a>.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        {{>user-footer}}
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.4/dist/sweetalert2.min.js"></script>
 </section>
+<script>
+
+
+
+    const usernameEl = document.querySelector('#phone');
+    const passwordEl = document.querySelector('#password');
+    const form = document.querySelector('#login-form');
+    const checkUsername = () => {
+        console.log("|||||")
+        let valid = false;
+        const min = 3,
+            max = 25;
+        const username = usernameEl.value.trim();
+        if (!isRequired(username)) {
+            showError(usernameEl, 'Username cannot be blank.');
+        } else if (!isBetween(username.length, min, max)) {
+            showError(usernameEl, `Username must be between ${min} and ${max} characters.`)
+        } else {
+            showSuccess(usernameEl);
+            valid = true;
+        }
+        return valid;
+    };
+    const checkPassword = () => {
+        let valid = false;
+        const min = 4, max = 16;
+        const password = passwordEl.value.trim();
+        if (!isRequired(password)) {
+            showError(passwordEl, 'Password cannot be blank.');
+        } else if (!isBetween(password.length, min, max)) {
+            showError(passwordEl, 'Invalid password');
+        } else {
+            showSuccess(passwordEl);
+            valid = true;
+        }
+        return valid;
+    };
+    const isRequired = value => value === '' ? false : true;
+    const isBetween = (length, min, max) => length < min || length > max ? false : true;
+    const showError = (input, message) => {
+        // get the form-field element
+        const formField = input.parentElement;
+        // add the error class
+        formField.classList.remove('success');
+        formField.classList.add('error');
+        // show the error message
+        const error = formField.querySelector('small');
+        error.textContent = message;
+    };
+    const showSuccess = (input) => {
+        // get the form-field element
+        const formField = input.parentElement;
+        // remove the error class
+        formField.classList.remove('error');
+        formField.classList.add('success');
+        // hide the error message
+        const error = formField.querySelector('small');
+        error.textContent = '';
+    }
+    $('#login-form').submit(function (e) {
+        // prevent the form from submitting
+        e.preventDefault();
+        // validate fields
+        let isUsernameValid = checkUsername();
+        let isPasswordValid = checkPassword();
+        let isFormValid = isUsernameValid && isPasswordValid;
+        // submit to the server if the form is valid
+        if (isFormValid) {
+            console.log("form is valid");
+            $.ajax({
+                type: "POST",
+                url: '/user-login',
+                data: $('#login-form').serialize(),
+                success: (response) => {
+                    console.log(response)
+                  //  const { response } = response
+                    if (response.response.status) {
+                        location.href = '/'
+                    }
+                    else {
+                        location.href = '/user-login'
+                    }
+                }, error: (err) => {
+                    alert(err)
+                }
+            });
+        }
+    });
+    const debounce = (fn, delay = 500) => {
+        let timeoutId;
+        return (...args) => {
+            // cancel the previous timer
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+            // setup a new timer
+            timeoutId = setTimeout(() => {
+                fn.apply(null, args)
+            }, delay);
+        };
+    };
+    form.addEventListener('input', debounce(function (e) {
+        switch (e.target.id) {
+            case 'firstname':
+                checkUsername();
+                break;
+            case 'password':
+                checkPassword();
+                break;
+        }
+    }));
+</script>

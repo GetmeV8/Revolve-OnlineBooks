@@ -1,12 +1,16 @@
-let productHelper = require('../helpers/product-helpers')
+const adminHelpers = require('../helpers/admin-helpers');
+let productHelper = require('../helpers/product-helpers');
+const userHelpers = require('../helpers/user-helpers');
 
 
 module.exports = {
-    productListing: (req, res) => {
+    productListing: async(req, res) => {
         let user = req.session.user;
+        let category = await adminHelpers.getallCategories()
+        console.log("|||||",category);
         productHelper.pageProductLoading().then((products) => {
             console.log(products)
-            res.render('user/user-shop', { user, products })
+            res.render('user/user-shop', { user, products , category})
         })
     },
     productView: (req, res) => {

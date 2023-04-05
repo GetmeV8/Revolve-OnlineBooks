@@ -1,0 +1,106 @@
+{{!-- {{>user-header}}
+{{>user-sidebar}}
+
+{{!-- Accordionceastart --}}
+<div class="accordion" id="accordionExample">
+
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                aria-expanded="true" aria-controls="collapseOne">
+                Add Address
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne"
+            data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+
+
+                {{!-- form div --}}
+                <form class="form" action="/editAddress?addressId={{currentAddress._id}}&from={{from}}" method="post">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6">
+                            <div class="billing-info mb-20">
+                                <label>Full Name <abbr class="required" title="required">*</abbr></label>
+                                <input class="form-control" type="text" name="name" value="{{currentAddress.name}}"> 
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="billing-info mb-20">
+                                <label>Locality <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="form-control" type="text" name="locality">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="billing-info mb-20">
+                                <label>Street Address <abbr class="required" title="required">*</abbr></label>
+                                <input class="form-control" name="address" placeholder="House number and street name"
+                                    type="text">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="billing-info mb-20">
+                                <label>Town / City <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="form-control" name="city">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="billing-info mb-20">
+                                <label>State / County <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="form-control" name="state">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="billing-info mb-20">
+                                <label>Locality <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="form-control" type="text" name="landmark">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="billing-info mb-20">
+                                <label>Postcode / ZIP <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="form-control" name="pincode">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="billing-info mb-20">
+                                <label>Phone <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="form-control" name="mobile">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="billing-info mb-20">
+                                <label>Email Address <abbr class="required" title="required">*</abbr></label>
+                                <input type="text" class="form-control" name="email">
+
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="Work">
+                                <label class="form-check-label" for="inlineRadio1">work</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                    value="Home">
+                                <label class="form-check-label" for="inlineRadio2">home</label>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn btn-danger" style="width: 100px;">Save</button>
+                    </div>
+
+                </form>
+
+
+
+                {{!-- form div end --}}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{{>user-footer}} --}}
