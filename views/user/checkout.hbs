@@ -217,18 +217,28 @@
                     <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#">Click here to enter
                             your code</a></p>
                     <div class="checkout-login-info3">
-                        <form action="#">
-                            <input type="text" placeholder="Coupon code">
-                            <input type="submit" value="Apply Coupon">
-                        </form>
+                        <input id="code" type="text" placeholder="Coupon code">
+                        <input type="button" onclick="checkCoupon()" value="Apply Coupon">
+
+                        {{#each coupons.normalCoupons }}
+                        <div class="coupon-card"
+                            style="background-color: #df1919; border: 2px solid #000000; width: 150px; padding: 10px;">
+                            <h4 class="coupon-title" style="text-align: center; margin-bottom: 10px;">{{this.code}}</h4>
+                            <p class="coupon-description" style="text-align: center; color: antiquewhite;">
+                                SAVE {{this.percentage}}% off at checkout</p>
+                            <p class="coupon-expires" style="text-align:center; color: cornsilk; margin-top: 1px;">
+                                Minimum spend of ${{this.limit}}</p>
+                        </div>
+                        {{/each}}
                     </div>
+
                 </div>
-                <div class="checkout-wrap pt-30">
+                <div class="checkout pt-30">
                     <div class="row">
-                        <div class="col-lg-7">
+                        {{!-- <div class="col-lg-7">
                             <div class="billing-info-wrap mr-50">
                                 <h3>Billing Details</h3>
-                                {{!-- <div class="row">
+                                <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <div class="billing-info mb-20">
                                             <label>First Name <abbr class="required" title="required">*</abbr></label>
@@ -302,7 +312,7 @@
                                             <input type="text">
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
                                 <div class="checkout-account mb-25">
                                     <input class="checkout-toggle2" type="checkbox">
                                     <span>Create an account?</span>
@@ -395,52 +405,71 @@
                                         name="message"></textarea>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-5">
+                        </div> --}}
+                        <div class="col-12">
                             <form id="checkout-form">
                                 <div class="your-order-area">
-                                    <h3>Your order</h3>
+
+
                                     <div class="your-order-wrap gray-bg-4">
-                                        <div class="your-order-info-wrap">
-                                            <div class="your-order-info">
-                                                <ul>
-                                                    <li>Product <span>Total</span></li>
-                                                </ul>
+                                        <div class="row">
+
+                                            <div class="your-order-info-wrap col-6">
+                                                <h3>Your order</h3>
+                                                <div class="your-order-info">
+                                                    <ul>
+                                                        <li>Product <span>Total</span></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="your-order-middle">
+                                                    <ul>
+                                                        {{#each cartItems.products}}
+                                                        <li>{{product_title}} X {{quantity}} <span>${{subtotal}}</span>
+                                                        </li>
+                                                        {{/each}}
+                                                    </ul>
+                                                </div>
+
+                                                <div class="your-order-info order-total">
+                                                    <ul>
+                                                        <li>Total <span id="total-amount">${{totalAmount.total}}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <div class="your-order-middle">
-                                                <ul>
-                                                    {{#each cartItems.products}}
-                                                    <li>{{product_title}} X {{quantity}} <span>${{subtotal}}</span></li>
+
+                                            <div class="col-6">
+                                                <h3>Billing Address</h3>
+                                                <div class="row">
+                                                    <input type="text" name="userId" id="" value="{{user._id}}" hidden>
+
+                                                    {{#if addresses}}
+                                                    {{#each addresses}}
+                                                    <address>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="addressid" value="{{_id}}">
+                                                            <label class="form-check-label" for="inlineRadio2"></label>
+                                                        </div>
+                                                        <p><strong>{{name}}</strong></p>
+                                                        <p>{{locality}},{{landmark}} <br>{{city}},{{state}},{{pincode}}
+                                                        </p>
+                                                        <p>Mobile: {{mobile}}</p>
+                                                    </address>
                                                     {{/each}}
-                                                </ul>
+                                                    {{else}}
+                                                    <button type="button" class="btn"
+                                                        style="background-color: black; border-color: black; border-radius: 5px; box-shadow: 0 4px 0 #444; color: white; font-size: 16px; font-weight: bold; text-transform: uppercase; transition: all 0.2s ease-in-out;"
+                                                        onclick="window.location.href='/user-account';">Add
+                                                        Address</button>
+
+
+                                                    {{/if}}
+                                                </div>
                                             </div>
-                                            <div class="your-order-info order-subtotal">
-                                                <ul>
-                                                    <li>Subtotal <span>${{subtotal}} </span></li>
-                                                </ul>
-                                            </div>
-                                            <div class="your-order-info order-shipping">
-                                                <ul>
-                                                    <li>Shipping <p>Enter your full address </p>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="your-order-info order-total">
-                                                <ul>
-                                                    <li>Total <span>${{totalAmount.total}}</span></li>
-                                                </ul>
-                                            </div>
+
                                         </div>
                                         <div class="payment-method">
-                                            {{!-- <div class="pay-top sin-payment">
-                                                <input id="payment_method_1" class="input-radio" type="radio"
-                                                    value="cheque" checked="checked" name="payment_method">
-                                                <label for="payment_method_1"> Direct Bank Transfer </label>
-                                                <div class="payment-box payment_method_bacs">
-                                                    <p>Make your payment directly into our bank account. Please use your
-                                                        Order ID as the payment reference.</p>
-                                                </div>
-                                            </div> --}}
                                             <div class="pay-top sin-payment">
                                                 <input id="payment-method-2" class="input-radio" type="radio"
                                                     value="razorpay" name="payment_method">
@@ -459,37 +488,13 @@
                                                         Order ID as the payment reference.</p>
                                                 </div>
                                             </div>
-                                            {{!-- <div class="pay-top sin-payment sin-payment-3">
+                                            <div class="pay-top sin-payment">
                                                 <input id="payment-method-4" class="input-radio" type="radio"
-                                                    value="paypal" name="payment_method">
-                                                <label for="payment-method-4">PayPal <img alt=""
-                                                        src="/images/icon-img/payment.png"><a href="#">What is
-                                                        PayPal?</a></label>
+                                                    value="wallet" name="payment_method">
+                                                <label for="payment-method-3">My Wallet</label>
                                                 <div class="payment-box payment_method_bacs">
-                                                    <p>Make your payment directly into our bank account. Please use your
-                                                        Order ID as the payment reference.</p>
+                                                    <p>Use your wallet money for easy payment and refunds</p>
                                                 </div>
-                                            </div> --}}
-                                        </div>
-                                        <div class="myaccount-content">
-                                            <h3>Billing Address</h3>
-                                            <div class="row">
-                                                <input type="text" name="userId" id="" value="{{user._id}}" hidden>
-                                                {{#each addresses}}
-                                                <address>
-                                                    <div class="form-check form-check-inline">
-                                                        <input class="form-check-input" type="radio" name="addressid"
-                                                            value="{{_id}}">
-                                                        <label class="form-check-label" for="inlineRadio2"></label>
-                                                    </div>
-                                                    <p><strong>{{name}}</strong></p>
-                                                    <p>{{locality}},{{landmark}} <br>{{city}},{{state}},{{pincode}}
-                                                    </p>
-                                                    <p>Mobile: {{mobile}}</p>
-                                                </address>
-                                                {{/each}}
-
-
                                             </div>
                                         </div>
                                     </div>
@@ -509,39 +514,103 @@
 
 
 </body>
+
+
+
+
+
+
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-    $("#checkout-form").submit((e) => {
-        console.log(">>>>>>>>>>>>>>ok")
-        e.preventDefault()
-        $.ajax({
-            url: '/order-placed',
-            method: 'post',
-            data: $('#checkout-form').serialize(),
-            success: (response) => {
-                console.log(response)
-                if (response.cod) {
-                    // Define the SweetAlert options
-                    const swalOptions = {
-                        title: 'PERFECT !',
-                        text: 'ORDER PLACED SUCCESSFULLY !',
-                        icon: 'success',
-                        timer: 6000 // delay in milliseconds
-                    };
-                    // Show the SweetAlert dialog and perform an action after the user clicks the OK button
-                    Swal.fire(swalOptions).then((result) => {
-                        if (result.isConfirmed) {
-                            // Redirect to the root URL after the user clicks the OK button
-                            window.location.href = '/order-placed-landing';
-                        }
-                    });
-                } else if (response.id) {
-                    console.log("called")
-                    getRazorpay(response)
-                }
+
+    const validatePlaceOrder = () => {
+        const addressRadios = document.getElementsByName('addressid');
+        let addressSelected = false;
+        for (let i = 0; i < addressRadios.length; i++) {
+            if (addressRadios[i].checked) {
+                addressSelected = true;
+                break;
             }
-        });
+        }
+        if (!addressSelected) {
+            // Use SweetAlert to show a popup alert
+            Swal.fire("Oops!", "Please select an address.", "error");
+            return false;
+        }
+        const paymentRadios = document.getElementsByName('payment_method');
+        let paymentSelected = false;
+        for (let i = 0; i < paymentRadios.length; i++) {
+            if (paymentRadios[i].checked) {
+                paymentSelected = true;
+                break;
+            }
+        }
+        if (!paymentSelected) {
+            // Use SweetAlert to show a popup alert
+            Swal.fire("Oops!", "Please select a payment method.", "error");
+            return false;
+        }
+        // Validation passed, allow form submission
+        return true;
+    }
+
+
+
+
+    $("#checkout-form").submit((e) => {
+        console.log(">>>>>OK<<<<<<")
+        e.preventDefault()
+        if (!validatePlaceOrder()) {
+            // Validation failed, don't submit the form
+            return false;
+        }
+        const deliveryAddress = $('input[name="addressid"]').val()
+        if (!deliveryAddress) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning...!',
+                text: 'Please add an address to place order.',
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#8B4000',
+                focusConfirm: '#FF0000'
+            })
+        } else {
+            $.ajax({
+                url: '/order-placed',
+                method: 'post',
+                data: $('#checkout-form').serialize(),
+                success: (response) => {
+                    console.log(response)
+                    if (response.cod) {
+                        // Define the SweetAlert options
+                        const swalOptions = {
+                            title: 'PERFECT !',
+                            text: 'ORDER PLACED SUCCESSFULLY !',
+                            icon: 'success',
+                            timer: 6000 // delay in milliseconds
+                        };
+                        // Show the SweetAlert dialog and perform an action after the user clicks the OK button
+                        Swal.fire(swalOptions).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect to the root URL after the user clicks the OK button
+                                window.location.href = '/order-placed-landing';
+                            }
+                        });
+                    } else if (response.id) {
+                        console.log("called")
+                        getRazorpay(response)
+                    }
+                }
+            });
+        }
     });
+
+
+
+
+
+
     const getRazorpay = (order) => {
         var options = {
             "key": "rzp_test_KR2oW5tjBzSx0y", // Enter the Key ID generated from the Dashboard
@@ -576,26 +645,60 @@
             alert(response.error.metadata.order_id);
             alert(response.error.metadata.payment_id);
         });
-        document.getElementById('place-order').onclick = function (e) {
-            e.preventDefault();
-            rzp1.open();
-        }
-        function verifyPayment(payment,order){
+        rzp1.open();
+        function verifyPayment(payment, order) {
             $.ajax({
-                url:'/verify-payment',
-                data:{
+                url: '/verify-payment',
+                data: {
                     payment,
                     order
                 },
-                method:'post',
-                success:(response)=>{
-                    if(response.status){
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        const swalOptions = {
+                            title: 'PERFECT !',
+                            text: 'ORDER PLACED SUCCESSFULLY !',
+                            icon: 'success',
+                            timer: 6000 // delay in milliseconds
+                        };
+                        // Show the SweetAlert dialog and perform an action after the user clicks the OK button
+                        Swal.fire(swalOptions).then((result) => {
+                            if (result.isConfirmed) {
+                                // Redirect to the root URL after the user clicks the OK button
+                                window.location.href = '/order-placed-landing';
+                            }
+                        });
                         alert('payment success')
-                    }else{
+                    } else {
                         alert('payment failed')
                     }
                 }
             })
         }
+    }
+    function checkCoupon() {
+        var code = document.getElementById('code').value
+        console.log(code)
+        $.ajax({
+            url: '/check-coupon',
+            data: {
+                data: code
+            },
+            method: 'post',
+            success: (response => {
+                console.log(response)
+                if (response.status) {
+                    Swal.fire({
+                        text: `you got ${response.discountPrice} rupees off..`
+
+                    })
+                    document.getElementById('total-amount').innerHTML = response.priceAfterDiscount
+                } else {
+                    console.log("invalid")
+                    document.getElementById('error-2').innerHTML = 'Invalid code or <br> Coupon expired'
+                }
+            })
+        })
     }
 </script>

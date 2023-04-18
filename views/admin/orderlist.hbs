@@ -1,0 +1,327 @@
+{{>adminmain-head}}
+{{>admin-header}}
+
+<div class="screen-overlay"></div>
+{{>side-bar}}
+<main class="main-wrap">
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Order List </h2>
+                <p>Lorem ipsum dolor sit amet.</p>
+            </div>
+            <div>
+                {{!-- <input type="text" onchange="filterTableRows()" placeholder="Search..." class="form-control"
+                    id="searchInput"> --}}
+            </div>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row gx-3">
+                    <div class="col-lg-2 col-md-4 ">
+                        <input type="text" oninput="filterTableRows()" placeholder="Search..." class="form-control"
+                            id="searchInput">
+                    </div>
+                    <div class="col-lg-2 col-md-4 me-auto">
+                        <select class="form-select" id="sort">
+                            <option selected disabled>Sort</option>
+                            <option>By date</option>
+                            <option>By Price</option>
+                        </select>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="userTable">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Mobile</th>
+                                <th>
+                                    <div style="display: inline-flex; align-items: center;">
+                                        <div>Total</div>
+                                        {{!-- <div class="ms-2"
+                                            style="display: flex; flex-direction: column;width: 2em;height: 2em;">
+                                            <div style="height: 1em; cursor: pointer;">
+                                                <button onclick="sortByAmount('asc')" style="border: none;"><i
+                                                        class="fas fa-chevron-up"
+                                                        style="display: inline-block;"></i></button>
+                                            </div>
+                                            <div style="height: 1em;cursor: pointer;">
+                                                <button onclick="sortByAmount('desc')" style="border:none"><i
+                                                        class="fas fa-chevron-down"
+                                                        style="display: inline-block;"></i></button>
+                                            </div>
+                                        </div> --}}
+                                    </div>
+                                </th>
+                </div>
+            </div>
+        </div>
+        </th>
+        <th>
+            <div style="display: inline-flex; align-items: center;">
+                <div>Date</div>
+                <div class="ms-2" style="display: flex; flex-direction: column;width: 2em;height: 2em;">
+                    <div style="height: 1em; cursor: pointer;" class="">
+                        <button style="border: none;" onclick="sortByDate('asc')"><i class="fas fa-chevron-up"
+                                style="display: inline-block;"></i></button>
+                    </div>
+                    <div style="height: 1em;cursor: pointer;">
+                        <button style="border: none;" onclick="sortByDate('desc')"><i class="fas fa-chevron-down"
+                                style="display: inline-block;"></i></button>
+                    </div>
+                </div>
+            </div>
+        </th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+        <th scope="col">More</th>
+        </tr>
+        </thead>
+        <tbody>
+            {{#each orders}}
+            <tr>
+                <td>0901</td>
+                <td><b>{{address.name}}</b></td>
+                <td>{{address.mobile}}</td>
+                <td>${{totalAmount.total}}</td>
+                <td id="order-date">{{formatDate date}}</td>
+                {{#if (eq status "placed")}}
+                <td><span class="badge rounded-pill alert-success">Placed</span></td>
+                {{else if (eq status "pending")}}
+                <td><span class="badge rounded-pill alert-warning">Pending</span></td>
+                {{else if (eq status "cancelled")}}
+                <td><span class="badge rounded-pill alert-danger">Canceled</span></td>
+                {{else if (eq status "confirmed")}}
+                <td><span class="badge rounded-pill alert-warning">Confirmed</span></td>
+                {{else if (eq status "shipped")}}
+                <td><span class="badge rounded-pill alert-primary">Shipped</span></td>
+                {{else if (eq status "delivery")}}
+                <td><span class="badge rounded-pill alert-info">Delivery</span></td>
+                {{else if (eq status "completed")}}
+                <td><span class="badge rounded-pill alert-secondary">Completed</span></td>
+                {{/if}}
+
+
+                <td class="">
+                    <div class="status-buttons">
+                        <select class="form-select form-select-sm"
+                            onchange="changeOrderStatus('{{_id}}','{{status}}', this.value)"
+                            style="font-size: 13px;width: 140px;">
+                            <option selected disabled>Change status</option>
+                            <option value="placed">Placed</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivery">Delivery</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </td>
+
+                <td class="">
+                    <a href="dashboard/admin-view-orders/view-order-details/{{_id}}" 
+                        class="btn btn-md rounded btn-primary font-sm">Details</a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+        </table>
+        </div> <!-- table-responsive //end -->
+        </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item" id="previousPage">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" data-page="1">1</a></li>
+                    <li class="page-item"><a class="page-link" data-page="2">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#" data-page="3">3</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#" data-page="16">16</a></li>
+                    <li class="page-item" id="nextPage">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
+    </section> <!-- content-main end// -->
+{{>admin-footer}}
+
+    <script>
+
+        
+            {
+                const table = document.getElementById("userTable");
+                const rowsPerPage = 10;
+                let currentPage = 0;
+                function updateTable() {
+                    // Hide all rows
+                    for (let i = 1; i < table.rows.length; i++) {
+                        table.rows[i].style.display = "none";
+                    }
+                    // Show the rows for the current page
+                    const startIndex = currentPage * rowsPerPage + 1;
+                    const endIndex = Math.min((currentPage + 1) * rowsPerPage + 1, table.rows.length);
+                    for (let i = startIndex; i < endIndex; i++) {
+                        table.rows[i].style.display = "table-row";
+                    }
+                    // Enable/disable pagination buttons
+                    document.getElementById("previousPage").disabled = (currentPage == 0);
+                    document.getElementById("nextPage").disabled = (endIndex >= table.rows.length);
+                }
+                function nextPage() {
+                    currentPage++;
+                    updateTable();
+                }
+                function prevPage() {
+                    currentPage--;
+                    updateTable();
+                }
+                // Initialize table pagination
+                {{!-- updateTable();
+                document.getElementById("prevPageBtn").addEventListener("click", prevPage);
+                document.getElementById("nextPageBtn").addEventListener("click", nextPage); --}}
+        }
+
+    </script>
+
+    <script>
+        //sort by total amount 
+        function sortByAmount(type) {
+            let rows = Array.from(document.querySelectorAll("#userTable tbody tr"));
+            rows.sort((row1, row2) => {
+                let value1 = parseFloat(row1.cells[3].textContent.replace(/[^0-9.-]+/g, ""));
+                let value2 = parseFloat(row2.cells[3].textContent.replace(/[^0-9.-]+/g, ""));
+                if (type === 'asc') {
+                    return value1 - value2;
+                } else {
+                    return value2 - value1;
+                }
+            });
+            rows.forEach(row => {
+                document.querySelector("#userTable tbody").appendChild(row);
+            });
+        }
+        $(document).ready(function () {
+            // Call sortByDate function with the default sorting order (descending)
+            sortByDate('desc');
+        });
+
+
+        //sort by date
+        function sortByDate(order) {
+            var rows = $('#userTable tbody tr').get();
+            rows.sort(function (a, b) {
+                var A = $(a).children('td').eq(4).text().toUpperCase();
+                var B = $(b).children('td').eq(4).text().toUpperCase();
+                if (A < B) {
+                    return order === 'asc' ? -1 : 1;
+                }
+                if (A > B) {
+                    return order === 'asc' ? 1 : -1;
+                }
+                return 0;
+            });
+            $.each(rows, function (index, row) {
+                $('#userTable tbody').append(row);
+            });
+        }
+    </script>
+    <script>
+        const changeOrderStatus = (orderId, currStatus, newStatus) => {
+            console.log(orderId, currStatus, newStatus)
+            $.ajax({
+                url: "/admin/change-product-status",
+                data: {
+                    orderId: orderId,
+                    currentStatus: currStatus,
+                    newStatus: newStatus
+                },
+                method: 'post',
+                success: (res) => {
+                    location.reload();
+                }
+            })
+        }
+        const viewMoreOrders = (orderId) => {
+            console.log("********************",orderId);
+            $.ajax({
+                url: "/admin/view-more-orders",
+                data: {
+                    orderId: orderId
+                },
+                method: 'get',
+                success: () => {
+                    console.log('successsss')
+                }
+            })
+        }
+        function filterTableRows() {
+            var searchInput = document.getElementById("searchInput");
+            var filter = searchInput.value.toUpperCase();
+            var table = document.getElementById("userTable");
+            var rows = table.getElementsByTagName("tr");
+            var numRows = rows.length;
+            var headerRow = rows[0];
+            var dataRows = [];
+            for (var i = 1; i < numRows; i++) {
+                dataRows.push(rows[i]);
+            }
+            var matchingRows = [];
+            for (var i = 0; i < dataRows.length; i++) {
+                var nameCell = dataRows[i].getElementsByTagName("td")[1];
+                if (nameCell) {
+                    var name = nameCell.textContent || nameCell.innerText;
+                    if (name.toUpperCase().indexOf(filter) > -1) {
+                        matchingRows.push(dataRows[i]);
+                    }
+                }
+            }
+            headerRow.style.display = (matchingRows.length > 0) ? "" : "none";
+            for (var i = 0; i < dataRows.length; i++) {
+                dataRows[i].style.display = "none";
+            }
+            var noMatchesRow = table.querySelector("tr:last-of-type");
+            if (noMatchesRow && noMatchesRow.cells[0].innerHTML === "No matches found.") {
+                table.deleteRow(-1);
+            }
+            if (matchingRows.length === 0) {
+                noMatchesRow = table.insertRow(-1);
+                var noMatchesCell = noMatchesRow.insertCell(0);
+                noMatchesCell.colSpan = numRows;
+                noMatchesCell.innerHTML = "No matches found.";
+            } else {
+                for (var i = 0; i < matchingRows.length; i++) {
+                    matchingRows[i].style.display = "";
+                }
+            }
+        }
+        function filterTableByStatus() {
+            var selectBox = document.getElementById("statusSelect");
+            var status = selectBox.options[selectBox.selectedIndex].value;
+            var rows = document.querySelectorAll("#userTable tbody tr");
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                var rowStatus = row.querySelector("td:nth-child(6)").textContent.trim().toLowerCase();
+                if (status === "all" || rowStatus === status.toLowerCase()) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        }
+    </script>

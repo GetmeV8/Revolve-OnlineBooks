@@ -36,24 +36,6 @@
                                     <a class="easyzoom-pop-up img-popup" href="{{products.image.[2]}}"><i
                                             class="icon-size-fullscreen"></i></a>
                                 </div>
-                                {{!-- <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="/images/product-details/b-large-4.jpg">
-                                            <img src="" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="/images/product-details/b-large-4.jpg"><i
-                                            class="icon-size-fullscreen"></i></a>
-                                </div> --}}
-                                {{!-- <div class="easyzoom-style">
-                                    <div class="easyzoom easyzoom--overlay">
-                                        <a href="/images/product-details/b-large-2.jpg">
-                                            <img src="/images/product-details/large-2.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <a class="easyzoom-pop-up img-popup" href="/images/product-details/b-large-2.jpg"><i
-                                            class="icon-size-fullscreen"></i></a>
-                                </div> --}}
                             </div>
                             <div class="product-dec-left product-dec-slider-small-2 product-dec-small-style2">
                                 <div class="product-dec-small active">
@@ -65,12 +47,6 @@
                                 <div class="product-dec-small">
                                     <img src="{{products.image.[2]}}" alt="">
                                 </div>
-                                {{!-- <div class="product-dec-small">
-                                    <img src="/images/product-details/small-4.jpg" alt="">
-                                </div>
-                                <div class="product-dec-small">
-                                    <img src="/images/product-details/small-2.jpg" alt="">
-                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -97,32 +73,25 @@
                             </div>
                             <p>{{products.description}}</p>
                             <div class="pro-details-price">
-                                <span class="new-price">${{products.price}}</span>
-                                <span class="old-price">$95.72</span>
+                                {{#if products.offer}}
+                                 <span class="new-price">${{products.offer}}</span>
+                                <span class="old-price">${{products.price}}</span>
+                                {{else}}
+                                 <span class="new-price">${{products.price}}</span>
+                                {{/if}}
                             </div>
-                            <div class="pro-details-quality">
+                            {{!-- <div class="pro-details-quality">
                                 <span>Quantity:</span>
                                 <div class="cart-plus-minus">
                                     <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1">
                                 </div>
-                            </div>
-                            <div class="product-details-meta">
-                                <ul>
-                                    {{!-- <li><span>Categories:</span> <a href="#">Woman,</a> <a href="#">Dress,</a> <a
-                                            href="#">T-Shirt</a></li> --}}
-                                    <li><span>Tag: </span> <a href="#">Fashion,</a> <a href="#">Mentone</a> , <a
-                                            href="#">Texas</a></li>
-                                </ul>
-                            </div>
+                            </div> --}}
                             <div class="pro-details-action-wrap">
                                 <div class="pro-details-add-to-cart">
-                                    <a onclick="cartAdd('{{products._id}}')" title="Add to Cart" href="#">Add To Cart
-                                    </a>
+                                    <a onclick="cartAdd('{{products._id}}')" title="Add to Cart" href="#">Add To Cart</a>
                                 </div>
                                 <div class="pro-details-action">
                                     <a title="Add to Wishlist" href="#"><i class="icon-heart"></i></a>
-                                    <a title="Add to Compare" href="#"><i class="icon-refresh"></i></a>
-                                    <a class="social" title="Social" href="#"><i class="icon-share"></i></a>
                                     <div class="product-dec-social">
                                         <a class="facebook" title="Facebook" href="#"><i
                                                 class="icon-social-facebook"></i></a>

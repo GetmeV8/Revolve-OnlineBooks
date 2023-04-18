@@ -1,0 +1,46 @@
+{{>adminmain-head}}
+    <div class="screen-overlay"></div>
+   {{>side-bar}}
+    <main class="main-wrap">
+        {{>admin-header}}
+        <section class="content-main">
+            <div class="content-header">
+                <div>
+                    <h2 class="content-title card-title">Categories </h2>
+                    <p>Add, edit or delete a category</p>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Categories" class="form-control bg-white">
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <form action="/admin/dashboard/add-product-category/edit-category/{{category._id}}" method="post">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="product_name" value="{{category.product_name}}"/>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Parent</label>
+                                    <select class="form-select" name="product_parent" >
+                                        <option value="">{{category.product_parent}}</option>
+                                        <option>Book</option>
+                                        <option>Self-Help</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" name="product_description">{{category.product_description}}</textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="" class="btn btn-primary">Update category</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+        </section> <!-- content-main end// -->
+{{>admin-footer}}

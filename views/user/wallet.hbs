@@ -1,0 +1,56 @@
+{{>user-header}}
+{{>user-sidebar}}
+
+<div class="container pt-30 pb-60">
+  <div class="row align-items-center mt-4">
+    <div class="col-lg-6">
+      <div class="balance">
+        <p class="mb-2">Current Balance:</p>
+        <h3 class="mb-4">${{walletData.balance}}</h3>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <h4 class="mb-3">Add Funds</h4>
+      <form class="add-funds">
+        <div class="form-group">
+          <label for="amount">Amount:</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text">$</span>
+            <input type="text" id="amount" name="amount" class="form-control">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Funds</button>
+      </form>
+    </div>
+  </div>
+  <hr>
+  {{!-- <div class="row">
+    <div class="col-12">
+      <h3 class="mb-3">Transactions</h3>
+      <ul class="list-group">
+        {{#each walletData.transactions}}
+        <li class="list-group-item">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <p class="mb-0">{{date}}</p>
+              {{#if (eq type 'credited')}}
+              <p class="mb-0 text-success">${{amount}} - {{type}}</p>
+              {{/if}}
+              {{#if (eq type 'debited')}}
+              <p class="mb-0 text-danger">${{amount}} - {{type}}</p>
+              {{/if}}
+              {{#if (eq type 'failed')}}
+              <p class="mb-0 text-warning">${{amount}} - {{type}}</p>
+              {{/if}}
+            </div>
+            <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+              <button type="button" class="btn btn-secondary">View Details</button>
+            </div>
+          </div>
+        </li>
+        {{/each}}
+      </ul>
+    </div> --}}
+  </div>
+</div>
+{{>user-footer}}

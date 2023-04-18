@@ -1,0 +1,236 @@
+{{>user-header}}
+
+<div class="screen-overlay"></div>
+<main class="main-wrap">
+    <section class="content-main">
+
+        <div class="card" style="padding-left: 100px;padding-right: 100px;">
+            <header class="card-header" style="margin-top: 2em;">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                        <h4>Order Details</h4>
+                        <span class="">
+                            <i class="material-icons md-calendar_today"></i> <b>{{formatDate orderDetails.date}}</b>
+                        </span> <br>
+                    </div>
+                </div>
+            </header> <!-- card-header end// -->
+            <div class="card-body ">
+                <div class="row mb-50 mt-20 order-info-wrap">
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-person"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Customer</h6>
+                                <p class="mb-1">
+                                    {{orderDetails.name}} <br> <template class="__cf_email__"
+                                        data-cfemail="e2838e879aa2879a838f928e87cc818d8f">[email&#160;protected]</template>
+                                    <br> +91 {{orderDetails.mobile}}
+                                </p>
+                                <a href="#">View profile</a>
+                            </div>
+                        </article>
+                    </div> <!-- col// -->
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-local_shipping"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Order info</h6>
+                                <p class="mb-1">
+                                    Shipping: Fargo express <br> Pay method: {{orderDetails.paymentMethod}} <br> Status:
+                                    {{orderDetails.status}}
+                                </p>
+                                <a href="#">Download info</a>
+                            </div>
+                        </article>
+                    </div> <!-- col// -->
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-place"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Deliver to</h6>
+                                <p class="mb-1">
+                                    City: {{orderDetails.deliveryDetails.city}},
+                                    {{address.address.state}}<br>{{orderDetails.deliveryDetails.landmark}},
+                                    {{orderDetails.deliveryDetails.pincode}}, {{orderDetails.deliveryDetails.locality}}
+                                    <br> Po Box 10000
+                                </p>
+                                <a href="#">View profile</a>
+                            </div>
+                        </article>
+                    </div> <!-- col// -->
+                </div> <!-- row // -->
+
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="35%">Product</th>
+                                        <th width="19%">Unit Price</th>
+                                        <th width="15%">Quantity</th>
+                                        {{!-- <th width="15%">Total</th> --}}
+                                        {{#if (eq orderDetails.status "completed")}} 
+                                        <th width="26%" id="actions"> Actions </th>
+                                         {{/if}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each orderDetails.products}}
+                                    <tr>
+                                        <td>
+                                            <a class="itemside d-flex align-items-center" href="#">
+                                                <div class="left">
+                                                    <img src="{{item.image.[0]}}" width="45" height="45" class="img-xs"
+                                                        alt="Item">
+                                                </div>
+                                                <div class="info ms-3 ml-2">{{item.name}}</div>
+                                            </a>
+                                        </td>
+
+                                        {{#if offer}}
+                                        <td> {{ item.offer}}</td>
+                                        {{else}}
+                                        <td> {{item.price}}</td>
+                                        {{/if}}
+                                        <td>{{quantity}}</td>
+                                        {{!-- <td>
+
+                                           
+
+                                            {{totalAmount.total}}
+                                        </td> --}}
+                                        {{#if (eq ../orderDetails.status "completed")}}
+                                        <td id="rating-button"><a
+                                                href="/shop-product-right/?productId={{item._id}}&parentId={{item.parentId}}#ratings">Rate
+                                                Product<span><i class="fa fa-sm fa-star star rating-star"
+                                                        style="color:#ffcc00;"></i></span></a></td>
+                                        {{/if}}
+                                        
+                                    </tr>
+
+                                    {{/each}}
+                                    <tr>
+                                        <td colspan="6">
+                                            <article class="float-end ">
+
+                                                <dl class="dlist me-3 d-flex">
+                                                    <dt style="padding-right: 10px; white-space: nowrap;">Subtotal:</dt>
+                                                    <dd style="white-space: nowrap;">${{orderDetails.totalPrice}}</dd>
+                                                </dl>
+                                                <dl class="dlist d-flex">
+                                                    <dt style="padding-right: 10px; white-space: nowrap;">Shipping cost:
+                                                    </dt>
+                                                    <dd style="white-space: nowrap;">Free Shipping</dd>
+                                                </dl>
+                                                <dl class="dlist d-flex">
+                                                    <dt style="padding-right: 10px; white-space: nowrap;">Grand total:
+                                                    </dt>
+                                                    <dd style="white-space: nowrap;"><b class="h5">${{
+                                                            orderDetails.totalPrice}}</b></dd>
+                                                </dl>
+                                                <dl class="dlist d-flex">
+                                                    <dt class="text-muted"
+                                                        style="padding-right: 10px; white-space: nowrap;">Status:</dt>
+                                                    <dd style="white-space: nowrap;">
+                                                        <span
+                                                            class="badge rounded-pill alert-success text-success">Payment
+                                                            done</span>
+                                                    </dd>
+                                                </dl>
+                                            </article>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- table-responsive// -->
+                    </div> <!-- col// -->
+                </div>
+            </div> <!-- card-body end// -->
+        </div> <!-- card end// -->
+    </section> <!-- content-main end// -->
+
+{{!-- 
+    <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-danger">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <i class="fas fa-exclamation-circle fa-4x text-white mb-3"></i>
+                    <h5 class="modal-title text-white mb-3" id="cancelModalLabel">Cancel Order</h5>
+                    <form id="cancelForm">
+                        <div class="mb-3">
+                            <label for="reason" class="form-label text-white">Reason for cancellation:</label>
+                            <select class="form-select" id="reason" name="reason">
+                                <option value="" selected disabled>Select a reason</option>
+                                <option value="not available">Item not available</option>
+                                <option value="wrong item">Wrong item ordered</option>
+                                <option value="delayed delivery">Delivery delayed</option>
+                                <option value="others">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="otherReasonContainer" style="display:none;">
+                            <label for="otherReason" class="form-label text-white">Other reason:</label>
+                            <textarea class="form-control" id="otherReason" name="otherReason"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-link text-white"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-light px-3 py-2 me-2"
+                            onclick="cancellOrderModal()">Submit</button>
+                        <input type="hidden" id="orderId" value="">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+
+    {{!-- Modal for returning the product --}}
+    {{!-- <div class="modal fade" id="returnModal" tabindex="-1" aria-labelledby="returnModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-danger">
+                <div class="modal-header border-0">
+                    <button type="button" class="btn-close text-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <i class="fas fa-exclamation-circle fa-4x text-white mb-3"></i>
+                    <h5 class="modal-title text-white mb-3" id="returnModalLabel">Return Order</h5>
+                    <form id="returnForm">
+                        <div class="mb-3">
+                            <label for="reason" class="form-label text-white">Reason for return:</label>
+                            <select class="form-select" id="reason" name="reason">
+                                <option value="" selected disabled>Select a reason</option>
+                                <option value="defective item">Defective item</option>
+                                <option value="wrong item">Wrong item received</option>
+                                <option value="damaged item">Item arrived damaged</option>
+                                <option value="others">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="otherReasonContainer" style="display:none;">
+                            <label for="otherReason" class="form-label text-white">Other reason:</label>
+                            <textarea class="form-control" id="otherReason" name="otherReason"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-link text-white"
+                            data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-sm btn-light px-3 py-2 me-2"
+                            onclick="returnOrderModal()">Submit</button>
+                        <input type="hidden" id="orderId" value="">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+
+    {{>user-footer}}

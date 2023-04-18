@@ -1,0 +1,100 @@
+{{>admin-head-html}}
+    <div class="screen-overlay"></div>
+    {{>admin-navbar}}
+    <main class="main-wrap">
+        {{>admin-header}}
+        <section class="content-main">
+
+            <div class="card mb-4">
+                
+
+                <table class="table align-middle mb-0 bg-white">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    {{#each blockeduser}}
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="https://mdbootstrap.com/img/new/avatars/6.jpg" class="rounded-circle"
+                                        alt="" style="width: 45px; height: 45px" />
+                                    <div class="ms-3">
+                                        <p class="fw-bold mb-1">{{name}}</p>
+                                        <p class="text-muted mb-0">{{email}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <p class="fw-normal mb-1">{{mobile}}</p>
+                            </td>
+                            <td>
+                                {{#if active}}
+                                <div class="col-lg-2 col-sm-2 col-4 col-status">
+                                    <span class="badge rounded-pill alert-success">Active</span>
+                                </div>
+                                {{else}}
+                                <div class="col-lg-2 col-sm-2 col-4 col-status">
+                                    <span class="badge rounded-pill alert-danger">Blocked</span>
+                                </div>
+                                {{/if}}
+                            </td>
+                            <td>
+                                <div class="col-lg-4 col-sm-4 col-4 col-action text-center ">
+                                   
+                                    {{#if active}}
+                                     <button id="block-btn" style="width:90px;"  onclick="blockAndUnblockUsers('{{_id}}',{{active}})" class="btn  font-sm rounded btn-danger  ">Block<i class="fa fa-ban " aria-hidden="true" style="margin-left:5px ;"></i>
+                                    </button>
+                                    {{else}}
+                                    <button id="block-btn2" style="width:90px;"   onclick="blockAndUnblockUsers('{{_id}}',{{active}})" class="btn   font-sm btn-success rounded text-white mt-2">Unblock<i class="fa fa-unlock " aria-hidden="true" style="margin-left:5px ;"></i>                               
+                                        </button>
+                                    {{/if}}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    {{/each}}
+                </table>
+
+                <div class="card-body">
+
+
+
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+            <div class="pagination-area mt-30 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i
+                                    class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </section> <!-- content-main end// -->
+ {{>admin-footer}}
+
+<script>
+    const blockAndUnblockUsers=(userId,currStatus) => {
+            $.ajax({
+        url:"/admin/dashboard/view-users/block-and-unblock-users",
+        data:{
+            userId:userId,
+            currentStat:currStatus
+        },
+        method:'post',
+        success:(res)=>{
+            location.reload();
+        }
+      })
+    }
+</script>

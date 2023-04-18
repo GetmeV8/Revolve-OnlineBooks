@@ -9,18 +9,22 @@
         <th>Status</th>
         <th>Total</th>
         <th>Action</th>
+        <th>Details</th>
       </tr>
     </thead>
     <tbody>
       {{#each orders}}
       <tr>
-
         <td>{{@index }}</td>
-
         <td>{{date}}</td>
         <td>{{status}}</td>
         <td>${{totalAmount.total}}</td>
-        <td><a href="cart.html" class="check-btn sqr-btn ">View</a>
+        {{#if (eq status "completed")}}
+        <td><a href="" class="check-btn sqr-btn ">Return</a></td>
+        {{else}}
+        <td><a href="" class="check-btn sqr-btn ">Cancel</a></td>
+        {{/if}}
+        <td><a href="/view-user-order-details/{{_id}}" class="check-btn sqr-btn ">View</a>
         </td>
       </tr>
       {{/each}}

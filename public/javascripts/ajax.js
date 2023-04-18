@@ -1,5 +1,6 @@
+
 function cartAdd(ProdId) {
-    console.log();
+    console.log(">>>>>>>>>>>>>>>");
     $.ajax({
         url: `/add-to-cart/${ProdId}`,
         method: 'get',
@@ -19,6 +20,8 @@ function cartAdd(ProdId) {
         }
     });
 }
+
+
 
 function wishlistAdd(ProdId) {
     console.log();
@@ -42,133 +45,140 @@ function wishlistAdd(ProdId) {
     });
 }
 
-// const changeQuantity = (cartId, productId, userId, count) => {
-//     console.log(cartId, productId, userId, count);
-//     const quantity = parseInt(document.getElementById(productId).value)
-//     console.log(quantity);
-//     $.ajax({
-//         type: 'POST',
-//         url: '/change-quantity',
-//         data: {
-//             cartId,
-//             productId,
-//             count,
-//             quantity,
-//             userId
-//         },
-//         success: (response) => {
-//             console.log(response);
-//             if (response.removed) {
-//                 alert('Product remove from your cart')
-//                 location.reload()
-//             } else {
-//                 document.getElementById(productId).innerHTML = quantity + count
-//                 const total = response.total.total
-//                 document.getElementById('totalAmount').innerHTML = `$${total}`
-//                 console.log(response.total.total)
+function removeDollarAndParseInt(amount) {
+    const withoutDollar = amount.replace('$', ''); // remove the dollar sign
+    const parsedInt = parseInt(withoutDollar); // parse the string into an integer
+    return parsedInt;
+}
 
-
-
-//                 // const subtotalArr = response.subtotal
-//                 // for (let i = 0; i < subtotalArr.length; i++) {
-//                 //     const subtotal = subtotalArr[i].subtotal
-//                 //     const productId = subtotalArr[i]._id.toString()
-//                 //     // document.getElementById(`${productId}-subtotal`).innerHTML = `$${subtotal}`
-//                 // }
-//             }
-//         },
-//         error: function (data) {
-//             alert(data)
-//             console.log(JSON.stringify(data))
-//         }
-//     })
-// }
 const changeQuantity = (cartId, productId, userId, count) => {
-    const quantity = parseInt(document.getElementById(productId).innerHTML)
+    const quantity = parseInt(document.getElementById(`quantity-${productId}`).innerHTML)
     $.ajax({
-      type: 'POST',
-      url: '/change-quantity',
-      data: {
-        cartId,
-        productId,
-        count,
-        quantity,
-        userId
-      },
-      success: (response) => {
-        if (response.removed) {
-          // Show the "Product Removed" modal
-          $('#productRemovedModal').modal('show')
-  
-          // Reload the page after the modal is closed
-          $('#productRemovedModal').on('hidden.bs.modal', function () {
-            location.reload()
-          })
-        }else if (!response.status){
-          Swal.fire({
-            icon: 'warning',
-            title: 'Out of stock!',
-            text: 'The requested quantity is not available.',
-            confirmButtonText: 'OK',
-            confirmButtonColor: '#8B4000',
-            focusConfirm: '#FF0000',
-            timer: 3000
-          })
-        } else {
-          document.getElementById(productId).innerHTML = quantity + count
-          let total = response.total.total
-          total = formatMoney(total)
-          document.getElementById('totalAmout').innerHTML = total
-          const subtotalArr = response.subtotal
-          for (let i = 0; i < subtotalArr.length; i++) {
-            let subtotal = subtotalArr[i].subtotal
-            subtotal = formatMoney(subtotal)
-            const productId = subtotalArr[i]._id.toString()
-  
-            document.getElementById(`${productId}-subtotal`).innerHTML = subtotal
-          }
-        }
-      },
-      error: function (data) {
-        alert(data)
-        console.log(JSON.stringify(data))
-      }
-    })
-  }
-
-const deleteCartProduct = (cartId, productId) => {
-    $.ajax({
-        type: 'PUT',
-        url: '/remove-cart-product',
+        type: 'POST',
+        url: '/change-quantity',
         data: {
             cartId,
-            productId
+            productId,
+            count,
+            quantity,
+            userId
         },
         success: (response) => {
+            console.log(response)
             if (response.removed) {
-                alert('deleted item')
-                location.reload()
+                // Show the "Product Removed" modal
+                $('#productRemovedModal').modal('show')
+
+                // Reload the page after the modal is closed
+                $('#productRemovedModal').on('hidden.bs.modal', function () {
+                    location.reload()
+                })
+            } else if (!response.status) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Out of stock!',
+                    text: 'The requested quantity is not available.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#8B4000',
+                    focusConfirm: '#FF0000',
+                    timer: 3000
+                })
             } else {
-                alert('deletion failed')
+                document.getElementById(`quantity-${productId}`).innerHTML = quantity + count
+                const quantityml = document.getElementById(`quantity-${productId}`).innerHTML
+                const productprice = removeDollarAndParseInt(document.getElementById(`productprice-${productId}`).innerHTML);
+                const subtotal = quantityml * productprice
+                document.getElementById(`subtotal-${productId}`).innerHTML = `$${subtotal}`
+                document.getElementById(`totalAmount`).innerHTML = response.total.total
+
+
+                console.log("++++++", subtotal, quantity, total, productprice)
             }
         },
-        error: (err) => {
-            alert(err)
+        error: function (data) {
+            alert(data)
+            console.log(JSON.stringify(data))
         }
     })
 }
-
-function Cartget(cartId){
+const deleteCartProduct = (cartId, productId) => {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this item!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: 'PUT',
+                url: '/remove-cart-product',
+                data: {
+                    cartId,
+                    productId
+                },
+                success: (response) => {
+                    if (response.removed) {
+                        Swal.fire(
+                            'Deleted!',
+                            'Your item has been deleted.',
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Deletion failed',
+                            'The item could not be deleted.',
+                            'error'
+                        );
+                    }
+                },
+                error: (err) => {
+                    Swal.fire(
+                        'Error',
+                        'There was an error deleting the item.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+};
+function Cartget(cartId) {
     $.ajax({
-        url:`/user-cart/${cartId}`,
-        method:'get',
-        data:{
+        url: `/user-cart/${cartId}`,
+        method: 'get',
+        data: {
             cartId,
             productId,
         },
-        sucess:(response)=>{
-          const data = JSON.parse(response);
+        sucess: (response) => {
+            const data = JSON.parse(response);
         }
+    })
+}
+const setOrderCancellData = (orderId) => {
+    document.getElementById('orderId').value = orderId
+}
+const cancellOrderModal = () => {
+    const orderId = document.getElementById('orderId').value
+    const reason = document.getElementById('reason').value
+    cancelOrder(orderId, reason)
+}
 
+const cancelOrder = (orderId, reason) => {
+    $.ajax({
+        url: '/cancel-order',
+        data: {
+            orderId,
+            reason
+        },
+        method: 'post',
+        success: (res) => {
+            location.reload()
+        }
     })
 }

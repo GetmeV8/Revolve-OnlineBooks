@@ -1,7 +1,7 @@
 <body>
     {{>adminmain-head}}
     <div class="screen-overlay"></div>
-   {{>side-bar}}
+    {{>side-bar}}
     <main class="main-wrap">
         {{>admin-header}}
         <section class="content-main">
@@ -20,32 +20,35 @@
             </div>
             {{/if}}
             {{#if addedCategory}}
-              <p class="alert alert-success text-center">{{addedCategory}}</p>
+            <p class="alert alert-success text-center">{{addedCategory}}</p>
             {{/if}}
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form action="/admin/addcategoryPost" method="post">
+                            <form id="add-category">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="product_name"/>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name"
+                                        name="product_name" />
                                 </div>
                                 <div class="mb-4">
                                     <label for="product_slug" class="form-label">Slug</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_slug" name="product_slug" />
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_slug"
+                                        name="product_slug" />
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Parent</label>
                                     <select class="form-select" name="product_parent">
-                                        <option>Clothes</option>
-                                        <option>T-Shirts</option>
+                                        <option>E-Books</option>
+                                        <option>Books</option>
                                         <option>Others</option>
                                     </select>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" class="form-control" name="product_description"></textarea>
+                                    <textarea placeholder="Type here" class="form-control"
+                                        name="product_description"></textarea>
                                 </div>
                                 <div class="d-grid">
                                     <button class="btn btn-primary">Create category</button>
@@ -54,7 +57,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="table-responsive">
-                                <table class="table table-hover"  style="overflow: hidden;">
+                                <table class="table table-hover" style="overflow: hidden;">
                                     <thead>
                                         <tr>
                                             <th class="text-center">
@@ -85,17 +88,21 @@
                                             <td>1</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown"
+                                                        class="btn btn-light rounded btn-sm font-sm"> <i
+                                                            class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
-                                                        <a class="dropdown-item" href="/admin/editProdutCategory/{{_id}}">Edit info</a>
-                                                        <a class="dropdown-item text-danger" href="/admin/deleteProductCategory/{{_id}}">Delete</a>
+                                                        <a class="dropdown-item"
+                                                            href="/admin/dashboard/add-product-category/edit-category/{{_id}}">Edit
+                                                            info</a>
+                                    
                                                     </div>
                                                 </div> <!-- dropdown //end -->
                                             </td>
                                         </tr>
                                         {{/each}}
-                                       
+
                                     </tbody>
                                 </table>
                             </div>
@@ -104,7 +111,19 @@
                 </div> <!-- card body .// -->
             </div> <!-- card .// -->
         </section> <!-- content-main end// -->
-     {{>admin-footer}}
+        {{>admin-footer}}
     </main>
-   
+
 </body>
+<script>
+    const otherForm = document.getElementById('add-category')
+    otherForm.addEventListener('submit', () => {
+        $.ajax({
+            url: '/admin/category',
+            data: $('#add-category').serialize(),
+            method: 'POST',
+            success: () => {
+            }
+        })
+    })
+</script>

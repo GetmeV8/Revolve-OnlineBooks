@@ -1,288 +1,283 @@
 {{>adminmain-head}}
-    <div class="screen-overlay"></div>
-    {{>admin-header}}
-    {{>side-bar}}
-    <main class="main-wrap">
-       <section class="page-align" id="footer">
+{{>admin-header}}
+<div class="screen-overlay"></div>
+
+{{>side-bar}}
+<main class="main-wrap">
+  <section class="page-align" id="footer" style="margin-bottom: 100px;">
     <h2>Add new Coupon</h2>
-    <form action="/admin/addcouponsubmit" id="form" method="post" onsubmit="return validateForm()">
-        <div class="row mb-3">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Offer Type</label>
-            <div class="col-sm-10">
-                <select class="form-select" name="type" id="select" onchange="return selector()"
-                    aria-label="Default select example">
-                    <option value="normal" selected>Normal</option>
-                    <option value="product">Product</option>
-                    <option value="category">Category</option>
-                </select>
-            </div>
+    <form action="/admin/couponSubmit" id="form" method="post" onsubmit="">
+      <div class="row mb-3">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Offer Type</label>
+        <div class="col-sm-10">
+          <select class="form-select" name="type" id="select" onchange="return selector()"
+            aria-label="Default select example">
+            <option value="normal" selected>Normal</option>
+            <option value="product">Product</option>
+            <option value="category">Category</option>
+          </select>
         </div>
-        <div class="row mb-3" id="category" style="display: none;">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Category</label>
-            <div class="col-sm-10">
-                <select class="form-select" name="category" id="category" onchange="return selector()"
-                    aria-label="Default select example">
-                    <option selected value="{{data.[0].name}}">{{data.[0].name}}</option>
-                    {{#each data}}
-                    <option value="{{this.name}}">{{this.name}}</option>
-                    {{/each}}
-                </select>
-            </div>
+      </div>
+      <div class="row mb-3" id="category" style="display: none;">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+          <select class="form-select" name="category" id="category" onchange="return selector()"
+            aria-label="Default select example">
+            <option selected value="{{data.[0].name}}">{{data.[0].name}}</option>
+            {{#each category}}
+            <option value="{{product_name}}">{{product_name}}</option>
+            {{/each}}
+          </select>
         </div>
-        <div class="row mb-3 mt-5" id="normal-1">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Coupon Name</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputText" name="name"   pattern="[A-Za-z]{3}[A-Za-z ]+">
-            </div>
+      </div>
+      <div class="row mb-3 mt-5" id="normal-1">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Coupon Name</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="inputText" name="name" pattern="[A-Za-z]{3}[A-Za-z ]+">
         </div>
-        <div class="row mb-3" id="normal-2">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Coupon Code/ID</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" name="code" id="id" pattern="^[a-zA-Z0-9]*$" >
-                <a onclick="codeGenerator()" class="badge badge-secondary"><button class="btn btn-default" type="button" style="background-color: rgb(170, 156, 156);">Generate Code</button></a>
-            </div>
+      </div>
+      <div class="row mb-3" id="normal-2">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Coupon Code/ID</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="code" id="id" pattern="^[a-zA-Z0-9]*$">
+          <a onclick="codeGenerator()" class="badge badge-secondary"><button class="btn btn-default" type="button"
+              style="background-color: rgb(170, 156, 156);">Generate Code</button></a>
         </div>
+      </div>
 
 
-        <div class="row mb-3" id="start">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">Start Date</label>
-            <div class="col-sm-10">
-                <input type="date" class="form-control" name="startDate" id="startDate" >
-            </div>
+      <div class="row mb-3" id="start">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">Start Date</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" name="startDate" id="startDate">
         </div>
-        <div class="row mb-3" id="end">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">End Date</label>
-            <div class="col-sm-10">
-                <input type="date" class="form-control" name="endDate" id="endDate" required>
-                
-            </div>
+      </div>
+      <div class="row mb-3" id="end">
+        <label for="inputPassword3" class="col-sm-2 col-form-label">End Date</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" name="endDate" id="endDate" required>
+
         </div>
-        <div class="row mb-3 mt-5">
-            <label for="inputEmail3" class="col-sm-2 col-form-label">Percentage</label>
-            <div class="col-sm-10">
-                <input type="number" onKeyPress="if(this.value.length==2) return false;" class="form-control"
-                    name="percentage" min="0" max="100" step="0.01" pattern="[0-9]+([.,][0-9]+)?" required>
-            </div>
-            </div>
-            <div class="row mb-3 mt-5" id="limit">
-                <label for="inputEmail3" class="col-sm-2 col-form-label">Purchase Limit Amount</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="limit" id="purchaselimit" pattern="\d+(\.\d+)?" >
-                </div>
+      </div>
+      <div class="row mb-3 mt-5">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Percentage</label>
+        <div class="col-sm-10">
+          <input type="number" onKeyPress="if(this.value.length==2) return false;" class="form-control"
+            name="percentage" min="0" max="100" step="0.01" pattern="[0-9]+([.,][0-9]+)?" required>
+        </div>
+      </div>
 
-            </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-
-
+      <div class="row mb-3 mt-5" id="limit">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Purchase Limit Amount</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="limit" id="purchaselimit" pattern="\d+(\.\d+)?">
+        </div>
+      </div>
+      <div class="text-center">
+        <button style="margin-bottom: 20px;">Create</button>
+        <input type="submit">
+      </div>
     </form>
+
     <div id="product" style="display: none;">
-        <table class="table table-bordered " id="pro">
-                <thead>
-                  <tr>
-                    <th scope="col">Image</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {{#each products}}
-                  <tr>
-                    <td class="book-image"><img style="width: 100px; height:auto;" src="{{this.image.[0]}}" alt="no"></td>
-                    <td>{{this.name}}</td>
-                    <td>{{this.description}}</td>
-                    <td>{{this.category}}</td>
-                    <td>₹{{this.price}}</td>
-                    <td class="button-set">
-                          <p><a href="#ex1" onclick="return IdPass('{{this._id}}')" rel="modal:open"><button class="btn btn-info btn-sm">Create Offer</button></a></p>
-                    </td>
-                  </tr>
-                  {{/each}}
-                </tbody>
-              </table>
+      <table class="table table-bordered " id="pro">
+        <thead>
+          <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Category</th>
+            <th scope="col">Price</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each products}}
+          <tr>
+            <td class="book-image"><img style="width: 100px; height:auto;" src="{{this.image.[0]}}" alt="no"></td>
+            <td>
+              <h5>{{this.name}}</h5>
+            </td>
+            <td>
+              <h5>{{this.description}}</h5>
+            </td>
+            <td>
+              <h5>{{this.category}}</h5>
+            </td>
+            <td>
+              <h5>₹{{this.price}}</h5>
+            </td>
+            <td class="button-set">
+              <p><a href="#ex1" onclick="return IdPass('{{this._id}}')" rel="modal:open"><button
+                    class="btn btn-info btn-sm">Create Offer</button></a></p>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
+
     <div id="ex1" class="modal">
-  <p>Thanks for clicking. That felt good.</p>
-  <form action="/admin/addcouponsubmit" method="post" onsubmit="return validateForms()">
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
+      <p>Thanks for clicking. That felt good.</p>
+      <form action="/admin/couponSubmit" method="post" onsubmit="return validateForms()">
+        <div class="modal-body mx-3">
+          <div class="md-form mb-5">
             <input type="text" name="type" value="product" hidden>
             <input type="text" name="id" id="proId" hidden>
-          <input type="number" name="percentage" id="defaultForm-email" class="form-control validate"  min="0" max="100" step="0.01" pattern="[0-9]+([.,][0-9]+)?" required>
-          <label data-error="wrong" data-success="right" for="defaultForm-email">Percentage</label>
+            <input type="number" name="percentage" id="defaultForm-email" class="form-control validate" min="0"
+              max="100" step="0.01" pattern="[0-9]+([.,][0-9]+)?" required>
+            <label data-error="wrong" data-success="right" for="defaultForm-email">Percentage</label>
+          </div>
+          <div class="md-form mb-2">
+            <input type="date" name="endDate" id="defaultForm-pass" class="form-control validate">
+            <label data-error="wrong" data-success="right" for="defaultForm-pass">Expires</label>
+          </div>
         </div>
-
-        <div class="md-form mb-4">
-          <input type="date" name="endDate" id="defaultForm-pass" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="defaultForm-pass">Expires</label>
+        <div class="modal-footer d-flex justify-content-center">
+          <button class="btn btn-success" type="submit">Create</button>
         </div>
-
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-success" type="submit">Create</button>
-      </div>
       </form>
-  <a href="#" rel="modal:close">Close</a>
-</div>
-    {{!-- <div class="modal fade " id="modalLoginForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog " role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Create offer</h4>
-        <button type="button" class="close pt-5" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form action="/admin/addcouponsubmit" method="post">
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-            <input type="text" name="type" value="product" hidden>
-            <input type="text" name="id" id="proId" hidden>
-          <input type="number" name="percentage" id="defaultForm-email" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="defaultForm-email">Percentage</label>
-        </div>
-        <div class="md-form mb-4">
-          <input type="date" name="endDate" id="defaultForm-pass" class="form-control validate">
-          <label data-error="wrong" data-success="right" for="defaultForm-pass">Expires</label>
-        </div>
-      </div>
-      <div class="modal-footer d-flex justify-content-center">
-        <button class="btn btn-default" type="submit">Create</button>
-      </div>
-      </form>
+      <a href="#" rel="modal:close">Close</a>
     </div>
-  </div>
-</div> --}}
+  </section>
 
-</section>
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script>
+
+
+
+   <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script>
     function codeGenerator() {
-        $.ajax({
-            url: '/admin/generatecode',
-            method: 'get',
-            success: (response => {
-                document.getElementById('id').value = response
-            })
+     console.log("++")
+      $.ajax({
+        url: '/admin/generatecode',
+        method: 'get',
+        success: (response => {
+          document.getElementById('id').value = response
         })
+      })
     }
     function selector() {
-        const selection = document.getElementById('select').value
-        console.log(selection)
-        if (selection == 'category') {
-            document.getElementById('normal-1').style.display = 'none'
-            document.getElementById('normal-2').style.display = 'none'
-            document.getElementById('start').style.display = 'none'
-            document.getElementById('limit').style.display = 'none'
-            document.getElementById('category').style.display = 'flex'
-        } else if (selection == 'product') {
-            document.getElementById('form').style.display = 'none'
-            document.getElementById('product').style.display = 'block'
-        } else if (selection == 'normal') {
-            document.getElementById('normal-1').style.display = 'flex'
-            document.getElementById('normal-2').style.display = 'flex'
-            document.getElementById('category').style.display = 'none'
-        }
+      const selection = document.getElementById('select').value
+      console.log(selection)
+      if (selection == 'category') {
+        document.getElementById('normal-1').style.display = 'none'
+        document.getElementById('normal-2').style.display = 'none'
+        document.getElementById('start').style.display = 'none'
+        document.getElementById('limit').style.display = 'none'
+        document.getElementById('category').style.display = 'flex'
+      } else if (selection == 'product') {
+        document.getElementById('form').style.display = 'none'
+        document.getElementById('product').style.display = 'block'
+      } else if (selection == 'normal') {
+        document.getElementById('normal-1').style.display = 'flex'
+        document.getElementById('normal-2').style.display = 'flex'
+        document.getElementById('category').style.display = 'none'
+      }
     }
-    function IdPass(id){
-        console.log(id,">>>>>")
-        $('#proId').val(id);
-        document.getElementById('proId').value = id
+    function IdPass(id) {
+      console.log(id, ">>>>>")
+      $('#proId').val(id);
+      document.getElementById('proId').value = id
     }
-    
-      $(document).ready(function () {
-        $('#pro').DataTable({
-          dom: 'Pfrtip'
-        });
+
+    $(document).ready(function () {
+      $('#pro').DataTable({
+        dom: 'Pfrtip'
+      });
     });
-</script>
+  </script>
 
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap4.min.js"></script>
+  <!-- jQuery Modal -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="https://www.pngplay.com/wp-content/uploads/1/Letter-F-PNG.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
-<script>
-function validateForm() {
-  if (document.getElementById('normal-1').style.display === 'flex') {
-  var currentDate = new Date();
-  var startDate = document.getElementById("startDate").value;
-  var endDate = document.getElementById("endDate").value;
- var year = currentDate.getFullYear();
-var month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-var day = currentDate.getDate().toString().padStart(2, "0");
-currentDate = year + "-" + month + "-" + day;
- var couponcode = document.getElementById("id").value;
-  var couponname = document.getElementById("inputText").value;
-   var purchaselimit = document.getElementById("purchaselimit").value;
-    if (!startDate) {
-    alert("Start date cannot be blank");
-    return false;
-  }
-  if (currentDate > endDate) {
-    alert("end date must be greater than or equal to current date");
-    return false;
-  
-  }
-  if (startDate > endDate) {
-    alert("Start date must be less than or equal to end date");
-    return false;
-  }
-   if (couponcode === null || couponcode === "") {
-    alert("Coupon code cannot be empty");
-    return false;
-  }
-    if (couponname == null || couponname == "") {
-    alert("Coupon name cannot be blank");
-    return false;
-  }
-    if (!purchaselimit) {
-    alert("Purchase limit is required.");
-    return false;
-  }
-  return true;
-  } else if (document.getElementById('category').style.display === 'flex') {
+
+  <script>
+    function validateForm() {
+      if (document.getElementById('normal-1').style.display === 'flex') {
+        var currentDate = new Date();
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        var year = currentDate.getFullYear();
+        var month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+        var day = currentDate.getDate().toString().padStart(2, "0");
+        currentDate = year + "-" + month + "-" + day;
+        var couponcode = document.getElementById("id").value;
+        var couponname = document.getElementById("inputText").value;
+        var purchaselimit = document.getElementById("purchaselimit").value;
+        if (!startDate) {
+          alert("Start date cannot be blank");
+          return false;
+        }
+        if (currentDate > endDate) {
+          alert("end date must be greater than or equal to current date");
+          return false;
+
+        }
+        if (startDate > endDate) {
+          alert("Start date must be less than or equal to end date");
+          return false;
+        }
+        if (couponcode === null || couponcode === "") {
+          alert("Coupon code cannot be empty");
+          return false;
+        }
+        if (couponname == null || couponname == "") {
+          alert("Coupon name cannot be blank");
+          return false;
+        }
+        if (!purchaselimit) {
+          alert("Purchase limit is required.");
+          return false;
+        }
+        return true;
+      } else if (document.getElementById('category').style.display === 'flex') {
+        var currentDate = new Date();
+        var startDate = document.getElementById("startDate").value;
+        var endDate = document.getElementById("endDate").value;
+        var year = currentDate.getFullYear();
+        var month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+        var day = currentDate.getDate().toString().padStart(2, "0");
+        currentDate = year + "-" + month + "-" + day;
+        var couponcode = document.getElementById("id").value;
+        var couponname = document.getElementById("inputText").value;
+        var purchaselimit = document.getElementById("purchaselimit").value;
+        if (currentDate > endDate) {
+          alert("end date must be greater than or equal to current date");
+          return false;
+
+        }
+      }
+    }
+  </script>
+  <script>
+    function validateForms() {
       var currentDate = new Date();
-  var startDate = document.getElementById("startDate").value;
-  var endDate = document.getElementById("endDate").value;
- var year = currentDate.getFullYear();
-var month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-var day = currentDate.getDate().toString().padStart(2, "0");
-currentDate = year + "-" + month + "-" + day;
- var couponcode = document.getElementById("id").value;
-  var couponname = document.getElementById("inputText").value;
-   var purchaselimit = document.getElementById("purchaselimit").value;
-   if (currentDate > endDate) {
-    alert("end date must be greater than or equal to current date");
-    return false;
-  
-  }
-  }
-}
-</script>
-<script>
-  function validateForms() {
-  var currentDate = new Date();
+
+      var endDate = document.getElementById("defaultForm-pass").value;
+      var year = currentDate.getFullYear();
+      var month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+      var day = currentDate.getDate().toString().padStart(2, "0");
+      currentDate = year + "-" + month + "-" + day;
+      if (currentDate > endDate) {
+        alert("end date must be greater than or equal to current date");
+        return false;
+
+      }
+
+
+      return true;
+    }
+
+  </script>
+
+
+
+
+  {{>admin-footer}}
  
-  var endDate = document.getElementById("defaultForm-pass").value;
- var year = currentDate.getFullYear();
-var month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-var day = currentDate.getDate().toString().padStart(2, "0");
-currentDate = year + "-" + month + "-" + day;
-  if (currentDate > endDate) {
-    alert("end date must be greater than or equal to current date");
-    return false;
-  
-  }
-  
-  
-  return true;
-}
-  
-</script>
-{{>admin-footer}}

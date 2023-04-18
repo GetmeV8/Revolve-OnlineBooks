@@ -1,0 +1,176 @@
+<section class="page-align" id="footer">
+    <a href="/admin/addcoupon"><button class="btn btn-success">Add Coupon</button></a>
+    <div class="row mb-3">
+        <label for="inputEmail3" class="col-sm-2 col-form-label">Offer Type</label>
+        <div class="col-sm-10">
+            <select class="form-select" name="type" id="select" onchange="return couponView()"
+                aria-label="Default select example">
+                <option value="normal" selected>Normal</option>
+                <option value="product">Product</option>
+                <option value="category">Category</option>
+            </select>
+        </div>
+    </div>
+    <div id="normal">
+        {{#if coupons.normalCoupons}}
+
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th scope="col">Code</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Percentage</th>
+                    <th scope="col">Starts</th>
+                    <th scope="col">Expires</th>
+                    <th scope="col">Limit Amount</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each coupons.normalCoupons}}
+                <tr>
+                    <td>{{this.code}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.percentage}}%</td>
+                    <td>{{this.startDate}}</td>
+                    <td>{{this.endDate}}</td>
+                    <td>₹{{this.limit}}</td>
+                    <td>
+                        <a href="/admin/editcoupon/{{this._id}}" class="badge badge-secondary"><button class="btn btn-success">Edit</button></a>
+                        <p onclick="return couponDelete('{{this._id}}')" class="badge badge-danger"><button class="btn btn-success">Delete</button></p>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <p class="coup">No Coupons</p>
+        {{/if}}
+    </div>
+    <div id="category">
+       {{#if coupons.categoryCoupons}}
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Percentage</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each coupons.categoryCoupons}}
+                <tr>
+                    <td>{{this.category}}</td>
+                    <td>{{this.percentage}}%</td>
+                    <td>
+                        <a href="/admin/editcoupon/{{this._id}}" class="badge badge-secondary"><button class="btn btn-success">Edit</button></a>
+                        <p onclick="return couponDelete('{{this._id}}')" class="badge badge-danger"><button class="btn btn-success">Delete</button></p>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+       {{else}}
+       <p class="coup">No Category Coupons</p>
+       {{/if}}
+    </div>
+    <div id="product">
+        {{#if coupons.productCoupons}}
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th scope="col">Image</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Percentage</th>
+                    <th scope="col">Expires</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each coupons.productCoupons}}
+                <tr>
+                    <td><img style="width: 50px;" src="{{this.product.image.[0]}}" alt="no"></td>
+                    <td>{{this.product.brand}}</td>
+                    <td>{{this.percentage}}%</td>
+                    <td>{{this.endDate}}</td>
+                    <td>
+                        <a href="/admin/editcoupon/{{this._id}}" class="badge badge-secondary"><button class="btn btn-success">Edit</button></a>
+                        <p onclick="return couponDelete('{{this._id}}')" class="badge badge-danger"><button class="btn btn-success">Delete</button></p>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+        <p class="coup">No Product Coupons</p>
+        {{/if}}
+    </div>
+</section>
+<script>
+    document.getElementById('category').style.display = 'none'
+    document.getElementById('normal').style.display = 'flex'
+    document.getElementById('product').style.display = 'none'
+    function couponView() {
+        const selection = document.getElementById('select').value
+        if (selection == 'normal') {
+            document.getElementById('category').style.display = 'none'
+            document.getElementById('normal').style.display = 'flex'
+            document.getElementById('product').style.display = 'none'
+        } else if (selection == 'category') {
+            document.getElementById('category').style.display = 'flex'
+            document.getElementById('normal').style.display = 'none'
+            document.getElementById('product').style.display = 'none'
+        } else if (selection == 'product') {
+            document.getElementById('category').style.display = 'none'
+            document.getElementById('normal').style.display = 'none'
+            document.getElementById('product').style.display = 'flex'
+        }
+    }
+  
+</script>
+<script>
+     function couponDelete(id) {
+    console.log(">>>>>>>>>>>>>>>>>>>")
+  const DNDALERT = new DNDAlert({
+    title: 'Alert',
+    message:
+        'Are you sure want to return this Coupon',
+    type: 'info',
+    html: false,
+    buttons: [
+      {
+        text: 'Yes',
+        type: 'primary',
+        onClick: () => {
+          deleteCoupon(id)
+        },
+      },
+      {
+        text: 'Close',
+        onClick: (bag) => {
+          bag.CLOSE_MODAL();
+        },
+      },
+    ],
+    closeBackgroundClick: true,
+    portalElement: document.querySelector('body'),
+    portalOverflowHidden: true,
+    textAlign: 'center',
+    theme: 'white',
+    onOpen: (bag) => {
+      console.log('Modal Opened');
+      console.log(bag.PROPERTIES);
+    },
+    onClose: (bag) => {
+      console.log('Modal Closed');
+      console.log(bag);
+    },
+    opacity: 1,
+    autoCloseDuration: 15000,
+    draggable: true,
+    animationStatus: true,
+    closeIcon: false,
+    sourceControlWarning: true,
+  });
+}
+</script>

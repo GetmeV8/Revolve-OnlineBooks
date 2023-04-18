@@ -10,13 +10,14 @@ let adminRouter = require('./routes/admin');
 const db = require('./config/connection')
 let session = require('express-session')
 const nocache = require('nocache')
+const helpers = require('./helpers/other-helpers')
 require('dotenv').config();
 let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-app.engine('hbs',hbs.engine({extname: 'hbs', defaultLayout:'layout', layoutsDir: __dirname +'/views/layout/',partialsDir:__dirname+'/views/partials/'}))
+app.engine('hbs',hbs.engine({extname: 'hbs', defaultLayout:'layout', layoutsDir: __dirname +'/views/layout/',partialsDir:__dirname+'/views/partials/',helpers:helpers}))
 
 
 

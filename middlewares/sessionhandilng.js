@@ -16,6 +16,19 @@ module.exports = {
         }
     },
     isUserExist: (req, res, next) => {
-        req.session.user ? next() : res.redirect('/')
-    }
+        try{
+            req.session.user ? next() : res.redirect('/')
+        }catch(error){
+            console.log(error)
+            res.send(500).json({ message: 'session error while login'})
+        }
+    },
+    isAdminExist: (req, res, next) => {
+        try {
+          req.session.admin ? next() : res.redirect('/admin')
+        } catch (error) {
+          console.log(error)
+          res.send(500).json({ message: 'session error while login' })
+        }
+      },
 }

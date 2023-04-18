@@ -6,6 +6,8 @@ let adminauth = require('../middlewares/sessionhandilng');
 const adminvalidation = require('../validation/adminvalidation');
 const multer = require('multer');
 const path = require('path');
+const admincontrollers = require('../controllers/admincontrollers');
+const sessionhandilng = require('../middlewares/sessionhandilng');
 const upload = multer({
     storage: multer.diskStorage({}),
     fileFilter: (req, file, cb) => {
@@ -26,7 +28,7 @@ const upload = multer({
 // }
 
 
-router.route("/").get(admin_controller.adminLoginGet).post(adminvalidation.adminLoginValidate, admin_controller.adminLoginPost)
+router.route("/").get(admin_controller.adminLoginGet).post(adminvalidation.adminLoginValidate,admin_controller.adminLoginPost)
 
 router.get('/logOut', admin_controller.logoutAdmin);
 
@@ -60,16 +62,41 @@ router.get('/productslist', admin_controller.productList);
 router.get('/editproduct/:id', admin_controller.productEdit);
 
 //product Edit post
-router.post('/productUpdate/:id', admin_controller.productUpdate);
+router.post('/productUpdate/:id', upload.fields([
+    { name: 'image1', maxCount: 1 },
+    { name: 'image2', maxCount: 1 },
+    { name: 'image3', maxCount: 1 },
 
-//category get
-router.get('/category', admin_controller.addcategoryGet);
+]), admin_controller.productUpdate);
 
-//category post
-router.post('/addcategoryPost', admin_controller.addcategoryPost);
+//category
+router.route("/category").get(admin_controller.addcategoryGet).post(admin_controller.addcategoryPost)
 
-//coupon get
-router.get('/add-coupon',admin_controller.couponGet);
+
+// router.get('/category', admin_controller.addcategoryGet);
+// router.post('/addcategoryPost', admin_controller.addcategoryPost);
+router.route("/dashboard/add-product-category/edit-category/:id").get( admin_controller.editCategoryGet).post(admin_controller.editCategoryPut)
+
+//orders
+router.get('/orderlist', admin_controller.orderList);
+
+// change status of ordered products
+router.post("/change-product-status", admin_controller.changeProductStatus)
+router.get("/dashboard/admin-view-orders/view-order-details/:id", admin_controller.viewOrderDetails)
+
+// amount refund
+// router.post("/refund-amount", admin_controller.refundAmount)
+
+
+//coupon 
+router.get('/add-coupon', admin_controller.couponGet);
+router.post('/couponSubmit', admin_controller.couponPost);
+router.get('/generatecode', admin_controller.codeGenerator)
+router.get('/view-coupons',admin_controller.viewCoupon)
+
+//dashboard
+router.get("/data-for-most-selling-product",admin_controller.getChartData)
+router.get("/data-for-other-graphs-and-chart",admin_controller.getData)
 
 
 module.exports = router;

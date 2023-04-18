@@ -30,16 +30,12 @@
                                         Profile</a>
                                     <a href="#orders" data-bs-toggle="tab"><i class="fa fa-cart-arrow-down"></i>
                                         Orders</a>
-                                    <a href="#download" data-bs-toggle="tab"><i class="fa fa-cloud-download"></i>
-                                        Download</a>
-                                    <a href="#payment-method" data-bs-toggle="tab"><i class="fa fa-credit-card"></i>
-                                        Payment
-                                        Method</a>
+                                    <a href="#wallet" data-bs-toggle="tab"><i class="fa fa-credit-card"></i>
+                                        My
+                                        Wallet</a>
                                     <a href="#address-edit" data-bs-toggle="tab"><i class="fa fa-map-marker"></i>
                                         address</a>
-                                    <a href="#account-info" data-bs-toggle="tab"><i class="fa fa-user"></i> Account
-                                        Details</a>
-                                    <a href="login-register.html"><i class="fa fa-sign-out"></i> Logout</a>
+                                    <a href="/signout"><i class="fa fa-sign-out"></i> Logout</a>
                                 </div>
                             </div>
                             <!-- My Account Tab Menu End -->
@@ -86,7 +82,8 @@
                                                             <td>{{date}}</td>
                                                             <td>{{status}}</td>
                                                             <td>${{totalAmount.total}}</td>
-                                                            <td><a href="cart.html" class="check-btn sqr-btn ">View</a>
+                                                            <td><a href="/view-user-order-details/{{_id}}"
+                                                                    class="check-btn sqr-btn ">View</a>
                                                             </td>
                                                         </tr>
                                                         {{/each}}
@@ -138,10 +135,56 @@
                                     </div>
                                     <!-- Single Tab Content End -->
                                     <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="payment-method" role="tabpanel">
+                                    <div class="tab-pane fade" id="wallet" role="tabpanel">
                                         <div class="myaccount-content">
-                                            <h3>Payment Method</h3>
-                                            <p class="saved-message">You Can't Saved Your Payment Method yet.</p>
+                                            <h3>My Wallet</h3>
+                                            {{#if walletData}}
+
+                                            <div class="col-lg-6">
+                                                <div class="balance">
+                                                    <p class="mb-2">Current Balance:</p>
+                                                    <h3 class="mb-4">{{ walletData.balance}}</h3>
+                                                </div>
+                                            </div>
+                                            {{#if walletData.transactions}}
+                                            <ul class="list-group">
+                                                {{#each walletData.transactions}}
+                                                <li class="list-group-item">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-lg-6">
+                                                            <p class="mb-0">{{date}}</p>
+                                                            {{#if (eq type 'credited')}}
+                                                            <p class="mb-0 text-success">${{amount}} - {{type}}</p>
+                                                            {{/if}}
+                                                            {{#if (eq type 'debited')}}
+                                                            <p class="mb-0 text-danger">${{amount}} - {{type}}</p>
+                                                            {{/if}}
+                                                            {{#if (eq type 'failed')}}
+                                                            <p class="mb-0 text-warning">${{amount}} - {{type}}</p>
+                                                            {{/if}}
+                                                        </div>
+                                                        <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+                                                            <button type="button" class="btn btn-secondary">View
+                                                                Details</button>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {{/each}}
+                                            </ul>
+                                            {{else}}
+                                            <h5>Please Make Some Wallet Transactions...</h5>
+                                            {{/if}}
+
+                                            {{else}}
+                                            <button id="activateWalletBtn" onclick="activateWallet()"
+                                                class="btn mt-3">Activate</button>
+                                            <div id="loadingModal" class="modal">
+                                                <div class="modal-content">
+                                                    <div id="loadingSpinner"></div>
+                                                    <h5 class="mt-3">Activating your wallet,Please wait..</h5>
+                                                </div>
+                                            </div>
+                                            {{/if}}
                                         </div>
                                     </div>
                                     <!-- Single Tab Content End -->
@@ -226,14 +269,7 @@
                                                                             name="state">
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-lg-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Locality <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input type="text" class="form-control"
-                                                                            type="text" name="landmark">
-                                                                    </div>
-                                                                </div>
+
                                                                 <div class="col-lg-12 col-md-12">
                                                                     <div class="billing-info mb-20">
                                                                         <label>Postcode / ZIP <abbr class="required"
@@ -259,40 +295,18 @@
 
                                                                     </div>
                                                                 </div>
-                                                                {{!-- <div class="col-lg-12 col-md-12">
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio"
-                                                                            name="type" id="inlineRadio1" value="Work">
-                                                                        <label class="form-check-label"
-                                                                            for="inlineRadio1">work</label>
-                                                                    </div>
-                                                                    <div class="form-check form-check-inline">
-                                                                        <input class="form-check-input" type="radio"
-                                                                            name="type" id="inlineRadio2"
-                                                                            value="{{this._id}}">
-                                                                        <label class="form-check-label"
-                                                                            for="inlineRadio2">home</label>
-                                                                    </div>
-                                                                </div> --}}
+
                                                                 <button type="submit" class="btn btn-danger"
                                                                     style="width: 100px;">Save</button>
-                                                                <button type="submit" class="btn btn-success"
-                                                                    style="width: 100px; margin-left: 10px;">Update</button>
-
+                                                                {{!-- <button type="submit" class="btn btn-success"
+                                                                    style="width: 100px; margin-left: 10px;">Update</button> --}}
                                                             </div>
-
                                                         </form>
-
-
-
                                                         {{!-- form div end --}}
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
-
-
                                         <div>
                                             <div class="myaccount-content">
                                                 <h3>Billing Address</h3>
@@ -418,6 +432,60 @@
             method: 'post',
             success: (res) => {
                 location.reload();
+            }
+        })
+    }
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+
+<script>
+    var loadingModal = document.getElementById("loadingModal");
+    var spinner = new Spinner().spin(document.getElementById("loadingSpinner"));
+    document.getElementById("activateWalletBtn")?.addEventListener("click", function () {
+        // Show loading modal
+        loadingModal.style.display = "block";
+        // Simulate wallet activation process
+        setTimeout(function () {
+            // Hide loading modal after a delay (replace with your actual wallet activation logic)
+            loadingModal.style.display = "none";
+            spinner.stop();
+        }, 3000); // 3000ms = 3 seconds (replace with your desired duration)
+    });
+    const activateWallet = () => {
+        $.ajax({
+            url: "/open-wallet/activate-wallet",
+            method: 'GET',
+            success: (response) => {
+                setTimeout(() => {
+                    $('#loadingModal').hide()
+                    Swal.fire({
+                        title: "Wallet Activation Successful",
+                        icon: "success",
+                        text: "Congratulations! Your wallet has been successfully activated.",
+                        showConfirmButton: false,
+                        timer: 3000, // Automatically close after 3 seconds
+                    });
+                }, 4000);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 6000);
+            },
+            error: (err) => {
+                $('#loadingModal').hide()
+                Swal.fire({
+                    title: "Wallet Activation Failed",
+                    icon: "error",
+                    text: "Oops! Something went wrong with wallet activation. Please try again.",
+                    showConfirmButton: true,
+                    confirmButtonText: "OK",
+                    allowOutsideClick: false, // Prevent clicking outside Swal to close
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload()
+                    }
+                });
             }
         })
     }

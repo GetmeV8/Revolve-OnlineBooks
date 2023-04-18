@@ -18,33 +18,7 @@
             <div class="container">
                 <div class="row flex-row-reverse">
                     <div class="col-lg-9">
-                        {{!-- <div class="shop-topbar-wrapper">
-                            <div class="shop-topbar-left">
-                                <div class="view-mode nav">
-                                    <a class="active" href="#shop-1" data-bs-toggle="tab"><i class="icon-grid"></i></a>
-                                    <a href="#shop-2" data-bs-toggle="tab"><i class="icon-menu"></i></a>
-                                </div>
-                                <p>Showing 1 - 20 of 30 results </p>
-                            </div>
-                            <div class="product-sorting-wrapper">
-                                <div class="product-shorting shorting-style">
-                                    <label>View :</label>
-                                    <select>
-                                        <option value=""> 20</option>
-                                        <option value=""> 23</option>
-                                        <option value=""> 30</option>
-                                    </select>
-                                </div>
-                                <div class="product-show shorting-style">
-                                    <label>Sort by :</label>
-                                    <select>
-                                        <option value="">Default</option>
-                                        <option value=""> Name</option>
-                                        <option value=""> price</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div> --}}
+                       
                         <div class="shop-bottom-area">
                             <div class="tab-content jump">
                                 <div id="shop-1" class="tab-pane active">
@@ -78,7 +52,12 @@
                                                     </div>
                                                     <h3><a href="product-details.html">{{this.name}}</a></h3>
                                                     <div class="product-price-2">
-                                                        <span>${{this.price}}</span>
+                                                        {{#if this.offer}}
+                                                        <span class="new-price">${{this.offer}}</span>
+                                                        <span class="old-price">${{this.price}}</span>
+                                                        {{else}}
+                                                        <span class="new-price">${{this.price}}</span>
+                                                        {{/if}}
                                                     </div>
                                                 </div>
                                                 <div
@@ -95,10 +74,20 @@
                                                     </div>
                                                     <h3><a href="product-details.html">{{this.name}}</a></h3>
                                                     <div class="product-price-2">
-                                                        <span>${{this.price}}</span>
+                                                        {{#if this.offer}}
+                                                        <span class="new-price">${{this.offer}}</span>
+                                                        <span class="old-price">${{this.price}}</span>
+                                                        {{else}}
+                                                        <span class="new-price">${{this.price}}</span>
+                                                        {{/if}}
                                                     </div>
-                                                    <div class="pro-add-to-cart">
+                                                    {{!-- <div class="pro-add-to-cart">
                                                         <button onclick="cartAdd('{{this._id}}')"
+                                                            title="Add to Cart">Add To Cart</button>
+                                                    </div> --}}
+                                                    <div class="pro-add-to-cart">
+                                                        <button
+                                                            onclick="cartAdd('{{this._id}}')"
                                                             title="Add to Cart">Add To Cart</button>
                                                     </div>
                                                 </div>
@@ -385,210 +374,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
-                                <h4 class="sidebar-widget-title">Refine By </h4>
-                                <div class="sidebar-widget-list">
-                                    <ul>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox"> <a href="#">On Sale <span>4</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">New <span>5</span></a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">In Stock <span>6</span>
-                                                </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
-                                <h4 class="sidebar-widget-title">Color </h4>
-                                <div class="sidebar-widget-list">
-                                    <ul>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Green <span>7</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Cream <span>8</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Blue <span>9</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Black <span>3</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border pt-40">
-                                <h4 class="sidebar-widget-title">Popular Tags</h4>
-                                <div class="tag-wrap sidebar-widget-tag">
-                                    <a href="#">Clothing</a>
-                                    <a href="#">Accessories</a>
-                                    <a href="#">For Men</a>
-                                    <a href="#">Women</a>
-                                    <a href="#">Fashion</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         {{>user-footer}}
-        <!-- Modal -->
-        {{!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true"></span></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-5 col-md-6 col-12 col-sm-12">
-                                <div class="tab-content quickview-big-img">
-                                    <div id="pro-1" class="tab-pane fade show active">
-                                        <img src="/images/product/product-1.jpg" alt="">
-                                    </div>
-                                    <div id="pro-2" class="tab-pane fade">
-                                        <img src="/images/product/product-3.jpg" alt="">
-                                    </div>
-                                    <div id="pro-3" class="tab-pane fade">
-                                        <img src="/images/product/product-6.jpg" alt="">
-                                    </div>
-                                    <div id="pro-4" class="tab-pane fade">
-                                        <img src="/images/product/product-3.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="quickview-wrap mt-15">
-                                    <div class="quickview-slide-active nav nav-style-6">
-                                        <a class="active" data-bs-toggle="tab" href="#pro-1"><img
-                                                src="/images/product/quickview-s1.jpg" alt=""></a>
-                                        <a data-bs-toggle="tab" href="#pro-2"><img
-                                                src="/images/product/quickview-s2.jpg" alt=""></a>
-                                        <a data-bs-toggle="tab" href="#pro-3"><img
-                                                src="/images/product/quickview-s3.jpg" alt=""></a>
-                                        <a data-bs-toggle="tab" href="#pro-4"><img
-                                                src="/images/product/quickview-s2.jpg" alt=""></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-md-6 col-12 col-sm-12">
-                                <div class="product-details-content quickview-content">
-                                    <h2>Simple Black T-Shirt</h2>
-                                    <div class="product-ratting-review-wrap">
-                                        <div class="product-ratting-digit-wrap">
-                                            <div class="product-ratting">
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star"></i>
-                                                <i class="icon_star"></i>
-                                            </div>
-                                            <div class="product-digit">
-                                                <span>5.0</span>
-                                            </div>
-                                        </div>
-                                        <div class="product-review-order">
-                                            <span>62 Reviews</span>
-                                            <span>242 orders</span>
-                                        </div>
-                                    </div>
-                                    <p>Seamlessly predominate enterprise metrics without performance based process
-                                        improvements.</p>
-                                    <div class="pro-details-price">
-                                        <span class="new-price">$75.72</span>
-                                        <span class="old-price">$95.72</span>
-                                    </div>
-                                    <div class="pro-details-color-wrap">
-                                        <span>Color:</span>
-                                        <div class="pro-details-color-content">
-                                            <ul>
-                                                <li><a class="dolly" href="#">dolly</a></li>
-                                                <li><a class="white" href="#">white</a></li>
-                                                <li><a class="azalea" href="#">azalea</a></li>
-                                                <li><a class="peach-orange" href="#">Orange</a></li>
-                                                <li><a class="mona-lisa active" href="#">lisa</a></li>
-                                                <li><a class="cupid" href="#">cupid</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="pro-details-size">
-                                        <span>Size:</span>
-                                        <div class="pro-details-size-content">
-                                            <ul>
-                                                <li><a href="#">XS</a></li>
-                                                <li><a href="#">S</a></li>
-                                                <li><a href="#">M</a></li>
-                                                <li><a href="#">L</a></li>
-                                                <li><a href="#">XL</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="pro-details-quality">
-                                        <span>Quantity:</span>
-                                        <div class="cart-plus-minus">
-                                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1">
-                                        </div>
-                                    </div>
-                                    <div class="product-details-meta">
-                                        <ul>
-                                            <li><span>Categories:</span> <a href="#">Woman,</a> <a href="#">Dress,</a>
-                                                <a href="#">T-Shirt</a>
-                                            </li>
-                                            <li><span>Tag: </span> <a href="#">Fashion,</a> <a href="#">Mentone</a> , <a
-                                                    href="#">Texas</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="pro-details-action-wrap">
-                                        <div class="pro-details-add-to-cart">
-                                            <a title="Add to Cart" href="#">Add To Cart </a>
-                                        </div>
-                                        <div class="pro-details-action">
-                                            <a title="Add to Wishlist" href="#"><i class="icon-heart"></i></a>
-                                            <a title="Add to Compare" href="#"><i class="icon-refresh"></i></a>
-                                            <a class="social" title="Social" href="#"><i class="icon-share"></i></a>
-                                            <div class="product-dec-social">
-                                                <a class="facebook" title="Facebook" href="#"><i
-                                                        class="icon-social-facebook"></i></a>
-                                                <a class="twitter" title="Twitter" href="#"><i
-                                                        class="icon-social-twitter"></i></a>
-                                                <a class="instagram" title="Instagram" href="#"><i
-                                                        class="icon-social-instagram"></i></a>
-                                                <a class="pinterest" title="Pinterest" href="#"><i
-                                                        class="icon-social-pinterest"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
-        <!-- Modal end -->
+
     </div>
+
+    <script>
+        function showSwalPopup() {
+            Swal.fire({
+                title: "Please Log In",
+                text: "You must be logged in to add items to your cart.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Log In",
+                cancelButtonText: "Cancel",
+                dangerMode: true,
+            })
+                .then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/user-login";
+                    }
+                });
+        }
+    </script>

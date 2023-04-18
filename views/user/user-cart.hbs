@@ -20,7 +20,7 @@
                 <h3 class="cart-page-title">Your cart items</h3>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                        <form action="#">
+                        <form>
                             <div class="table-content table-responsive cart-table-content">
                                 {{#if cartItems}}
                                 <table>
@@ -38,26 +38,30 @@
                                         {{#each cartItems.products}}
                                         <tr>
                                             <td class="product-thumbnail">
-                                                <a href="#"><img class="w-75" src="{{image.[0]}}"
-                                                        alt=""></a>
+                                                <a href="#"><img class="w-75" src="{{image.[0]}}" alt=""></a>
                                             </td>
                                             <td class="product-name"><a href="#">{{product_title}}</a></td>
-                                            <td class="product-price-cart"><span
-                                                    class="amount">${{product_price}}</span></td>
-                                            <td class="product-quantity pro-details-quality">
-                                                <div>
-                                                 <button class="dec qtybutton"
-                                                        onclick="changeQuantity('{{../cartId}}','{{product_id}}','{{../user._id}}',1)">
-                                                    +</button>
-                                                    <input class="cart-plus-minus-box" id="{{product_id}}" type="text"
-                                                        name="qtybutton" value="{{quantity}}"
-                                                        data-quantity="{{quantity}}">
-                                                    <button class="inc qtybutton"
-                                                        onclick="changeQuantity('{{../cartId}}','{{product_id}}','{{../user._id}}',-1)">
-                                                    -</button>
-                                                 </div>
+
+                                            {{#if this.offer}}
+                                            <span class="new-price">${{product_offer}}</span>
+                                            {{else}}
+                                            <td class="product-price-cart"><span class="amount"
+                                                    id="productprice-{{product_id}}">${{product_price}}</span></td>
+                                            {{/if}}
+                                            <td class="product-quantity pro-details-quality" data-title="Stock">
+                                                <div class="">
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary rounded-0"
+                                                        onclick="changeQuantity('{{../cartId}}','{{product_id}}','{{../user._id}}',1)">&#43;<i
+                                                            class="fi-rs-angle-small-down"></i></button>
+                                                    <p class="" id="quantity-{{product_id}}">{{quantity}}</p>
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-outline-secondary rounded-0"
+                                                        onclick="changeQuantity('{{../cartId}}','{{product_id}}','{{../user._id}}',-1)">&#8722;<i
+                                                            class="fi-rs-angle-small-up"></i></button>
+                                                </div>
                                             </td>
-                                            <td class="product-subtotal">${{subtotal}}</td>
+                                            <td id="subtotal-{{product_id}}" class="product-subtotal">${{subtotal}}</td>
                                             <td class="product-remove">
                                                 {{!-- <a href="#"><i class="icon_close"></i></a> --}}
                                                 <a href="#"
@@ -85,49 +89,6 @@
                             </div>
                         </form>
                         <div class="row">
-                            <div class="col-lg-4 col-md-6">
-                                {{!-- <div class="cart-tax">
-                                    <div class="title-wrap">
-                                        <h4 class="cart-bottom-title section-bg-gray">Estimate Shipping And Tax</h4>
-                                    </div>
-                                    <div class="tax-wrapper">
-                                        <p>Enter your destination to get a shipping estimate.</p>
-                                        <div class="tax-select-wrapper">
-                                            <div class="tax-select">
-                                                <label>
-                                                    * Country
-                                                </label>
-                                                <select class="email s-email s-wid">
-                                                    <option>Bangladesh</option>
-                                                    <option>Albania</option>
-                                                    <option>Åland Islands</option>
-                                                    <option>Afghanistan</option>
-                                                    <option>Belgium</option>
-                                                </select>
-                                            </div>
-                                            <div class="tax-select">
-                                                <label>
-                                                    * Region / State
-                                                </label>
-                                                <select class="email s-email s-wid">
-                                                    <option>Bangladesh</option>
-                                                    <option>Albania</option>
-                                                    <option>Åland Islands</option>
-                                                    <option>Afghanistan</option>
-                                                    <option>Belgium</option>
-                                                </select>
-                                            </div>
-                                            <div class="tax-select">
-                                                <label>
-                                                    * Zip/Postal Code
-                                                </label>
-                                                <input type="text">
-                                            </div>
-                                            <button class="cart-btn-2" type="submit">Get A Quote</button>
-                                        </div>
-                                    </div>
-                                </div> --}}
-                            </div>
                             <div class="col-lg-4 col-md-6">
                                 <div class="discount-code-wrapper">
                                     <div class="title-wrap">
@@ -157,8 +118,13 @@
                                             <li><input type="checkbox"> Express <span>$30.00</span></li>
                                         </ul>
                                     </div>
-                                    <h4 class="grand-totall-title">Grand Total <span
-                                            id="totalAmount">${{totalAmount.total}}</span></h4>
+                                    <h4 class="grand-totall-title">Grand Total
+                                        {{#if cartItems.total}}
+                                        <span id="totalAmount">${{cartItems.total}}</span>
+                                        {{else}}
+                                        <span id="totalAmount">${{cartItems.total}}</span>
+                                        {{/if}}
+                                    </h4>
                                     <a href="/checkout">Proceed to Checkout</a>
                                 </div>
                             </div>
