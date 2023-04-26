@@ -19,8 +19,15 @@
                 <p class="alert alert-danger text-center">{{deletedCategory}}</p>
             </div>
             {{/if}}
-            {{#if addedCategory}}
-            <p class="alert alert-success text-center">{{addedCategory}}</p>
+            {{#if response.status}}
+            <p class="alert alert-success text-center">{{response.Message}}</p>
+            {{/if}}
+            {{#if response.exist}}
+                        <p class="alert alert-danger text-center">{{response.Message}}</p>
+            {{/if}}
+              {{#if response.failed}}
+                        <p class="alert alert-danger text-center">{{response.Message}}</p>
+
             {{/if}}
             <div class="card">
                 <div class="card-body">

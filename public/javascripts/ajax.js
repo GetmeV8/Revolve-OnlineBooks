@@ -160,25 +160,85 @@ function Cartget(cartId) {
         }
     })
 }
-const setOrderCancellData = (orderId) => {
-    document.getElementById('orderId').value = orderId
-}
-const cancellOrderModal = () => {
-    const orderId = document.getElementById('orderId').value
-    const reason = document.getElementById('reason').value
-    cancelOrder(orderId, reason)
-}
+function cancelOrder(orderId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, cancel it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: '/cancel-order',
+          method: 'post',
+          data: {
+            orderId,
+          },
+          success: (response) => {
+            Swal.fire({
+              title: 'Cancelled!',
+              text: 'Your order has been cancelled.',
+              icon: 'success',
+              timer: 2000
+            }).then(() => {
+              location.reload();
+            });
+          },
+          error: (err) => {
+            Swal.fire({
+              title: 'Error!',
+              text: 'Something went wrong. Please try again.',
+              icon: 'error',
+              timer: 2000
+            });
+          }
+        });
+      }
+    });
+  }
 
-const cancelOrder = (orderId, reason) => {
+  const refundAmount = (orderId, userId, amount) => {
+    console.log(">>>>",orderId, userId, amount)
     $.ajax({
-        url: '/cancel-order',
+        url: '/admin/refund-amount',
         data: {
             orderId,
-            reason
+            userId,
+            amount
         },
         method: 'post',
-        success: (res) => {
-            location.reload()
+        success: (response) => {
+            console.log(response)
+            if (response.status) {
+                Swal.fire({
+                    imageUrl: 'https://media.giphy.com/media/2u11zpzwyMTy8/giphy.gif',
+                    title: 'Transferring Money...',
+                    text: 'Please wait while we process your money transfer.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Close'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    imageUrl: 'https://media.giphy.com/media/Km2YiI2mzRKgw/giphy.gif',
+                    title: 'Transfer Failed',
+                    text: 'Sorry, we were unable to process your money transfer. Please check your account balance and try again later.',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Close'
+                });
+            }
+        },
+        error: (err) => {
+            console.log(err)
         }
     })
 }
+  
+
+  

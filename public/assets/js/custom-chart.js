@@ -54,14 +54,14 @@
               borderColor: "rgb(4, 209, 130)",
               data: visitors,
             },
-            {
-              label: "Products",
-              tension: 0.3,
-              fill: true,
-              backgroundColor: "rgba(380, 200, 230, 0.2)",
-              borderColor: "rgb(380, 200, 230)",
-              data: products,
-            },
+            // {
+            //   label: "Products",
+            //   tension: 0.3,
+            //   fill: true,
+            //   backgroundColor: "rgba(380, 200, 230, 0.2)",
+            //   borderColor: "rgb(380, 200, 230)",
+            //   data: products,
+            // },
           ],
         },
         options: {
@@ -84,7 +84,7 @@
       canvas.height = 400 // Set the height of the canvas to 400 pixels
   
       const ctx = document.getElementById("orderStatitics").getContext("2d")
-      // const chartData = $("#chartData").val().split(",")
+    //    const chartData = $("#chartData").val().split(",")
       const labels = [
         "Placed",
         "Confirmed",
@@ -145,7 +145,7 @@
       const chart = new Chart(ctx, {
         type: "doughnut",
         data: {
-          labels: ["Cod", "Paypal", "Wallet", "Razorpay"],
+          labels: ["Cod", "Wallet", "Razorpay"],
           datasets: [
             {
               label: "My Dataset",
@@ -233,7 +233,4 @@
         .catch((error) => {
         })
     }
-    
-  
-  
   })(jQuery)

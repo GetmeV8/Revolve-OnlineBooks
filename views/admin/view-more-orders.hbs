@@ -58,7 +58,7 @@
                             <div class="text">
                                 <h6 class="mb-1">Order info</h6>
                                 <p class="mb-1">
-                                    Shipping: FedEx  <br> Pay method: {{orderDetails.paymentMethod}} <br> Status:
+                                    Shipping: FedEx <br> Pay method: {{orderDetails.paymentMethod}} <br> Status:
                                     {{orderDetails.status}}
                                 </p>
                                 <a href="#">Download info</a>
@@ -75,7 +75,8 @@
                                 <p class="mb-1">
                                     City: {{orderDetails.deliveryDetails.city}},
                                     {{orderDetails.deliveryDetails.state}}<br>{{orderDetails.deliveryDetails.landmark}},
-                                   , {{orderDetails.deliveryDetails.locality}} <br> Po Box :{{orderDetails.deliveryDetails.pincode}}
+                                    , {{orderDetails.deliveryDetails.locality}} <br> Po Box
+                                    :{{orderDetails.deliveryDetails.pincode}}
                                 </p>
                                 <a href="#">View profile</a>
                             </div>
@@ -100,10 +101,10 @@
                                         <td>
                                             <a class="itemside" href="#">
                                                 <div class="left">
-                                                    <img src="{{item.image.[0]}}" width="40" height="40"
-                                                        class="img-xs" alt="Item">
+                                                    <img src="{{item.image.[0]}}" width="40" height="40" class="img-xs"
+                                                        alt="Item">
                                                 </div>
-                                                 <div class="info ms-3 ml-2">{{item.name}}</div>
+                                                <div class="info ms-3 ml-2">{{item.name}}</div>
                                             </a>
                                         </td>
                                         {{#if offerPrice}}
@@ -113,13 +114,27 @@
                                         {{/if}}
                                         <td> {{this.quantity}}</td>
                                         {{!-- <td class="text-end"> $ {{multiply offerPrice quantity}} </td> --}}
-                                          {{/each}}
-                                          <td class="text-end">${{orderDetails.totalPrice}}   </td>
+                                        {{/each}}
+                                        <td class="text-end">${{orderDetails.totalPrice}} </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div> <!-- table-responsive// -->
+
                     </div> <!-- col// -->
+                    {{#if  (eq orderDetails.paymentMethod "razorpay")}}
+                    <button onclick="refundAmount('{{orderDetails._id}}','{{orderDetails.userId}}','{{orderDetails.totalPrice}}')"
+                        style="background: #333; color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-size: 16px; font-weight: bold;"><i
+                            class="fas fa-undo"></i> Refund The Amount</button>
+                    {{else}}
+                   <button
+                        style="background: #333; color: #fff; border: none; border-radius: 20px; padding: 10px 20px; font-size: 16px; font-weight: bold;"><i
+                            class="fas fa-undo"></i> Dont Refund.  It's COD</button>
+                    {{/if}}
+
+
+
+
                     {{!-- <div class="col-lg-1"></div>
                     <div class="col-lg-4">
                         {{#if orderDetails.reasonTocancell}}
@@ -180,6 +195,9 @@
                         {{/if}}
                         {{/if}}
                     </div> <!-- col// --> --}}
+
+
+
                 </div>
             </div> <!-- card-body end// -->
         </div> <!-- card end// -->
@@ -288,5 +306,5 @@
                 }
             })
         }
-    
+
     </script>

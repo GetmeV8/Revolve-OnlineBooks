@@ -215,10 +215,11 @@ module.exports = {
             const category = await adminHelper.getallCategories()
             res.render("admin/category", {
                 category,
+                response :req.session.categoryResponse,
                 deletedCategory: req.session.categoryDeleted,
-                addedCategory: req.session.addedCategory,
             })
             req.session.categoryDeleted = req.session.addedCategory = null
+            req.session.categoryResponse = null
         } catch (error) {
             res.status(500).send("Internal Server Error")
         }
@@ -226,8 +227,8 @@ module.exports = {
     addcategoryPost: (req, res) => {
         try {
             const { body } = req
-            adminHelper.addCategories(body).then(() => {
-                req.session.addedCategory = "Added Category you can add another one"
+            adminHelper.addCategories(body).then((response) => {
+                req.session.categoryResponse = response
                 res.redirect("/admin/category")
             })
         } catch (error) {
@@ -323,7 +324,6 @@ module.exports = {
                 await Promise.allSettled([
                     adminHelper.calculateMonthlySalesForGraph(),
                     adminHelper.NumberOfProductsAddedInEveryMonth(),
-                    adminHelper.findNumberOfMonthlyVisitors(),
                     adminHelper.orderStatitics(),
                     adminHelper.paymentStat(),
                 ]).then((results) =>
@@ -338,12 +338,32 @@ module.exports = {
                 orderStat,
                 paymentStat,
             }
-            console.log(response);
+          //  console.log(response);
             res.json(response)
         } catch (error) {
             res.status(500).send("Internal Server Error")
         }
     },
+
+
+
+
+    refundAmount: async (req, res) => {
+        try {
+          const { orderId } = req.body
+         // console.log(req.body);
+          const result = await adminHelper.refundAmont(req.body)
+         // console.log(result);
+          if (result.modifiedCount === 1) {
+            adminHelper.updateRefundStatus(orderId)
+            res.json({ status: true })
+          } else {
+            res.json({ status: false })
+          }
+        } catch (error) {
+          res.status(500).send("Internal Server Error")
+        }
+      },
 
   
 

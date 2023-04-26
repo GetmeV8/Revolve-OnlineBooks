@@ -831,10 +831,11 @@ module.exports = {
             // const {total:amount} = amountArg
             console.log(amount + "amount from coupon")
             const moment = require('moment');
-            const coupon = await db.get().collection(collection.COUPON_COLLECTION).findOne({ code: couponCode })
+            const coupon = await db.get().collection(collection.COUPON_COLLECTION).findOne({ type: "normal",code: couponCode })
+            console.log(coupon);
             if (!coupon) {
                 return {
-                    statuse: false,
+                    status: false,
                     Message: "Invalid coupon code "
                 }
             }
@@ -858,6 +859,7 @@ module.exports = {
                     const { code } = coupon
                     return {
                         status: true,
+                        type:"normal",
                         code: coupon.code,
                         discountPrice,
                         priceAfterDiscount: amount - discountPrice,
@@ -869,7 +871,8 @@ module.exports = {
             throw new Error("Failed to calculate coupon discount")
         }
     },
-    getWalletData: async (userId) => {
+    
+    getWalletData: async (userId) => {    
         try {
             const wallet = await db
                 .get()
@@ -880,6 +883,7 @@ module.exports = {
             throw new Error(error)
         }
     },
+
     activateWallet: async (user) => {
         try {
             const now = new Date()
@@ -902,11 +906,13 @@ module.exports = {
             console.log(response)
             return response
         } catch (error) {
+            
             throw new Error("Error while activating wallet")
         }
     },
-    getUserWallet: async (orderId, total, userId) => {
+    getUserWallet: async (orderId, {total}, userId) => {
         try {
+            console.log(orderId,total,userId)
             const { WALLET_COLLECTION, ORDER_COLLECTION } = collection
             const walletCollection = await db.get().collection(WALLET_COLLECTION)
             const ordersCollection = await db.get().collection(ORDER_COLLECTION)
@@ -920,12 +926,14 @@ module.exports = {
             const dateString = currentDate.toLocaleDateString(undefined, optionsDate)
             const timeString = currentDate.toLocaleTimeString(undefined, optionsTime)
             const dateTimeString = `${dateString} at ${timeString}`
+            console.log("GGGGGGGGG",total);
             if (balance && balance >= total) {
                 const paymentStatusUpdated = await ordersCollection.updateOne(
                     { _id: ObjectId(orderId) },
                     { $set: { paymentStatus: "done", status: "placed" } }
                 )
                 if (paymentStatusUpdated.modifiedCount === 1) {
+                    console.log("YYYYYYYYYY");
                     const updatedBalance = balance - total
                     await walletCollection.updateOne(
                         { userid: ObjectId(userId) },

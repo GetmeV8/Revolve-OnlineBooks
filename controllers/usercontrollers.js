@@ -6,7 +6,6 @@ const userHelper = require('../helpers/user-helpers');
 const { doSignup } = require('../helpers/user-helpers');
 let twilio = require('../middlewares/twilio');
 const { subscribe } = require('../routes/user');
-const userHelpers = require('../helpers/user-helpers');
 const { validationResult } = require('express-validator');
 const adminHelpers = require('../helpers/admin-helpers');
 const { getTotalPrice } = require('../utils/getcart')
@@ -42,7 +41,7 @@ module.exports = {
       const err = errors.errors
       req.session.mobile = req.body.mobile
       if (err.length === 0) {
-        const response = await userHelpers.doLogin(req.body)
+        const response = await userHelper.doLogin(req.body)
         if (response.block) {
           req.session.loginError = 'Your account is blocked by admin'
           res.json({ status: false })
@@ -90,7 +89,7 @@ module.exports = {
       console.log(req.session.err)
       const { email, phone } = req.body
       if (req.session.err.length === 0) {
-        const response = await userHelpers.doSignup(req.body)
+        const response = await userHelper.doSignup(req.body)
         if (response.email === email) {
           req.session.signUpErr = `${response.email} already exists please login`
           res.json({ status: false })
@@ -179,7 +178,7 @@ module.exports = {
     orders = orders.reverse()
     // console.log("0000000000000000", orders);
     // console.log(addresses);
-    res.render('user/user-profile/user-account', { user: req.session.user, addresses, orders , walletData});
+    res.render('user/user-profile/user-account', { user: req.session.user, addresses, orders, walletData });
   },
 
   //Cart ADD
@@ -237,7 +236,7 @@ module.exports = {
       const totalAmount = await userHelper.FindTotalAmount(req.session.user._id);
       const cartItems = await userHelper.getcartProducts(req.session.user._id);
       const addresses = await userHelper.getUserAdresses(userId);
-      const coupons = await userHelpers.getAllCoupons();
+      const coupons = await userHelper.getAllCoupons();
       const cartId = cartItems?._id;
       console.log(req.body);
       // console.log("<<|>>",coupons);
@@ -294,23 +293,31 @@ module.exports = {
 
   Orderplacementpost: async (req, res) => {
     try {
+      console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>',req.body);
+      const { payment_method } = req.body
       let products = await userHelper.getCartProductList(req.body.userId);
       let totalPrice = await userHelper.FindTotalAmount(req.body.userId);
       if (req.session.coupon) {
-        const { code, priceAfterDisount } = req.session.coupon
+        const { code, priceAfterDiscount } = req.session.coupon
         console.log('discount razorpay ')
-        totalPrice = { total: priceAfterDisount }
+        totalPrice = { total: priceAfterDiscount }
       }
       let address = await userHelper.getcurrentAddress(req.body.addressid);
       console.log(products, "???");
-      
       let orderId = await userHelper.placeOrder(req.body, products, totalPrice, address);
       console.log(">>>>", req.body);
-      if (req.body["payment_method"] === 'cod') {
+      if (payment_method === 'cod') {
         res.json({ cod: true });
-      } else if(["payment_method"]=== 'wallet'){
-        res.json({wallet:true})
-      }else{
+      } else if (payment_method === 'wallet') {
+        const walletDetails = await userHelper.getWalletData(
+          req.session.user?._id
+        )
+        console.log("$$$$", walletDetails);
+        walletDetails.wallet = true
+        walletDetails.total = totalPrice
+        req.session.walletInfo = {orderId,totalPrice}
+        res.json(walletDetails)
+      } else {
         const response = await userHelper.generateRazorpay(orderId, totalPrice)
         console.log("?????", response);
         res.json(response)
@@ -346,7 +353,7 @@ module.exports = {
   orderdetailGet: async (req, res) => {
     try {
       const orderId = req.params.id
-      const orderDetails = await userHelpers.getCurrentUserOrders(req.params.id)
+      const orderDetails = await userHelper.getCurrentUserOrders(req.params.id)
       console.log(orderDetails.products);
       res.render("user/order-details", { orderDetails })
     } catch (error) {
@@ -359,7 +366,7 @@ module.exports = {
     try {
       const { orderId } = req.body
       userHelper.cancelUserOrder(orderId).then(() => {
-        res.redirect("/view-orders")
+        res.redirect("/orders")
       })
     } catch (error) {
       res.render("user/user-shop", {
@@ -379,48 +386,52 @@ module.exports = {
       res.json({ status: false })
     })
   },
-  getWallet:async(req,res)=>{
-      try {
-        const walletData = await userHelpers.getWalletData(req.session.user._id )  
-        if (walletData) { 
-          walletData.transactions = walletData.transactions ? walletData.transactions.reverse() : []
-        }
-        console.log(walletData)
-        res.render("user/user-profile/user-account", { walletData,user:req.session.user })
-      } catch (error) { 
-        console.log(error)
-        // res.render("users/wallet", {
-        //   warningMessage: "Internal Server Error Please try again later...",
-        // })
+  getWallet: async (req, res) => {
+    try {
+      const walletData = await userHelper.getWalletData(req.session.user._id)
+      if (walletData) {
+        walletData.transactions = walletData.transactions ? walletData.transactions : []
       }
+      console.log(walletData)
+      res.render("user/user-profile/user-account", { walletData, user: req.session.user })
+    } catch (error) {
+      console.log(error)
+      res.render("users/wallet", {
+        warningMessage: "Internal Server Error Please try again later...",
+      })
+    }
   },
-  activateWallet: async(req,res) =>{
+
+  activateWallet: async (req, res) => {
     try {
       const user = req.session.user
-      const response = await userHelpers.activateWallet(user)
+      const response = await userHelper.activateWallet(user)
       response.acknowledged
-      ?res.status(200).json(response)
-      :res.status(403).json(response)
+        ? res.status(200).json(response)
+        : res.status(403).json(response)
     } catch (error) {
       res.render("user/wallet", {
         warningMessage: "Internal Server Error Please try again later...",
       })
     }
   },
+
+
   walletPayment: async (req, res) => {
     try {
-      const insertedOrderId = req.session.orderId
+      const {totalPrice,orderId} = req.session.walletInfo
       const userId = req.session.user._id
-      const { total } = req.body
       const response = await userHelper.getUserWallet(
-        insertedOrderId,
-        parseInt(total),
+        orderId,
+        totalPrice,
         userId
       )
-      const coupon = await userHelper.calculateCouponDiscount(total.total, req.body.data)
+      console.log(response)
+      const coupon = await userHelper.calculateCouponDiscount(totalPrice, userId)
       response.coupon = coupon
       res.json(response)
     } catch (error) {
+      console.log(error);
       res.status(500).json({ status: false, errorMsg: "Something went wrong" })
     }
   },

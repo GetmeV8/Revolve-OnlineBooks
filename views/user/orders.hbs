@@ -22,7 +22,7 @@
         {{#if (eq status "completed")}}
         <td><a href="" class="check-btn sqr-btn ">Return</a></td>
         {{else}}
-        <td><a href="" class="check-btn sqr-btn ">Cancel</a></td>
+        <td><a href="#" onclick="cancelOrder('{{this._id}}')" class="check-btn sqr-btn ">Cancel</a></td>
         {{/if}}
         <td><a href="/view-user-order-details/{{_id}}" class="check-btn sqr-btn ">View</a>
         </td>
@@ -30,5 +30,6 @@
       {{/each}}
     </tbody>
   </table>
-</div>
+ 
+
 {{>user-footer}}

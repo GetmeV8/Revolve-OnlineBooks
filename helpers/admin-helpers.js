@@ -1,6 +1,7 @@
 var db = require('../config/connection')
 var collection = require('../config/collections')
 const { ObjectId } = require('bson');
+const c = require('config');
 let objectId = require('mongodb').ObjectId;
 module.exports = {
     allUsers: () => {
@@ -268,13 +269,37 @@ module.exports = {
 
     addCategories: async (category) => {
         try {
-            const existingCategory = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ name: category.name });
-            if (existingCategory) {
-                return { message: "Category already exists." };
-            } else {
-                const response = await db.get().collection(collection.CATEGORY_COLLECTION).insertOne(category);
-                return response;
+            const {product_name} = category
+            // const cagry = category.toLowerCase()
+            const existingCategory = await db.get().collection(collection.CATEGORY_COLLECTION).findOne({ product_name })
+            console.log(existingCategory)
+            if (existingCategory==null) {
+                console.log('it is new category');
+                 const response = await db.get().collection(collection.CATEGORY_COLLECTION).insertOne(category)
+                   if(response){
+                    return {
+                        status:true,
+                        Message:"Successfully added category"
+                    }
+                   }else {
+                    return{
+                        failed:false,
+                        Message:"Failed to add category"
+                    }
+                        
+                    }
+
+                
+            
+            }else{
+                return {
+                    exist:true,
+                    Message:"Category already exist..."
+                }
+               
             }
+
+            return 
         } catch (error) {
             throw new Error(error);
         }
@@ -565,6 +590,78 @@ module.exports = {
             throw new Error(error)
         }
     },
+    refundAmont: async (refundInfo) => {
+        try {
+            const userId = objectId(refundInfo.userId)
+            const refundAmount = parseInt(refundInfo.amount)
+            const orderId = refundInfo.orderId
+            const currentDate = new Date()
+            const optionsDate = { month: "long", day: "numeric", year: "numeric" }
+            const optionsTime = { hour: "numeric", minute: "2-digit" }
+            const dateString = currentDate.toLocaleDateString(undefined, optionsDate)
+            const timeString = currentDate.toLocaleTimeString(undefined, optionsTime)
+            const dateTimeString = `${dateString} at ${timeString}`
+            const result = await db
+                .get()
+                .collection(collection.WALLET_COLLECTION)
+                .updateOne(
+                    { userid: userId },
+                    {
+                        $inc: { balance: refundAmount },
+                        $push: {
+                            transactions: {
+                                $each: [
+                                    {
+                                        orderId,
+                                        amount: refundAmount,
+                                        type: "credited",
+                                        date: dateTimeString,
+                                    },
+                                ],
+                            },
+                        },
+                        $set: {
+                            updatedAt: dateTimeString,
+                        },
+                    }
+                )
+            return result
+        } catch (error) {
+            throw new Error(error)
+        }
+    },
+    updateRefundStatus: (orderId) => {
+        try {
+          db.get()
+            .collection(collection.ORDER_COLLECTION)
+            .updateOne(
+              { _id: objectId(orderId) },
+              {
+                $set: {
+                  refundStatus: "completed",
+                },
+              },
+              { upsert: true }
+            )
+        } catch (error) {
+          throw new Error(error)
+        }
+      },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -621,16 +718,6 @@ module.exports = {
                 .collection(collection.PRODUCT_COLLECTION)
                 .aggregate([
                     {
-                        $project: {
-                            addedAt: {
-                                $dateFromString: {
-                                    dateString: "$addedAt",
-                                    format: "%Y-%m-%dT%H:%M:%S.%LZ"
-                                }
-                            }
-                        }
-                    },
-                    {
                         $group: {
                             _id: {
                                 month: { $month: "$addedAt" },
@@ -655,54 +742,12 @@ module.exports = {
                     },
                 ])
                 .toArray()
-                console.log("++++++++",products);
+            console.log("++++++++", products);
             const productsByMonth = Array(12).fill(0)
             products.forEach(({ month, count }) => {
                 productsByMonth[month - 1] = count
             })
             return productsByMonth
-        } catch (error) {
-            throw new Error(error)
-        }
-    },
-    findNumberOfMonthlyVisitors: async () => {
-        try {
-            const visitors = await db
-                .get()
-                .collection(collection.VISITORS)
-                .aggregate([
-                    {
-                        $group: {
-                            _id: {
-                                year: { $toInt: { $substr: ["$month", 0, 4] } },
-                                month: { $toInt: { $substr: ["$month", 5, 2] } },
-                            },
-                            count: { $sum: 1 },
-                        },
-                    },
-                    {
-                        $project: {
-                            _id: 0,
-                            month: "$_id.month",
-                            year: "$_id.year",
-                            count: 1,
-                        },
-                    },
-                    {
-                        $sort: {
-                            year: 1,
-                            month: 1,
-                        },
-                    },
-                ])
-                .toArray()
-          console.log("))))))",visitors);
-            const visitorsByMonth = Array(12).fill(0)
-            visitors.forEach(({ month, count }) => {
-                visitorsByMonth[month - 1] = count
-            })
-            console.log("+++",visitorsByMonth);
-            return visitorsByMonth
         } catch (error) {
             throw new Error(error)
         }

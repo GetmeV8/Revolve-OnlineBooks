@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
 const admin_controller = require('../controllers/admincontrollers');
+const dashboard_controller = require('../controllers/dashboardcontrollers')
 const page_controller = require('../controllers/pagecontroller')
 let adminauth = require('../middlewares/sessionhandilng');
 const adminvalidation = require('../validation/adminvalidation');
 const multer = require('multer');
 const path = require('path');
-const admincontrollers = require('../controllers/admincontrollers');
 const sessionhandilng = require('../middlewares/sessionhandilng');
 const upload = multer({
     storage: multer.diskStorage({}),
@@ -28,13 +28,13 @@ const upload = multer({
 // }
 
 
-router.route("/").get(admin_controller.adminLoginGet).post(adminvalidation.adminLoginValidate,admin_controller.adminLoginPost)
+router.route("/").get(admin_controller.adminLoginGet).post(adminvalidation.adminLoginValidate, admin_controller.adminLoginPost)
 
 router.get('/logOut', admin_controller.logoutAdmin);
 
-router.get('/admin-dash', admin_controller.adminDash);
+router.get('/admin-dash', sessionhandilng.isAdminExist, admin_controller.adminDash);
 
-router.get('/allusers', admin_controller.allUsers);
+router.get('/allusers', sessionhandilng.isAdminExist, admin_controller.allUsers);
 
 router.get('/user-block/:id', admin_controller.userBlocking);
 
@@ -75,7 +75,7 @@ router.route("/category").get(admin_controller.addcategoryGet).post(admin_contro
 
 // router.get('/category', admin_controller.addcategoryGet);
 // router.post('/addcategoryPost', admin_controller.addcategoryPost);
-router.route("/dashboard/add-product-category/edit-category/:id").get( admin_controller.editCategoryGet).post(admin_controller.editCategoryPut)
+router.route("/dashboard/add-product-category/edit-category/:id").get(admin_controller.editCategoryGet).post(admin_controller.editCategoryPut)
 
 //orders
 router.get('/orderlist', admin_controller.orderList);
@@ -85,18 +85,22 @@ router.post("/change-product-status", admin_controller.changeProductStatus)
 router.get("/dashboard/admin-view-orders/view-order-details/:id", admin_controller.viewOrderDetails)
 
 // amount refund
-// router.post("/refund-amount", admin_controller.refundAmount)
+router.post("/refund-amount", admin_controller.refundAmount)
+
 
 
 //coupon 
 router.get('/add-coupon', admin_controller.couponGet);
 router.post('/couponSubmit', admin_controller.couponPost);
 router.get('/generatecode', admin_controller.codeGenerator)
-router.get('/view-coupons',admin_controller.viewCoupon)
+router.get('/view-coupons', admin_controller.viewCoupon)
 
 //dashboard
-router.get("/data-for-most-selling-product",admin_controller.getChartData)
-router.get("/data-for-other-graphs-and-chart",admin_controller.getData)
+router.get("/data-for-most-selling-product", admin_controller.getChartData)
+router.get("/data-for-other-graphs-and-chart", admin_controller.getData)
 
+// create sales report
+router.route("/admin/dashboard/create-report").get(dashboard_controller.makeReportGet).post(dashboard_controller.makeReport)
+router.route("/dashboard/filter-report").post(dashboard_controller.filterReportData)
 
 module.exports = router;

@@ -484,14 +484,14 @@
                                                     value="cod" name="payment_method">
                                                 <label for="payment-method-3">Cash on delivery </label>
                                                 <div class="payment-box payment_method_bacs">
-                                                    <p>Make your payment directly into our bank account. Please use your
-                                                        Order ID as the payment reference.</p>
+                                                    <p>Pay Only When The Get Your Product In Your Hand.
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="pay-top sin-payment">
                                                 <input id="payment-method-4" class="input-radio" type="radio"
                                                     value="wallet" name="payment_method">
-                                                <label for="payment-method-3">My Wallet</label>
+                                                <label for="payment-method-4">My Wallet</label>
                                                 <div class="payment-box payment_method_bacs">
                                                     <p>Use your wallet money for easy payment and refunds</p>
                                                 </div>
@@ -600,6 +600,80 @@
                     } else if (response.id) {
                         console.log("called")
                         getRazorpay(response)
+                    } else {
+                        const walletBalance = response.balance
+                        const walletId = response._id
+                        const total = response.total
+                        Swal.fire({
+                            title: 'Your Wallet Information',
+                          
+                            showCloseButton: false,
+                            showCancelButton: true,
+                            focusConfirm: false,
+                            confirmButtonText:
+                                '<i class="fa fa-inr"></i> Pay',
+                            confirmButtonAriaLabel: 'Pay',
+                            cancelButtonText:
+                                '<i class="fa fa-thumbs-down"></i> Cancel',
+                            cancelButtonAriaLabel: 'Cancel',
+                            customClass: {
+                                container: 'my-swal'
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Make AJAX call to pay with wallet
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/wallet-payment",
+                                    data: { confirmed: true, balance:walletBalance },
+                                    success: function (response) {
+                                        console.log(response)
+                                        // Handle payment success
+                                        if (response.paid) {
+                                            const amountPaid = response.amountPaid;
+                                            const newBalance = response.updatedBalance;
+                                            Swal.fire({
+                                                title: 'Payment Successful!',
+                                                icon: 'success',
+                                                showConfirmButton: true,
+                                                confirmButtonText: 'Close',
+                                                customClass: {
+                                                    container: 'my-swal'
+                                                }
+                                            }).then((result) => {
+                                                if (result.isConfirmed) {
+                                                    couponResponsePareser(response)
+                                                }
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                title: 'Insufficient Balance!',
+                                                text: 'Your account balance is not enough to complete this transaction.',
+                                                icon: 'error',
+                                                showConfirmButton: true,
+                                                confirmButtonText: 'OK',
+                                                customClass: {
+                                                    container: 'my-swal'
+                                                }
+                                            });
+                                        }
+                                    },
+                                    error: function (xhr, status, error) {
+                                        // Handle payment error
+                                        Swal.fire({
+                                            title: 'Payment Error!',
+                                            text: 'An error occurred while processing your payment. Please try again later.',
+                                            icon: 'error',
+                                            showConfirmButton: true,
+                                            confirmButtonText: 'Close',
+                                            customClass: {
+                                                container: 'my-swal'
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             });

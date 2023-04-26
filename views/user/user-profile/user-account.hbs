@@ -53,369 +53,416 @@
                                             <p class="mb-0">In this profile , you can easily check & view
                                                 your recent orders, manage your shipping and billing addresses and edit
                                                 your password and account details.</p>
-                                        </div>
-                                    </div>
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-
-                                    {{!-- orders --}}
-                                    <div class="tab-pane fade" id="orders" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Orders</h3>
-                                            <div class="myaccount-table table-responsive text-center">
-                                                <table class="table table-bordered">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th>Order</th>
-                                                            <th>Date</th>
-                                                            <th>Status</th>
-                                                            <th>Total</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {{#each orders}}
-                                                        <tr>
-
-                                                            <td>{{@index }}</td>
-
-                                                            <td>{{date}}</td>
-                                                            <td>{{status}}</td>
-                                                            <td>${{totalAmount.total}}</td>
-                                                            <td><a href="/view-user-order-details/{{_id}}"
-                                                                    class="check-btn sqr-btn ">View</a>
-                                                            </td>
-                                                        </tr>
-                                                        {{/each}}
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
 
 
 
-
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="download" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>Downloads</h3>
-                                            <div class="myaccount-table table-responsive text-center">
-                                                <table class="table table-bordered">
-                                                    <thead class="thead-light">
-                                                        <tr>
-                                                            <th>Product</th>
-                                                            <th>Date</th>
-                                                            <th>Expire</th>
-                                                            <th>Download</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Haven - Free Real Estate PSD Template</td>
-                                                            <td>Aug 22, 2018</td>
-                                                            <td>Yes</td>
-                                                            <td><a href="#" class="check-btn sqr-btn "><i
-                                                                        class="fa fa-cloud-download"></i> Download
-                                                                    File</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>HasTech - Profolio Business Template</td>
-                                                            <td>Sep 12, 2018</td>
-                                                            <td>Never</td>
-                                                            <td><a href="#" class="check-btn sqr-btn "><i
-                                                                        class="fa fa-cloud-download"></i> Download
-                                                                    File</a></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-                                    <div class="tab-pane fade" id="wallet" role="tabpanel">
-                                        <div class="myaccount-content">
-                                            <h3>My Wallet</h3>
-                                            {{#if walletData}}
-
-                                            <div class="col-lg-6">
-                                                <div class="balance">
-                                                    <p class="mb-2">Current Balance:</p>
-                                                    <h3 class="mb-4">{{ walletData.balance}}</h3>
-                                                </div>
-                                            </div>
-                                            {{#if walletData.transactions}}
-                                            <ul class="list-group">
-                                                {{#each walletData.transactions}}
-                                                <li class="list-group-item">
-                                                    <div class="row align-items-center">
-                                                        <div class="col-lg-6">
-                                                            <p class="mb-0">{{date}}</p>
-                                                            {{#if (eq type 'credited')}}
-                                                            <p class="mb-0 text-success">${{amount}} - {{type}}</p>
-                                                            {{/if}}
-                                                            {{#if (eq type 'debited')}}
-                                                            <p class="mb-0 text-danger">${{amount}} - {{type}}</p>
-                                                            {{/if}}
-                                                            {{#if (eq type 'failed')}}
-                                                            <p class="mb-0 text-warning">${{amount}} - {{type}}</p>
-                                                            {{/if}}
-                                                        </div>
-                                                        <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
-                                                            <button type="button" class="btn btn-secondary">View
-                                                                Details</button>
+                                            {{!-- Accordian Start --}}
+                                            <div class="accordion" id="accordionExample">
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="headingOne">
+                                                        <button
+                                                            class="accordion-button collapsed bg-primary text-white fw-bold"
+                                                            type="button" data-bs-toggle="collapse"
+                                                            data-bs-target="#collapseOne" aria-expanded="false"
+                                                            aria-controls="collapseOne">
+                                                            Please Edit Your Profile Here
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapseOne" class="accordion-collapse collapse"
+                                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                        <div class="accordion-body my-4">
+                                                            <form class="row">
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="name" class="form-label fw-bold">First
+                                                                        Name <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control" id="name"
+                                                                        name="name" required>
+                                                                </div>
+                                                                <div class="col-md-6 mb-3">
+                                                                    <label for="mobile" class="form-label fw-bold">phone
+                                                                        <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control" id="mobile"
+                                                                        name="mobile" required>
+                                                                </div>
+                                                                <div class="col-12 mb-3">
+                                                                    <label for="email" class="form-label fw-bold">email
+                                                                         <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="email" class="form-control" id="email"
+                                                                        name="email" required>
+                                                                </div>
+                                                                <div class="col-12 d-grid gap-2">
+                                                                    <button type="submit"
+                                                                        class="btn btn-danger fw-bold">Save</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
-                                                </li>
-                                                {{/each}}
-                                            </ul>
-                                            {{else}}
-                                            <h5>Please Make Some Wallet Transactions...</h5>
-                                            {{/if}}
-
-                                            {{else}}
-                                            <button id="activateWalletBtn" onclick="activateWallet()"
-                                                class="btn mt-3">Activate</button>
-                                            <div id="loadingModal" class="modal">
-                                                <div class="modal-content">
-                                                    <div id="loadingSpinner"></div>
-                                                    <h5 class="mt-3">Activating your wallet,Please wait..</h5>
                                                 </div>
                                             </div>
-                                            {{/if}}
-                                        </div>
                                     </div>
-                                    <!-- Single Tab Content End -->
-                                    <!-- Single Tab Content Start -->
-
-
-
-
-                                    <div class="tab-pane fade" id="address-edit" role="tabpanel">
-
-                                        {{!-- Accordionceastart --}}
-                                        <div class="accordion" id="accordionExample">
-
-                                            <div class="accordion-item">
-                                                <h2 class="accordion-header" id="headingOne">
-                                                    <button class="accordion-button" type="button"
-                                                        data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                                                        aria-expanded="true" aria-controls="collapseOne">
-                                                        Add Address
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseOne" class="accordion-collapse collapse "
-                                                    aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                                    <div class="accordion-body">
-
-
-                                                        {{!-- form div --}}
-                                                        <form class="form" action="/addressManagement" method="post">
-                                                            <div class="row">
-                                                                <div class="col-lg-6 col-md-6">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Full Name <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input class="form-control" type="text"
-                                                                            name="name">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Locality <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input type="text" class="form-control"
-                                                                            type="text" name="locality">
-                                                                    </div>
-                                                                </div>
-                                                                {{!-- <div class="col-lg-12">
-                                                                    <div class="billing-select mb-20">
-                                                                        <label>Country <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <select>
-                                                                            <option>Select a country</option>
-                                                                            <option>Azerbaijan</option>
-                                                                            <option>Bahamas</option>
-                                                                            <option>Bahrain</option>
-                                                                            <option>Bangladesh</option>
-                                                                            <option>Barbados</option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div> --}}
-                                                                <div class="col-lg-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Street Address <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input class="form-control" name="address"
-                                                                            placeholder="House number and street name"
-                                                                            type="text">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Town / City <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input type="text" class="form-control"
-                                                                            name="city">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>State / County <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input type="text" class="form-control"
-                                                                            name="state">
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg-12 col-md-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Postcode / ZIP <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input type="text" class="form-control"
-                                                                            name="pincode">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Phone <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input type="text" class="form-control"
-                                                                            name="mobile">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-12 col-md-12">
-                                                                    <div class="billing-info mb-20">
-                                                                        <label>Email Address <abbr class="required"
-                                                                                title="required">*</abbr></label>
-                                                                        <input type="text" class="form-control"
-                                                                            name="email">
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <button type="submit" class="btn btn-danger"
-                                                                    style="width: 100px;">Save</button>
-                                                                {{!-- <button type="submit" class="btn btn-success"
-                                                                    style="width: 100px; margin-left: 10px;">Update</button> --}}
-                                                            </div>
-                                                        </form>
-                                                        {{!-- form div end --}}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="myaccount-content">
-                                                <h3>Billing Address</h3>
-                                                <div class="row">
-                                                    <input type="text" hidden name="userId" value="">
-                                                    {{#each addresses}}
-                                                    <address>
-                                                        <div class="form-check form-check-inline">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="inlineRadioOptions" id="inlineRadio2"
-                                                                value="Home">
-                                                            <label class="form-check-label" for="inlineRadio2"></label>
-                                                        </div>
-                                                        <p><strong>{{name}}</strong></p>
-                                                        <p>{{locality}},{{landmark}} <br>{{city}},{{state}},{{pincode}}
-                                                        </p>
-                                                        <p>Mobile: {{mobile}}</p>
-                                                    </address>
-                                                    <a href="/editaddress" class="check-btn sqr-btn "><i
-                                                            class="fa fa-edit"></i>
-                                                        Edit
-                                                        Address</a>
-                                                    <div>
-                                                        <button type="button" onclick="deleteAddress('{{_id}}')"
-                                                            class="btn btn-secondary btn-sm">Delete Address</button>
-                                                    </div>
-                                                    {{/each}}
-
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-
-
-
-
                                 </div>
                                 <!-- Single Tab Content End -->
                                 <!-- Single Tab Content Start -->
-                                <div class="tab-pane fade" id="account-info" role="tabpanel">
+
+                                {{!-- orders --}}
+                                <div class="tab-pane fade" id="orders" role="tabpanel">
                                     <div class="myaccount-content">
-                                        <h3>Account Details</h3>
-                                        <div class="account-details-form">
-                                            <form action="#">
+                                        <h3>Orders</h3>
+                                        <div class="myaccount-table table-responsive text-center">
+                                            <table class="table table-bordered">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Order</th>
+                                                        <th>Date</th>
+                                                        <th>Status</th>
+                                                        <th>Total</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {{#each orders}}
+                                                    <tr>
+
+                                                        <td>{{@index }}</td>
+
+                                                        <td>{{date}}</td>
+                                                        <td>{{status}}</td>
+                                                        <td>${{totalAmount.total}}</td>
+                                                        <td><a href="/view-user-order-details/{{_id}}"
+                                                                class="check-btn sqr-btn ">View</a>
+                                                        </td>
+                                                    </tr>
+                                                    {{/each}}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <!-- Single Tab Content End -->
+                                <!-- Single Tab Content Start -->
+                                {{!-- <div class="tab-pane fade" id="download" role="tabpanel">
+                                    <div class="myaccount-content">
+                                        <h3>Downloads</h3>
+                                        <div class="myaccount-table table-responsive text-center">
+                                            <table class="table table-bordered">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th>Product</th>
+                                                        <th>Date</th>
+                                                        <th>Expire</th>
+                                                        <th>Download</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Haven - Free Real Estate PSD Template</td>
+                                                        <td>Aug 22, 2018</td>
+                                                        <td>Yes</td>
+                                                        <td><a href="#" class="check-btn sqr-btn "><i
+                                                                    class="fa fa-cloud-download"></i> Download
+                                                                File</a></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Goodreads</td>
+                                                        <td> {{date}}</td>
+                                                        <td>Never</td>
+                                                        <td><a href="#" class="check-btn sqr-btn "><i
+                                                                    class="fa fa-cloud-download"></i> Download
+                                                                File</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div> --}}
+                                <!-- Single Tab Content End -->
+                                <!-- Single Tab Content Start -->
+                                <div class="tab-pane fade" id="wallet" role="tabpanel">
+                                    <div class="myaccount-content">
+                                        <h3>My Wallet</h3>
+                                        {{#if walletData}}
+
+                                        <div class="col-lg-6">
+                                            <div class="balance">
+                                                <p class="mb-2">Current Balance:</p>
+                                                <h3 class="mb-4">${{ walletData.balance}}</h3>
+                                            </div>
+                                        </div>
+                                        {{#if walletData.transactions}}
+                                        <ul class="list-group">
+                                            {{#each walletData.transactions}}
+                                            <li class="list-group-item">
+                                                <div class="row align-items-center">
+                                                    <div class="col-lg-6">
+                                                        <p class="mb-0">{{date}}</p>
+                                                        {{#if (eq type 'credited')}}
+                                                        <p class="mb-0 text-success">${{amount}} - {{type}}</p>
+                                                        {{/if}}
+                                                        {{#if (eq type 'debited')}}
+                                                        <p class="mb-0 text-danger">${{amount}} - {{type}}</p>
+                                                        {{/if}}
+                                                        {{#if (eq type 'failed')}}
+                                                        <p class="mb-0 text-warning">${{amount}} - {{type}}</p>
+                                                        {{/if}}
+                                                    </div>
+                                                    {{!-- <div class="col-lg-6 text-lg-end mt-3 mt-lg-0">
+                                                        <button type="button" class="btn btn-secondary">View
+                                                            Details</button>
+                                                    </div> --}}
+                                                </div>
+                                            </li>
+                                            {{/each}}
+                                        </ul>
+                                        {{else}}
+                                        <h5>Please Make Some Wallet Transactions...</h5>
+                                        {{/if}}
+
+                                        {{else}}
+                                        <button id="activateWalletBtn" onclick="activateWallet()"
+                                            class="btn mt-3">Activate</button>
+                                        <div id="loadingModal" class="modal">
+                                            <div class="modal-content">
+                                                <div id="loadingSpinner"></div>
+                                                <h5 class="mt-3">Activating your wallet,Please wait..</h5>
+                                            </div>
+                                        </div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                                <!-- Single Tab Content End -->
+                                <!-- Single Tab Content Start -->
+
+
+
+
+                                <div class="tab-pane fade" id="address-edit" role="tabpanel">
+
+                                    {{!-- Accordionceastart --}}
+                                    <div class="accordion" id="accordionExample">
+
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapseOne" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    Add Address
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse "
+                                                aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+
+
+                                                    {{!-- form div --}}
+                                                    <form class="form" action="/addressManagement" method="post">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>Full Name <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input class="form-control" type="text" name="name">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>Locality <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control" type="text"
+                                                                        name="locality">
+                                                                </div>
+                                                            </div>
+                                                            {{!-- <div class="col-lg-12">
+                                                                <div class="billing-select mb-20">
+                                                                    <label>Country <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <select>
+                                                                        <option>Select a country</option>
+                                                                        <option>Azerbaijan</option>
+                                                                        <option>Bahamas</option>
+                                                                        <option>Bahrain</option>
+                                                                        <option>Bangladesh</option>
+                                                                        <option>Barbados</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div> --}}
+                                                            <div class="col-lg-12">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>Street Address <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input class="form-control" name="address"
+                                                                        placeholder="House number and street name"
+                                                                        type="text">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>Town / City <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control" name="city">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>State / County <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="state">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>Postcode / ZIP <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="pincode">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>Phone <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="mobile">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12">
+                                                                <div class="billing-info mb-20">
+                                                                    <label>Email Address <abbr class="required"
+                                                                            title="required">*</abbr></label>
+                                                                    <input type="text" class="form-control"
+                                                                        name="email">
+
+                                                                </div>
+                                                            </div>
+
+                                                            <button type="submit" class="btn btn-danger"
+                                                                style="width: 100px;">Save</button>
+                                                            {{!-- <button type="submit" class="btn btn-success"
+                                                                style="width: 100px; margin-left: 10px;">Update</button>
+                                                            --}}
+                                                        </div>
+                                                    </form>
+                                                    {{!-- form div end --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="myaccount-content">
+                                            <h3>Billing Address</h3>
+                                            <div class="row">
+                                                <input type="text" hidden name="userId" value="">
+                                                {{#each addresses}}
+                                                <address>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input" type="radio"
+                                                            name="inlineRadioOptions" id="inlineRadio2" value="Home">
+                                                        <label class="form-check-label" for="inlineRadio2"></label>
+                                                    </div>
+                                                    <p><strong>{{name}}</strong></p>
+                                                    <p>{{locality}},{{landmark}} <br>{{city}},{{state}},{{pincode}}
+                                                    </p>
+                                                    <p>Mobile: {{mobile}}</p>
+                                                </address>
+                                                <a href="/editaddress" class="check-btn sqr-btn "><i
+                                                        class="fa fa-edit"></i>
+                                                    Edit
+                                                    Address</a>
+                                                <div>
+                                                    <button type="button" onclick="deleteAddress('{{_id}}')"
+                                                        class="btn btn-secondary btn-sm">Delete Address</button>
+                                                </div>
+                                                {{/each}}
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+
+                            </div>
+                            <!-- Single Tab Content End -->
+                            <!-- Single Tab Content Start -->
+                            <div class="tab-pane fade" id="account-info" role="tabpanel">
+                                <div class="myaccount-content">
+                                    <h3>Account Details</h3>
+                                    <div class="account-details-form">
+                                        <form action="#">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="single-input-item">
+                                                        <label for="first-name" class="required">First
+                                                            Name</label>
+                                                        <input type="text" id="first-name" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="single-input-item">
+                                                        <label for="last-name" class="required">Last
+                                                            Name</label>
+                                                        <input type="text" id="last-name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="single-input-item">
+                                                <label for="display-name" class="required">Display Name</label>
+                                                <input type="text" id="display-name" />
+                                            </div>
+                                            <div class="single-input-item">
+                                                <label for="email" class="required">Email Addres</label>
+                                                <input type="email" id="email" />
+                                            </div>
+                                            <fieldset>
+                                                <legend>Password change</legend>
+                                                <div class="single-input-item">
+                                                    <label for="current-pwd" class="required">Current
+                                                        Password</label>
+                                                    <input type="password" id="current-pwd" />
+                                                </div>
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item">
-                                                            <label for="first-name" class="required">First
-                                                                Name</label>
-                                                            <input type="text" id="first-name" />
+                                                            <label for="new-pwd" class="required">New
+                                                                Password</label>
+                                                            <input type="password" id="new-pwd" />
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="single-input-item">
-                                                            <label for="last-name" class="required">Last
-                                                                Name</label>
-                                                            <input type="text" id="last-name" />
+                                                            <label for="confirm-pwd" class="required">Confirm
+                                                                Password</label>
+                                                            <input type="password" id="confirm-pwd" />
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="single-input-item">
-                                                    <label for="display-name" class="required">Display Name</label>
-                                                    <input type="text" id="display-name" />
-                                                </div>
-                                                <div class="single-input-item">
-                                                    <label for="email" class="required">Email Addres</label>
-                                                    <input type="email" id="email" />
-                                                </div>
-                                                <fieldset>
-                                                    <legend>Password change</legend>
-                                                    <div class="single-input-item">
-                                                        <label for="current-pwd" class="required">Current
-                                                            Password</label>
-                                                        <input type="password" id="current-pwd" />
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item">
-                                                                <label for="new-pwd" class="required">New
-                                                                    Password</label>
-                                                                <input type="password" id="new-pwd" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <div class="single-input-item">
-                                                                <label for="confirm-pwd" class="required">Confirm
-                                                                    Password</label>
-                                                                <input type="password" id="confirm-pwd" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                                <div class="single-input-item">
-                                                    <button class="check-btn sqr-btn ">Save Changes</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </fieldset>
+                                            <div class="single-input-item">
+                                                <button class="check-btn sqr-btn ">Save Changes</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                </div> <!-- Single Tab Content End -->
-                            </div>
-                        </div> <!-- My Account Tab Content End -->
-                    </div>
-                </div> <!-- My Account Page End -->
-            </div>
+                                </div>
+                            </div> <!-- Single Tab Content End -->
+                        </div>
+                    </div> <!-- My Account Tab Content End -->
+                </div>
+            </div> <!-- My Account Page End -->
         </div>
     </div>
+</div>
 </div>
 {{>user-footer}}
 </div>
