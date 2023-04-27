@@ -1,3 +1,4 @@
+require('dotenv').config()
 var db = require('../config/connection')
 var collection = require('../config/collections')
 const bcrypt = require('bcrypt')
@@ -8,7 +9,7 @@ const Razorpay = require('razorpay');
 const { resolve } = require('path');
 const adminHelpers = require('./admin-helpers');
 var instance = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID??'rzp_test_KR2oW5tjBzSx0y',
+    key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 

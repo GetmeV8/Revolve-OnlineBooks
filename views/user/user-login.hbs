@@ -1,3 +1,5 @@
+
+{{>user-header}}
 <section>
     <div class="main-wrapper">
 
@@ -184,7 +186,7 @@
                                             {{/if}}
                                             <form id="login-form" name="login-form">
                                                 <div>
-                                                    <input id="phone" type="text" name="phone" placeholder="Username">
+                                                    <input id="phone" type="text" name="phone" placeholder="Phone Number">
                                                     <small class="text-danger error-msg ms-1 pt-2"></small>
                                                 </div>
                                                 <div>
@@ -195,9 +197,9 @@
                                                 </div>
 
                                                 <div class="button-box">
-                                                    <div class="login-toggle-btn">
+                                                    {{!-- <div class="login-toggle-btn">
                                                         <a href="/otplogin">Forgot Password?</a>
-                                                    </div>
+                                                    </div> --}}
                                                     <button type="submit">Login</button>
                                                 </div>
         
