@@ -8,8 +8,8 @@ const Razorpay = require('razorpay');
 const { resolve } = require('path');
 const adminHelpers = require('./admin-helpers');
 var instance = new Razorpay({
-    key_id: "rzp_test_KR2oW5tjBzSx0y",
-    key_secret: 'MqvVFvT9J9tsVMsEojRCOcZ0',
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 
