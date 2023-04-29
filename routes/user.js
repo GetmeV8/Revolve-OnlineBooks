@@ -80,7 +80,7 @@ router.get('/order-placed-landing',session_check.isUserExist,user_controller.ord
 router.get('/add-to-wishlist/:id', session_check.isUserExist, user_controller.addtoWishlist);
 router.get('/wishlist', session_check.isUserExist, user_controller.wishlistGet);
 
-// router.delete('/user-wishlist/remove-item/:productId',user_controller.removeProducts)
+router.delete('/user-wishlist/remove-item/:productId',user_controller.removeProducts)
 
 // wallet management
 router.get("/open-wallet",session_check.isUserExist,user_controller.getWallet)

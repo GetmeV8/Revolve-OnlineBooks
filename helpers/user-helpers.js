@@ -1088,5 +1088,20 @@ module.exports = {
             throw new Error("Error getting user wallet.")
         }
     },
+    removeProducts: async (productId,userId) => {
+        try {
+            console.log("))))))))))))))))))))");
+         const response = await db
+            .get()
+            .collection(collection.WISHLIST_COLLECTION)
+            .updateOne(
+              { userId:userId },
+              { $pull: { products: ObjectId(productId) } }
+            )
+          return response
+        } catch (error) {
+         throw new Error(error)
+        }
+      },
 
 }

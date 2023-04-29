@@ -21,6 +21,20 @@
       }
     })
   }
+  showDeleteConfirmation = (productId) =>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You are about to remove this item from your wishlist.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, remove it!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteFromWishlist(productId)
+      }
+    })
+  }
 function cartAdd(ProdId) {
     console.log(">>>>>>>>>>>>>>>");
     console.log(ProdId)
