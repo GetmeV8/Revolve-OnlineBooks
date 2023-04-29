@@ -14,9 +14,9 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="cart-main-area pt-115 pb-120">
-             {{#if wishlisted}}
+            {{#if wishlisted}}
             <div class="container">
                 <h3 class="cart-page-title">Your cart items</h3>
                 <div class="row">
@@ -30,9 +30,9 @@
                                             <th>Product Name</th>
                                             <th>Price</th>
                                             <th>action</th>
+                                            <th>remove</th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
                                         <tr>
                                             {{#each wishlisted}}
@@ -43,11 +43,17 @@
                                             <td class="product-price-cart"><span
                                                     class="amount">${{product_price}}</span></td>
                                             <td class="product-wishlist-cart">
-                                                {{!-- <a onclick="cartAdd('{{this._id}}')" href="#">add to cart</a> --}}
-                                                <div class="pro-add-to-cart">
-                                                    <button onclick="cartAdd('{{this._id}}')" title="Add to Cart">Add To
+                                                <a onclick="cartAdd('{{product_id}}')" href="#">add to cart</a>
+                                                {{!-- <div class="pro-add-to-cart">
+                                                    <button onclick="cartAdd('{{product_id}}')" title="Add to Cart">Add
+                                                        To
                                                         Cart</button>
-                                                </div>
+                                                </div> --}}
+                                            </td>
+                                            <td class="product-remove">
+                                                <a href="#"
+                                                    onclick="deleteCartProduct('{{../cartId}}','{{product_id}}')"><i
+                                                        class="icon_close"></i></a>
                                             </td>
 
                                         </tr>

@@ -39,11 +39,9 @@ router.get('/user-shop', page_controller.productListing);
 //view products details
 router.get('/product-view/:id', page_controller.productView);
 
-//get Cart
-router.get('/user-cart', session_check.isUserExist, user_controller.userCartGet);
-
 // add to cart
 router.get('/add-to-cart/:id', session_check.isUserExist, user_controller.AddtoCart);
+router.get('/user-cart', session_check.isUserExist, user_controller.userCartGet);
 
 //changeQuantity
 router.post('/change-quantity', user_controller.ChangeCartQuantity);
@@ -81,6 +79,8 @@ router.get('/order-placed-landing',session_check.isUserExist,user_controller.ord
 //wishlist
 router.get('/add-to-wishlist/:id', session_check.isUserExist, user_controller.addtoWishlist);
 router.get('/wishlist', session_check.isUserExist, user_controller.wishlistGet);
+
+// router.delete('/user-wishlist/remove-item/:productId',user_controller.removeProducts)
 
 // wallet management
 router.get("/open-wallet",session_check.isUserExist,user_controller.getWallet)

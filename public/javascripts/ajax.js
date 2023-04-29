@@ -1,10 +1,34 @@
 
+  const deleteFromWishlist = (productId) =>{
+    $.ajax({
+      url:"/user-wishlist/remove-item/"+productId,
+      type:"DELETE",
+      success:(response) =>{
+        if(response.acknowledged){
+          location.reload()
+        } else {
+          Swal.fire({
+            text:"Oops! Something went wrong",
+            showConfirmButton:true,
+          })
+        }
+      },
+      error:(response) =>{
+        Swal.fire({
+          text:"Oops! Something went wrong",
+          showConfirmButton:true,
+        })
+      }
+    })
+  }
 function cartAdd(ProdId) {
     console.log(">>>>>>>>>>>>>>>");
+    console.log(ProdId)
     $.ajax({
         url: `/add-to-cart/${ProdId}`,
         method: 'get',
         success: (response) => {
+            console.log("+++++");
             if (response.status) {
                 Swal.fire({
                     position: "top-right",
@@ -20,9 +44,6 @@ function cartAdd(ProdId) {
         }
     });
 }
-
-
-
 function wishlistAdd(ProdId) {
     console.log();
     $.ajax({

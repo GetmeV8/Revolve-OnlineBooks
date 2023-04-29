@@ -84,7 +84,7 @@ module.exports = {
         return new Promise(async (res, rej) => {
             let response = {};
             let user = await db.get().collection(collection.USER_COLLECTION).findOne({ phone: userData.phone })
-            if (user.access) {
+            if (!user.access) {
                 response.block = true;
                 res(response)
             }
@@ -480,7 +480,7 @@ module.exports = {
                     }
                 }
             ]).toArray()
-            console.log("//////////",orderItems);
+            console.log("//////////", orderItems);
             return Promise.resolve(orderItems)
         } catch (error) {
             return Promise.reject(error)
@@ -585,6 +585,117 @@ module.exports = {
             console.log(errors);
         }
     },
+
+    // addToWhishList: async (proId, userId) => {
+    //     try {
+
+    //         const productId = ObjectId(proId)
+    //         const response = {}
+    //         const wishList = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({ userId: userId })
+    //         if (wishList) {
+    //             const productIndex = wishList.products.findIndex((product) => product.equals(productId))
+    //             if (productIndex > -1) {
+    //                 // product already exists, remove it
+    //                 wishList.products.splice(productIndex, 1)
+    //                 response.removed = true
+    //             } else {
+    //                 // product does not exist, add it
+    //                 wishList.products.push(productId)
+    //                 response.updated = true
+    //             }
+    //             await db.get().collection(collection.WISHLIST_COLLECTION).updateOne({ _id: wishList._id }, { $set: { products: wishList.products } })
+    //         } else {
+    //             const wishListSchema = {
+    //                 userId,
+    //                 products: [productId],
+    //             }
+    //             response.created = true
+    //             await db.get().collection(collection.WISHLIST_COLLECTION).insertOne(wishListSchema)
+    //         }
+
+    //         return response
+    //     } catch (error) {
+    //         return false
+    //     }
+
+    // },
+    // getAllItemsInWishlist: async (userId) => {
+    //     try {
+    //         const wishListItems = await db.get().collection(collection.WISHLIST_COLLECTION).findOne({ userId: userId })
+    //         return wishListItems
+
+    //     } catch (error) {
+    //         throw new Error(error)
+    //     }
+
+    // },
+    // getProductsDetailsOfWishList: async (userId) => {
+    //     try {
+    //         const wishItems = await db.get().collection(collection.WISHLIST_COLLECTION).aggregate([
+    //             {
+    //                 $match: {
+    //                     userId: userId
+    //                 }
+    //             },
+    //             {
+    //                 $unwind: '$products'
+    //             },
+    //             {
+    //                 $lookup: {
+    //                     from: collection.PRODUCT_COLLECTION,
+    //                     localField: 'products',
+    //                     foreignField: '_id',
+    //                     as: 'productDetails'
+    //                 }
+    //             },
+    //             {
+    //                 $project: {
+    //                     product: { $arrayElemAt: ["$productDetails", 0] },
+    //                 }
+    //             },
+    //             {
+    //                 $replaceRoot: { newRoot: "$product" }
+    //             }
+    //         ]).toArray()
+    //         return wishItems
+    //     } catch (error) {
+    //         throw new Error(error)
+    //     }
+
+    // },
+    // getWishedCount: async (userId) => {
+    //     try {
+    //         const wished = await db
+    //             .get()
+    //             .collection(collection.WISHLIST_COLLECTION)
+    //             .findOne({ userId: userId })
+    //         let count = 0
+    //         wished
+    //             ? count = wished.products?.length
+    //             : count = 0
+
+    //         return count
+    //     } catch (error) {
+    //         throw new Error("Failed to get wishlist products count.")
+    //     }
+    // },
+    // removeProducts: async (productId, userId) => {
+    //     try {
+    //         const response = await db
+    //             .get()
+    //             .collection(collection.WISHLIST_COLLECTION)
+    //             .updateOne(
+    //                 { userId: userId },
+    //                 { $pull: { products: ObjectId(productId) } }
+    //             )
+    //         return response
+    //     } catch (error) {
+    //         throw new Error(error)
+    //     }
+    // },
+
+
+
 
     wishlistget: async (userId, productId) => {
         const product = {
@@ -763,7 +874,7 @@ module.exports = {
                     },
                 ])
                 .toArray()
-                // console.log("////");
+            // console.log("////");
             return order[0]
         } catch (error) {
             throw new Error("Failed to fetch current user orders")
@@ -832,7 +943,7 @@ module.exports = {
             // const {total:amount} = amountArg
             console.log(amount + "amount from coupon")
             const moment = require('moment');
-            const coupon = await db.get().collection(collection.COUPON_COLLECTION).findOne({ type: "normal",code: couponCode })
+            const coupon = await db.get().collection(collection.COUPON_COLLECTION).findOne({ type: "normal", code: couponCode })
             console.log(coupon);
             if (!coupon) {
                 return {
@@ -860,7 +971,7 @@ module.exports = {
                     const { code } = coupon
                     return {
                         status: true,
-                        type:"normal",
+                        type: "normal",
                         code: coupon.code,
                         discountPrice,
                         priceAfterDiscount: amount - discountPrice,
@@ -872,8 +983,8 @@ module.exports = {
             throw new Error("Failed to calculate coupon discount")
         }
     },
-    
-    getWalletData: async (userId) => {    
+
+    getWalletData: async (userId) => {
         try {
             const wallet = await db
                 .get()
@@ -907,13 +1018,13 @@ module.exports = {
             console.log(response)
             return response
         } catch (error) {
-            
+
             throw new Error("Error while activating wallet")
         }
     },
-    getUserWallet: async (orderId, {total}, userId) => {
+    getUserWallet: async (orderId, { total }, userId) => {
         try {
-            console.log(orderId,total,userId)
+            console.log(orderId, total, userId)
             const { WALLET_COLLECTION, ORDER_COLLECTION } = collection
             const walletCollection = await db.get().collection(WALLET_COLLECTION)
             const ordersCollection = await db.get().collection(ORDER_COLLECTION)
@@ -927,7 +1038,7 @@ module.exports = {
             const dateString = currentDate.toLocaleDateString(undefined, optionsDate)
             const timeString = currentDate.toLocaleTimeString(undefined, optionsTime)
             const dateTimeString = `${dateString} at ${timeString}`
-            console.log("GGGGGGGGG",total);
+            console.log("GGGGGGGGG", total);
             if (balance && balance >= total) {
                 const paymentStatusUpdated = await ordersCollection.updateOne(
                     { _id: ObjectId(orderId) },
