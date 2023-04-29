@@ -90,5 +90,8 @@ router.post("/wallet-payment",user_controller.walletPayment)
 //razorpay
 router.post('/verify-payment',user_controller.verifyPayment);
 
+//productseach
+router.get('/search',user_controller.productsearch)
+
 
 module.exports = router;
