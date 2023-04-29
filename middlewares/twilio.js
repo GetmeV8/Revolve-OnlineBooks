@@ -1,10 +1,10 @@
 // const accountSid = process.env.TWILIO_ACCOUNT_SID; // Your Account SID from www.twilio.com/console
 // const authToken = process.env.TWILIO_AUTH_TOKEN; // Your Auth Token from www.twilio.com/console
 // const serviceSid = process.env.TWILIO_SERVICE_SID; // My Service SID from www.twilio.com/console
-
-const accountSid ='ACd2a0d27270298bc317ae8cf776f5e1fd'
-const authToken ='cdab3fc41de610548d056f09fb6e3239' 
-const serviceSid ='VA88b406bbba327add825f04ebe6123a0f';
+require('dotenv').config()
+const accountSid =process.env.TWILIO_ACCOUNT_SID
+const authToken =process.env.TWILIO_AUTH_TOKEN
+const serviceSid =process.env.TWILIO_SERVICE_SID
 
 
 const client = require('twilio')(accountSid, authToken);
